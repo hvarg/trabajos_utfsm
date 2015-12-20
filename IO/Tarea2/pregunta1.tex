@@ -1,0 +1,57 @@
+%tex_origin: Tarea2-IO1-SandovalVargas.tex
+\section{Guaripolo S.A.}
+\begin{enumerate}
+	\item \textbf{Malla del programa, ruta crítica y duración esperada.} \\
+		La malla queda representada por la siguiente figura, donde se asignan
+		números a los nodos y letras a los trabajos (las lineas punteadas son
+		\texttt{dummies}):
+		\begin{center}
+			\input{malla1.tex}
+		\end{center}
+		Podemos notar que la ruta crítica será:
+		$$ A\rightarrow C\rightarrow H\rightarrow I\rightarrow L\rightarrow O $$
+		Con una duración esperada de $25$ días.
+	\item
+		Como notamos del resultado anterior el programa no finaliza en los $22$
+		días que espera nuestro gerente de operaciones, por lo que es necesario
+		acelerar el proceso. Para ello analizamos la tabla presentada y notamos 
+		que:
+		\begin{itemize}
+			\item
+				De la ruta crítica el trabajo con menor costo de aceleración es
+				$I$, por lo tanto lo aceleramos un día.
+			\item
+				Como la aceleración de $I$ no produjo un cambio de ruta crítica,
+				y además no podemos seguir acelerando $I$ pasamos al siguiente
+				menor que es $L$. Lo aceleramos un día.
+			\item
+				El último cambio afectó la ruta crítica: desde $I$ se
+				puede llegar a $O$ ya sea por $L$ o por $K\rightarrow M$ sin
+				cambiar su duración. Ahora un cambio en $L$ no afectará la ruta
+				crítica a no ser que a su vez se cambie $K$ o $M$, lo que nos
+				costará un mínimo de $\$ 15000 $.
+			\item
+				Vemos que en la ruta crítica tenemos un elemento con menor
+				precio: $H$, lo aceleramos un día y obtenemos el resultado
+				esperado.
+			\item
+				El costo de la aceleración fue de $5000 + 7000 + 8000 = 20000$
+		\end{itemize}
+		La nueva malla del programa será:
+		\begin{center}
+			\input{malla2.tex}
+		\end{center}
+		Las nueva ruta críticas serán:
+		$$ A\rightarrow C\rightarrow H\rightarrow I\rightarrow L\rightarrow O $$
+		$$ A\rightarrow C\rightarrow H\rightarrow I\rightarrow K\rightarrow 
+			M\rightarrow O $$
+		$$ A\rightarrow C\rightarrow F\rightarrow G\rightarrow I\rightarrow 
+			L\rightarrow O $$
+		$$ A\rightarrow C\rightarrow F\rightarrow G\rightarrow I\rightarrow 
+			K\rightarrow M\rightarrow O $$
+	\item
+		De la resolución del problema usando \texttt{lp\_solve} (ver código 
+		anexo) obtenemos el siguiente resultado:
+		\verbinput{p1-IO-lab2-output.txt}
+		El cual no varía del resultado obtenido sin el programa.
+\end{enumerate}

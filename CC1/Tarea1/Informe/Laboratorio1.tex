@@ -1,0 +1,288 @@
+\documentclass[spanish, fleqn]{article}
+\usepackage{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{wasysym}
+\usepackage[colorlinks, urlcolor=blue]{hyperref}
+\usepackage[top = 2.5cm, bottom = 2cm, left = 2cm, right = 2cm]{geometry}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{gris}{rgb}{0.2,0.2,0.2}
+
+\title{ILI 285 \\
+       Laboratorio \#1 \\
+      }
+\author{Alonso Sandoval Acevedo\\asandova@alumnos.inf.utfsm.cl\\201073011-5 \and 
+		Hernán Vargas Leighton\\hvargas@alumnos.inf.utfsm.cl\\201073009-3}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\thispagestyle{empty}
+
+\section{Descripción del experimento}
+	%Descripción del experimento y suposiciones
+	El experimento realizado pretende dejar en evidencia los problemas asociados
+	a la precisión del computador al realizar cómputo con cantidades muy
+	pequeñas o distantes entre sí. Para ello se expondrán cálculos con cifras
+	que representan cantidades extremas en la representación de punto
+	flotante(double-precision floating-point), o de gran diferencia en órdenes
+	de magnitud entre sí, de manera de evidenciar los problemas previstos.
+	Veremos también cómo influye en ello la cantidad conocida como $e_{mach}$
+	(machine epsilon). 
+\section{Desarrollo}
+	%Desarrollo y análisis de resultados
+	\subsection{Representación punto flotante}
+	\begin{enumerate}
+		\item
+			El resultado entregado de la diferencia $5-2^{-53}$ en Python es 5.
+		\begin{enumerate}
+			\item
+				Lo primero que podríamos pensar es que el computador guarda como
+				cero el $2^{-53}$. Sin embargo, lo que realmente ocurre es que
+				el computador ''considera'' que $2^{-53}$ comparado con 5 es 
+				prácticamente cero.\\
+				Esto ocurre debido a la representación en punto flotante doble
+				precisión de las cifras, por lo que el problema lo podemos
+				notar al observar estas cantidades en la notación punto
+				flotante:
+				\begin{center}
+					$5-2^{-53}$ = $(1.01$ x $2^{2} )$ x $2^{-53}$
+				\end{center}
+				Sabemos que la mantisa en la representación punto flotante con
+				doble precisión ocupa 52 bits, por lo que una diferencia en
+				órdenes de magnitud de más de $(16)_{10} = (52)_{2}$ implicaría
+				que el ordenador omita la cantidad pequeña, en nuestro caso, si
+				vemos la diferencia de los exponentes, el ordenador es tolerante
+				hasta una diferencia de 
+				$|(2 - 52)| = 50 \rightarrow (2^{50})_{2}, 50$ órdenes de
+				magnitud versus el 5. Esto ocurre ya que al guardar el $5$ se 
+				utilizan dos decimales de la mantisa, dejando espacio solo para
+				$50$ más.
+			\item
+				$e_{mach}$ representa la diferencia entre el 1 y el menor número
+				representable mayor a 1, en notación punto flotante doble
+				precisión $e_{mach} = 2^{-53}$.\\
+				El error presentado en la pregunta anterior ocurre debido a que
+				el resultado real está entre un número y el	siguiente número
+				representable, por ello el resultado debe ser aproximado 
+				perdiendo así exactitud.\\
+				Para que este tipo de errores no ocurran debe suceder que los
+				números con los cuales se opera no sean tan distantes entre sí.
+				En el ejemplo anterior podemos calcular cual es esta barrera por
+				medio de la fórmula $e_{mach} * |5_2|$ es decir:
+				\begin{equation*}
+					2^{-53} * 1.01 * 2^2 \approx 2^{-51}
+				\end{equation*}
+				Es decir, para obtener un resultado debemos restarle al 5 
+				números con orden de magnitud mayor a $2^{-51}$. En python 
+				comprobamos que es posible almacenar el resultado de una
+				operación como $5 - 2^{50}$.
+		\end{enumerate}
+		\item
+			Cacular $(5-3$ x $2^{-53})+5$.
+		\begin{enumerate}
+			\item
+				El resultado aritmético exacto es (a través de wolframalpha):\\
+				$9.99999999999999966693309261245303787291049957275390625$
+			\item
+				El resultado aritmético computacional obtenido con Python es:
+				10. Identificamos el problema o la diferencia con un cálculo más
+				preciso, tal como en el ejercicio anterior, en la significancia
+				entre el $3$ y $2^{-53}$ es decir: $ 1.1$ x $2^1$ y $ 2^{-53}$,
+				la diferencia en órdenes de magnitud es de $|1 - 52| = 51$, por
+				lo que números menores que $2^{-51}$ son 0 con respecto al 3.
+			\item
+				El cero en punto flotante con doble precisión puede ser
+				representado de dos formas, positivo y negativo, con su signo 0
+				o 1 respectivamente:
+				\begin{center}
+					\begin{tabular}{|c|c|c|}
+					\hline 
+						signo(1 bit) & mantisa(52 bits) & exponente(11 bits) \\ 
+					\hline 
+						0 & 000....0 & 00...0 \\ 
+					\hline 
+						1 & 000....0 & 00...0 \\ 
+					\hline 
+					\end{tabular}
+				\end{center}
+
+		\end{enumerate}
+	\end{enumerate}
+	\subsection{Perdida de significancia}
+	\begin{enumerate}
+		\item
+			Primero obtenemos el límite de la expresión utilizando la regla de
+			l'Hôpital. Derivando 3 veces y evaluando en 0 tenemos que el
+			límite de la expresión cuando $x \rightarrow 0$ es $\frac{1}{3}$\\
+			Ahora sabemos que el resultado de la expresión tenderá a 
+			$\frac{1}{3}$ cuando $p \rightarrow \infty$. 
+			Ejecutamos el script (ver anexo) con $1 \leq p \leq 20$ y obtenemos
+			que la salida es:
+			\begin{verbatim}
+				01: 0.000341666706845/0.001 = 0.341666706845
+				02: 3.34166666782e-07/1e-06 = 0.334166666782
+				03: 3.33416849685e-10/1e-09 = 0.333416849685
+				04: 3.33510996597e-13/1e-12 = 0.333510996597
+				05: 4.4408920985e-16/1e-15 = 0.44408920985
+				06: 0.0/1e-18 = 0.0
+				07: -2.22044604925e-16/1e-21 = -222044.604925
+				08: 0.0/1e-24 = 0.0
+				09: 0.0/1e-27 = 0.0
+				10: 0.0/1e-30 = 0.0
+				11: 0.0/1e-33 = 0.0
+				12: 0.0/1e-36 = 0.0
+				13: 0.0/1e-39 = 0.0
+				14: -2.22044604925e-16/1e-42 = -2.22044604925e+26
+				15: -2.22044604925e-16/1e-45 = -2.22044604925e+29
+				16: 0.0/1e-48 = 0.0
+				17: 0.0/1e-51 = 0.0
+				18: 0.0/1e-54 = 0.0
+				19: 0.0/1e-57 = 0.0
+				20: 0.0/1e-60 = 0.0
+			\end{verbatim}
+			Como vemos, el script parece funcionar bien hasta $p=4$, pero
+			después de eso empiezan a suceder cosas extrañas y termina dando 0
+			reiteradas veces.\\
+			Para ver bien cual es el problema que está ocurriendo activamos la
+			opción verbose e iteramos desde 4 hasta 7 obteniendo como resultado:
+			\begin{verbatim}
+				04: 3.33510996597e-13/1e-12 = 0.333510996597
+				x         : 0.0001
+				a = e^x   : 1.0001000050001667
+				b = cos(x): 0.999999995
+				c = sin(x): 9.999999983333334e-05
+				d = x^3   : 1.0000000000000002e-12
+				a + b     : 2.0001000000001667
+				b - c     : 0.9998999950001667
+				(a+b) - c : 2.0000000000003335
+				a + (b-c) : 2.0000000000003335
+				##################################################
+				05: 4.4408920985e-16/1e-15 = 0.44408920985
+				x         : 1e-05
+				a = e^x   : 1.00001000005
+				b = cos(x): 0.99999999995
+				c = sin(x): 9.999999999833334e-06
+				d = x^3   : 1.0000000000000003e-15
+				a + b     : 2.00001
+				b - c     : 0.9999899999500002
+				(a+b) - c : 2.0000000000000004
+				a + (b-c) : 2.0
+				##################################################
+				06: 0.0/1e-18 = 0.0
+				x         : 1e-06
+				a = e^x   : 1.0000010000005
+				b = cos(x): 0.9999999999995
+				c = sin(x): 9.999999999998333e-07
+				d = x^3   : 9.999999999999999e-19
+				a + b     : 2.000001
+				b - c     : 0.9999989999994999
+				(a+b) - c : 2.0
+				a + (b-c) : 2.0
+				##################################################
+			\end{verbatim}
+			Para $p=4$ notamos que no existen problemas, para $p=5$ vemos que
+			si la expresión es evaluada como $a + (b - c)$ ocurrirá un error, 
+			pero, como obtenemos un resultado distinto de 0, notamos que el
+			computador evalúa $(a + b) - c$.\\
+			En el caso $p=6$ vemos que la expresión se hace 0 siempre, es decir,
+			el computador incurre en un error de cancelación en $(a+b)-c$ donde
+			el resultado debe ser muy cercano a 2, pero no 2, por ello decimos
+			que para $1 \leq p \leq 5$ no hay errores de cancelación. 
+
+		\begin{enumerate}
+			\item
+				El error relativo lo calcularemos según el resultado en la
+				representación punto flotante dado por la iteración mostrada en
+				el punto anterior, cuando $p = 4$. A pesar de que se 
+				logra calcular un valor para $p = 5$ sin incurrir en errores de
+				cancelación, este valor tiene un error mayor que el de $p=4$.\\
+				Como valor esperado, utilizaremos el resultado entregado por el 
+				computo de la expresión en wolframalpha.
+				\begin{center}
+					$\frac{|0.333510996597 - 0.333334166...|}{|0.333334166...|}
+					= 0.00053049$
+				\end{center}
+				Por la presición de la representación punto flotante usada, el 
+				mejor valor a conseguir tendrá un error cercano a $\frac{1}{2} 
+				e_{mach}$, sin embargo en nuestro computo insiden otros 
+				factores que aumentan el error (lo alejan del mejor caso 
+				posible).\\
+				En primer lugar, el computo de cada parte de la expresión 
+				conlleva un redondeo dado que no se pueden almacenar infinitos
+				decimales. Luego, detectamos un error en el paso de decimal, 
+				binario, decimal, osea cuando se ingresa el valor, se traspasa 
+				máquina y luego se vuelve a recuperar.\\
+				Esto se puede mejorar arreglando la expresión, de manera de 
+				sopesar estos errores.
+			\item
+				Computacionalmente el mejor valor que podemos conseguir tiene un 
+				error entre 0 (el valor exacto) y $\frac{1}{2} e_{mach}$, pero 
+				nuestro algoritmo incurre en errores mucho más grandes pues se
+				hacen aproximaciones($e^x, cos(x)$, etc.) y hay un error de 
+				cancelación.
+		\end{enumerate}
+	\end{enumerate}
+
+\section{Conclusiones}
+	%Conclusiones
+	Existen problemas de cálculo computacional cuando las cifras presentes son 
+	extremadamente pequeñas, grandes, o, en nuestro caso de estudio, difieren
+	mucho entre si (en ordenes de magnitud), esto ocurre por la representación
+	que tienen en la máquina las cifras. El presente laboratorio se centró en
+	la representación en punto flotante doble presición, y en particular, en el
+	análisis de la cifra $e_{mach}$ la cual nos da cuenta de cuando las cifras
+	son comparables entre si al momento de operar, así como del error posible
+	al momento de una aproximación. En la representación mencionada existe una
+	''tolerancia'' entre cifras del orden de $10^{16}$, la cual es justamente
+	$e_{mach} = 2^{-52}$.\\
+	De esto derivan los problemas de cancelación (diferencía por debajo de lo
+	representable), aproximación, entre otros, con las cuales existen técnicas
+	que permiten acomodar las expresiones de manera de evitar omitir cifras
+	significativas.
+
+\section{Referencias}
+%Referencias
+\begin{enumerate}
+	\item
+		 http://drj11.wordpress.com/2007/07/03/python-poor-printing-of-floating-point/,
+		 Acerca de por que no usar la conversión implicita de flotante a string.
+\end{enumerate}
+
+\newpage
+\section{Anexo}
+	%hack para acentos:
+	\lstset{literate=
+		{á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+		{Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+		{à}{{\`a}}1 {è}{{\'e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+		{À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+		{ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+		{Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+		{â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+		{Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+		{œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+		{ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+		{€}{{\EUR}}1 {£}{{\pounds}}1
+	}
+	%Anexo con código utilizado
+	\lstinputlisting[language=Python,
+				 frame=single,
+				 showstringspaces=false,
+				 commentstyle=\color{gris},
+				 title=\lstname,
+			 	 tabsize=4]{../Codigos/Pregunta1.py}
+	\newpage
+	\lstinputlisting[language=Python,
+				 frame=single,
+				 showstringspaces=false,
+				 commentstyle=\color{gris},
+				 title=\lstname,
+			 	 tabsize=4]{../Codigos/Pregunta2.py}
+
+\vfill\hfill HV/AS/\LaTeXe
+\end{document}

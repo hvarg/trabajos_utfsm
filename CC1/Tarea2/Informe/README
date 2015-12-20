@@ -1,0 +1,4 @@
+Compilar con:
+	pdflatex  Laboratorio2.tex
+
+Los archivos: errores.tex y graficos.tex son parte de éste.

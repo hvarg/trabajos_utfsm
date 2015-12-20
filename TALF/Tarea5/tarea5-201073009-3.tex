@@ -1,0 +1,133 @@
+\documentclass[spanish, fleqn]{article}
+%\usepackage{babel}		Tikz...
+\usepackage[spanish, es-noshorthands]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}  
+\usepackage{wasysym}
+\usepackage[colorlinks, urlcolor=blue]{hyperref}
+\usepackage{fourier}
+\usepackage[top = 2.5cm, bottom = 2cm, left = 2cm, right = 2cm]{geometry}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows, shapes}
+
+\title{Introducción a la Informática Teórica \\
+       Tarea 5 \\
+       ``¡norecursivorecursivorecursivamenteenumerablenorecursivo!''
+      }
+\author{Hernán Vargas \\ 201073009-3}
+\date{2 de junio 2014}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\section*{Respuestas}
+
+\begin{enumerate}
+	\item
+		Conceptos
+		\begin{itemize}
+			\item 
+%				¿Qué se puede decir de un lenguaje \(\mathcal{L}\) si se sabe
+%				que su complemento \(! \mathcal{L}\) \textbf{no} es
+%				recursivamente enumerable?
+				Sabemos que: $!\mathcal{L}$ es recursivamente enumerable 
+				$\Leftrightarrow \mathcal{L} $ es recursivo. De esto podemos
+				concluir que si nuestro lenguaje $!\mathcal{L}$ no es
+				recursivamente enumerable, entonces el lenguaje $\mathcal{L}$ a
+				lo más será recursivamente enumerable.
+
+			\item 
+%				¿Qué relación hay entre un lenguaje que es decidible y un
+%				lenguaje recursivo?
+				Un lenguaje decidible es aquel para el cual existe una máquina
+				de Tuning que acepta y se detiene, lo cual también es la
+				definición de lenguaje recursivo. En síntesis son lo mismo.
+			
+			\item
+%				¿Por qué se dice que un problema en \(\mathcal{P}\) también
+%				está en  \(\mathcal{NP}\)?
+				Por definición sabemos que un problema $\mathcal{P}$ es aquel
+				que puede ser resuelto en tiempo polinomial por una máquina de
+				Tuning determinista. Por otro lado, un problema $\mathcal{NP}$
+				puede ser resuelto en tiempo polinomial por una máquina de 
+				Tuning no determinista, pero una máquina de Tuning determinista
+				es un caso particular de una no determinista, por lo tanto
+				podemos decir que un problema $\mathcal{P}$ también está en 
+				$\mathcal{NP}$.
+
+			\item
+%				Dados un problema \(P\) que se sabe en \(\mathcal{NP}\) y un
+%				problema \(\mathcal{NP}\)-completo \(P_c\)
+%				¿qué puede concluir de una reducción polinomial de \(P_c\) a
+%				\(P\)?.
+				Si logramos reducir $P_c$ a $P$ entonces $P$ es un problema 
+				$\mathcal{NP}$-completo, ya que $P$ está en $\mathcal{NP}$.
+				Ahora todo problema en $\mathcal{NP}$ será reducible a $P$.
+
+			\item
+%				¿Cuál es la diferencia entre un lenguaje recursivamente
+%				enumerable y uno recursivamente enumerable no recursivo?
+				Un lenguaje recursivamente enumerable no recursivo será a lo
+				más recursivamente enumerable, es decir la maquina de Tuning que
+				lo representa no parará en todos los casos. En contraposición,
+				un lenguaje recursivamente enumerable puede ser recursivo, lo
+				que indica que su máquina de Tuning se detiene en todos los
+				casos.
+		\end{itemize}
+
+	\item
+%		Se define un \emph{Autómata Linealmente Acotado} como una TM que se
+%		detiene en cuanto sale de la entrada original (se detiene si lee un
+%		blanco o retrocede antes del comienzo de la cinta). 
+%		Demuestre que el lenguaje \(\mathcal{A}_{LA} = \{<M,\omega>:\) M es un
+%		\emph{Autómata Linealmente Acotado}  y \(\omega \in \mathcal{L}(M) \}\)
+%		es decidible.
+		Para demostrar que $\mathcal{A}_{LA}$ es decidible nos basta con
+		demostrar que un \emph{Autómata Linealmente Acotado} es recursivo, ya
+		que $\mathcal{A}_{LA}$ está compuesto por las palabras $\omega$ que son
+		aceptadas por el \emph{Autómata Linealmente Acotado}. Además sabemos que
+		ésta máquina de Tuning se detiene cuando sale de la entrada original,
+		es decir, se detendrá en todos los casos y por lo tanto es recursiva.
+	
+	\item
+%		El famoso \emph{Halting problem} de Turing consiste en determinar si
+%		dada una TM \(M\) y un string \(\omega\), \(M\) se detendrá al procesar
+%		como entrada a \(\omega\).
+%		En 1936 Alan Turing demostró que este problema es indecidible.
+%		Utilizando esta información, ¿Se puede determinar si la TM \(M_b\) se
+%		detiene al comenzar con puros blancos grabados en su cinta?
+%		\emph{Pista: utilice las famosas ``cajitas''}
+		Digamos $M_h$ una máquina que prueba el \emph{Halting problem}, pide un
+		string $\omega$ y una máquina de Tuning MT y dice ''Si`` si la máquina
+		se detiene, en este caso digamos $\omega$ una cinta que comienza con
+		puros blancos y la máquina de Tuning $M_b$,	tenemos:
+
+		%Estilo
+		\tikzstyle{caja}=[draw, fill=gray!50, minimum size=1em]
+		\tikzstyle{init}=[pin edge={to-,thin,black}]
+		%Cajas
+		\begin{center}
+			\begin{tikzpicture}[auto]
+				%Máquinas
+				\node [caja, pin={[init]above:$M_b$}] (a) {$M_h$};
+				%Caja
+				\draw[color=gray,thick](-2, 1.5) rectangle (2,-1);
+				%Flecha w
+				\node (b) [left of=a,node distance=3cm, coordinate] {a};
+				\path[->] (b) edge node {$\omega$} (a);
+				%Felcha out
+				\node [coordinate] (end) [right of=a, node distance=3cm]{};
+				\draw[->] (a) edge node {$Si$} (end);
+			\end{tikzpicture}
+		\end{center}
+		Ahora probar que $M_b$ se detiene sería equivalente a probar el
+		\emph{Halting problem}, pero sabemos este último indecidible, por lo
+		tanto $M_b$ es indecidible.
+
+\end{enumerate}
+\vfill\hfill HV/\LaTeXe
+\end{document}

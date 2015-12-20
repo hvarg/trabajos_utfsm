@@ -1,0 +1,243 @@
+\documentclass{beamer}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{multicol} % indice en 2 columnas
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{adjustbox}
+%configura la figura de las listas itemize
+\setlist[itemize]{label={\color{blue}$\bullet$}}
+\usetheme{Warsaw}
+\usecolortheme{dolphin}
+\useoutertheme{shadow}
+\useinnertheme{rectangles}
+
+% 1º ppt
+\title[IPv6]{Migrando aplicaciones a IPv6}
+\subtitle{Fundamentos técnico: DualStack y Socket.h}
+\author[Sandoval, Vargas]
+{Alonso Sandoval A. \and Hernán Vargas L.}
+\institute[UTFSM]
+{
+	Universidad Técnica Federico Santa María
+	\and
+	\texttt{asandova@alumnos.inf.utfsm.cl, hvargas@alumnos.inf.utfsm.cl}
+}
+\date{\today}
+
+%2º ppt
+\AtBeginSection{
+	\begin{frame}
+		\frametitle{Índice}
+		\tableofcontents[currentsection]
+	\end{frame}
+}
+
+\AtBeginSubsection{
+	\begin{frame}
+		\frametitle{Índice}
+		\tableofcontents[currentsection,currentsubsection]
+	\end{frame}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+	\frametitle{Índice}
+	\tableofcontents
+\end{frame}
+
+\input{1parte}
+
+\section{socket.h}
+\subsection{Descripción}
+
+\begin{frame}
+	\frametitle{Recuerdo.}
+	\begin{itemize}[itemsep=2em]
+	\item
+		Provee funciones básicas para el traspaso de paquetes vía socket.
+	\item
+		Soporta los protocolos de transporte \texttt{UDP} y \texttt{TCP}.
+	\item
+		Soporta los protocolos de red IPv4 y IPv6.
+	\item
+		Nos enfocaremos en el traspaso de mensajes \texttt{TCP/IP} tanto
+		versión 4 como 6.
+	\end{itemize}
+% Mini bloques dentro de las ppt
+%\begin{block}{Marsupiales en Australia}
+% Koala, Canguro, Wombat...
+%\end{block}			 
+\end{frame}
+
+\subsection{Funcionalidad}
+
+\begin{frame}[fragile]
+	\frametitle{Creación del socket}
+	\begin{verbatim}
+	#include <sys/socket.h>
+	/* int = socket(int domain, int type, int protocol); */
+	int mi_socket;
+	mi_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	\end{verbatim}
+	\begin{itemize}
+		\item
+			\texttt{domain}: dominios de transmisión, puede ser
+			\texttt{AF\_INET} en el caso de IPv4, \texttt{AF\_UNIX} para
+			comunicación interna, etc.
+		\item
+			\texttt{type}: Tipo de conexión, \texttt{SOCK\_STREAM} para 
+			\texttt{TCP} o \texttt{SOCK\_DGRAM} para \texttt{UDP}.
+		\item
+			\texttt{protocol}: Protocolo utilizado. Si el tipo (\texttt{type}) 
+			solo tiene un protocolo se puede poner un 0 (ej: \texttt{TCP}).
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\centering
+	\adjustbox{max height=\dimexpr\textheight-5.5cm\relax,max width=\textwidth}{
+	\begin{tabular}{|c|c|}
+		\hline
+		\textbf{domain} & \textbf{Descripción} \\
+		\hline
+		\texttt{AF\_UNIX} & Comunicación interna Unix.\\
+		\hline
+		\texttt{AF\_INET} & Comunicación IPv4.\\
+		\hline
+		\texttt{AF\_INET6} & Comunicación IPv6.\\
+		\hline
+		\texttt{AF\_APPLETALK} & Comunicación para AppleTalk. \\
+		\hline
+		\hline 
+		\textbf{type}& \textbf{Descripción} \\
+		\hline
+		\texttt{SOCK\_STREAM} & Socket de flujos, orientado a la conexión. \\
+		\hline
+		\texttt{SOCK\_DGRAM} & Socket de datagramas, envía los paquetes
+		individualmente. \\
+		\hline
+		\texttt{SOCK\_SEQPACKET} & Envia los paquetes secuencialmente. \\
+		\hline
+		\texttt{SOCK\_RDM} & Socket de datagramas, confiable pero no ordenado.\\
+		\hline
+	\end{tabular}
+}\\[0.4cm]
+	\small Una vez elegido el tipo de socket que queremos utilizar debemos
+	ligarlo a nuestra dirección y puerto. Las estructuras de IPv4 y IPv6 son
+	diferentes.
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Comparación es estructuras.}
+	Estructura IPv4:
+	\small
+	\begin{verbatim}
+struct in_addr {
+    unsigned long s_addr;  // Dirección IPv4
+};
+
+struct sockaddr_in {
+    short            sin_family;   // Dominio AF_INET.
+    unsigned short   sin_port;     // Puerto
+    struct in_addr   sin_addr;     // Dirección IPv4.
+    char             sin_zero[8];  // Ceros.
+};
+	\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Comparación es estructuras.}
+	Estructura IPv6:
+	\small
+	\begin{verbatim}
+struct in6_addr {
+    u_int8_t  s6_addr[16];  // Dirección IPv6
+}
+
+struct sockaddr_in6 {
+    u_char           sin6_len;      // Largo de esta estructura.
+    u_char           sin6_family;   // Dominio AF_INET6.
+    u_int16m_t       sin6_port;     // Puerto.
+    u_int32m_t       sin6_flowinfo; // Cero.
+    struct in6_addr  sin6_addr;     // Dirección IPv6.
+};
+	\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Convenciones.}
+	En las estructuras vistas, los campos para manejar el puerto y la dirección 
+	utilizan un ordenamiento de bytes especial (formato network) para guardar
+	la información, por ello se hacen necesarias funciones de conversión.
+	\begin{verbatim}
+	// Para la dirección IP:
+	int inet_pton(int af, const char *cp, void *buf);
+	/* af: AF_INET o AF_INET6, 
+	 * cp: dirección IPv4 o IPv6, 
+	 * buf: buffer para el resultado. */
+
+	// Para el puerto:
+	uint16_t htons(uint16_t hostshort);
+	// hostshort: Puerto.
+	\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+	Una vez configurado el socket y la estructura de dirección, debemos crear
+	la relación entre ellos:
+	\begin{verbatim}
+	int bind(int fd, struct sockaddr *addr, int addrlen);
+	/* fd: Descriptor del socket,
+	 * addr: Estructura de dirección,
+	 * addrlen: Largo de la estructura de dirección. */
+	\end{verbatim}
+	Con nuestro sockey y dirección configurados podemos intentar establecer una
+	conexión (\texttt{connect();}) con un servidor que debe estar en ``modo 
+	escucha'' (\texttt{listen();}). Este ultimo debe aceptar la conexión 
+	(\texttt{accept();}) antes de poder enviar y recibir mensajes
+	(\texttt{send();} y \texttt{recv();}).
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Funciones importantes.}
+	\small
+	\begin{verbatim}
+	int listen(int fd, int backlog);
+	/* fd: descriptor del socket,
+	 * backlog: numero de conexiones permitidas. */ 
+	
+	int connect(int fd, struct sockaddr *server, int addrlen);
+	/* server: estructura de dirección del servidor */
+
+	int accept(int fd, void *addr, int *addrlen);
+	/* addr: puntero para la dirección de quien nos contacta. */
+
+	int send(int fd, const void *msg, int len, int flags);
+	/* msg: puntero a los datos que queremos enviar */
+
+	int recv(int fd, void *buf, int len, unsigned int flags);
+	/* buf: buffer para guardar los datos */
+	\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Terminando la conexión.}
+	Una vez enviados los paquetes debemos cerrar los sockets.
+	\small
+	\begin{verbatim}
+	int shutdown(int fd, int how);
+	/* fd: descriptor del socket,
+	 * how: 0 para prohibir la recepción,
+	        1 para prohibir el envío,
+	        2 para prohibir ambos. */
+	
+	/* Utilizar how=2  es equivalente a close() */
+	close(fd);
+	\end{verbatim}
+\end{frame}
+\end{document}

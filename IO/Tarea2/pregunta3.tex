@@ -1,0 +1,82 @@
+%tex_origin: Tarea2-IO1-SandovalVargas.tex
+\section{Triviño a senador.}
+\begin{enumerate}
+\item
+	Grafo de asignaciones con sus respectivas etapas de decisión.\\
+	{\medskip}
+	Etapa 1 \hfill Etapa 2 \hfill Etapa 3 \hfill Etapa 4
+	\begin{center}
+	\input{grafo.tex}
+	\end{center}
+	\newpage
+\item
+	Iteraciones por etapas de decisión.\\
+	\begin{table}[ht]
+		\caption{\textbf{Cuarta etapa}, Titirileufú.}
+		\centering
+		\begin{tabular}{ |c|c|c| }                 
+		\hline\hline
+		S & $f^{\*}_4(S)$ & $X^{\*}_4$ \\
+		\hline
+		5 & 16 & 0\\
+		4 & 14 & 0\\
+		3 & 12 & \rojo{0}\\
+		2 & 7  & 0\\
+		1 & 3  & 0\\
+		0 & 0  & 0\\
+		\hline 
+		\end{tabular}
+	%\end{table}
+	%\begin{table}[ht]
+		\caption{\textbf{Tercera etapa}, Titirilahue.}
+		\centering
+		\begin{tabular}{ |c|cccccc|cc| }                 
+		\hline
+		 & \multicolumn{6}{c|}{$f_3(S,X_3) = C_{X_3} + f^{*}_4(S)$} & & \\
+		\diagbox{S}{$X_3$} &5&4&3&2&1&0& $f^{*}_4(S)$ & $X^{*}_4$ \\
+		\hline
+		5 & 16 & 19 & 21 & 18 & 13 & 9 & 21 & 3\\
+		4 & - & 14 & 17 & 16 & 14 & 10 & 17 & \rojo{3}\\
+		3 & - & - & 12 & 12 & 12 & 11 & 12 & 3/2/1\\
+		2 & - & - & - & 7 & 8 & 9 & 9 & 0\\
+		1 & - & - & - & - & 3 & 5 & 5 & 0\\
+		0 & - & - & - & - & - & 0 & 0 & 0\\
+		\hline 
+		\end{tabular}
+	%\end{table}
+	%\begin{table}[ht]
+		\caption{\textbf{Segunda etapa}, Titiritalca.}
+		\centering
+		\begin{tabular}{ |c|cccccc|cc| }                 
+		\hline
+		 & \multicolumn{6}{c|}{$f_2(S,X_2) = C_{X_2} + f^{*}_3(S)$} & & \\
+		\diagbox{S}{$X_2$} &5&4&3&2&1&0& $f^{*}_2(S)$ & $X^{*}_2$ \\
+		\hline
+		5 & 21 & 23 & 20 & 19 & 16 & 12 & 23 & \rojo{4}\\
+		4 & - & 17 & 18 & 17 & 15 & 11 & 18 & 3\\
+		3 & - & - & 12 & 15 & 13 & 10 & 15 & 2\\
+		2 & - & - & - & 9 & 11 & 8 & 11 & 1\\
+		1 & - & - & - & - & 5 & 6 & 6 & 0\\
+		0 & - & - & - & - & - & 0 & 0 & 0\\
+		\hline 
+		\end{tabular}
+	%\end{table}
+	%\begin{table}[ht]
+		\caption{\textbf{Primera etapa}, Titirilquen.}
+		\centering
+		\begin{tabular}{ |c|cccccc|cc| }                 
+		\hline
+		 & \multicolumn{6}{c|}{$f_1(S,X_1) = C_{X_1} + f^{*}_1(S)$} & & \\
+		\diagbox{S}{$X_1$} &5&4&3&2&1&0& $f^{*}_1(S)$ & $X^{*}_1$ \\
+		\hline
+		5 & 23 & 22 & 22 & 20 & 18 & 15 & 23 & \rojo{5}\\
+		\hline 
+		\end{tabular}
+	\end{table}
+\item
+	Por lo tanto, la solución encontrada es: \\
+	$5 \rightarrow 5 \rightarrow 4 \rightarrow 3 \rightarrow 0$.\\
+	Obteniendo así 2300 votos a favor del candidato a senador Triviño.\\
+	\emph{Supuesto}: Se ocupan todos los comerciales disponibles dado que
+	no existe restricción para ello y queremos maximizar los votantes.
+\end{enumerate}	

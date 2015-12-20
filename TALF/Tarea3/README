@@ -1,0 +1,3 @@
+Para la correcta compilación del .tex se necesita el paquete:
+	texlive-tikz-qtree
+	texlive-fourier

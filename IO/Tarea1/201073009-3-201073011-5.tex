@@ -1,0 +1,267 @@
+\documentclass[spanish, fleqn]{article}
+\usepackage{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{wasysym}
+\usepackage[colorlinks, urlcolor=blue]{hyperref}
+\usepackage[top = 2.5cm, bottom = 2cm, left = 2cm, right = 2cm]{geometry}
+
+\usepackage{pdflscape}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{tikz}
+\usetikzlibrary{plotmarks}
+
+\newcommand{\rojo}{\textcolor{red}}
+
+\title{ILI 292 - Investigación de operaciones I\\ Tarea I}
+\author{
+	Alonso Sandoval Acevedo\\ 
+	\href{mailto:asandova@alumnos.inf.utfsm.cl}{asandova@alumnos.inf.utfsm.cl}\\
+	201073011-5 
+	\and 
+	Hernán Vargas Leighton\\
+	\href{mailto:hvargas@alumnos.inf.utfsm.cl}{hvargas@alumnos.inf.utfsm.cl}\\
+	201073009-3}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\thispagestyle{empty}
+
+\section{Pregunta 1}
+	\begin{enumerate}
+		\item
+			\textbf{Buscando la función objetivo:} El local busca maximizar sus
+			ganancias de la venta de sus almuerzos, a los cuales llamamos A y B
+			respectivamente. Como sabemos el precio de venta de cada uno tenemos
+			que la función objetivo será: $$ \max{Z} = 1400A + 1600B $$
+		\item
+			\textbf{Seleccionando restricciones:} Del enunciado podemos obtener
+			los siguientes datos, tenemos: $40$ tomates ($T$), $20$ lechugas
+			($L$), $50$ croquetas ($C$) y $50$ hamburguesas ($H$). Además
+			sabemos que para hacer un almuerzo de cada tipo necesitamos:
+			$$ A = 0.5T + 0.2L + C $$ $$ B = 0.4T + 0.3L + H $$ Como las 
+			cantidades $T, L, C, H$ son conocidas podemos plantear las
+			siguientes restricciones:
+			\begin{align*}
+				\hspace{5.33cm}
+				0.5A + 0.4B &\leq 40 \quad\emph{(Tomates)}\\
+				0.2A + 0.3B &\leq 20 \quad\emph{(Lechugas)}\\
+						  A &\leq 50 \quad\emph{(Croquetas)}\\
+						  B &\leq 50 \quad\emph{(Hamburguesas)}
+			\end{align*}
+			Además sabemos que debemos hacer al menos $10$ almuerzos de cada
+			tipo, esta restricción incluye la restricción de naturaleza de las
+			variables (tener almuerzos enteros positivos), luego se agregan 2
+			restricciones: $$ \text{Mínima cantidad producida A:} \qquad A
+			\geq 10 $$ $$\text{Mínima cantidad producida B:} \qquad B \geq 10 $$
+		\item
+			\textbf{Modelo:} El modelo de programación lineal para este problema
+			queda reducido a: $$ \text{\textbf{F.O.:}} \quad \max{Z} = 1400A +
+			1600B $$ \vspace{-1.05cm}
+			\begin{align}
+				\hspace{4.92cm} \text{\textbf{S.T.:}} \quad 
+					0.5A + 0.4B &\leq 40 \label{1:1}\\
+					0.2A + 0.3B &\leq 20 \label{1:2}\\
+							  A &\leq 50 \label{1:3}\\
+							  B &\leq 50 \label{1:4}\\
+							  A &\geq 10 \label{1:5}\\
+							  B &\geq 10 \label{1:6}
+			\end{align}
+			\newpage
+		\item
+			\textbf{Resolución grafica:} Para solucionar el problema nos basta
+			graficar las restricciones y evaluar los vértices:
+			\input{grafico}
+			En el gráfico vemos representadas las restricciones como las rectas,
+			la región factible está pintada gris y por ultimo tenemos con lineas
+			punteadas algunos valores de la función objetivo.\\
+			Del análisis del gráfico vemos como claramente el punto intercepción
+			entre la recta (\ref{1:3}) y la recta (\ref{1:2}) es el punto optimo
+			en maximización, además, de este mismo análisis podemos concluir que 
+			las demás restricciones (\ref{1:1}, \ref{1:4}, \ref{1:5}, \ref{1:6})
+			son no-activas.\\
+			Cabe destacar que el punto máximo en nuestro gráfico no es entero,
+			por lo que, debido a la naturaleza de las variables, debemos buscar
+			el entero más cercano a éste que sea máximo. En este caso tenemos
+			que el punto optimo es $(50, 33.3)$, los candidatos a máximo serán:
+			$(50,33)$ y $(49,34)$ ya que cumplen todas las restricciones. De 
+			estos últimos tenemos que el máximo es para $A=49$ y $B=34$ con un
+			valor de \$$123000$.
+	\end{enumerate}
+	\newpage
+\section{Pregunta 2}
+	\begin{enumerate}
+		\item
+			\textbf{Buscando función objetivo:} Las variables que modificarán
+			nuestras ganancias son:
+			\begin{enumerate}
+				\item
+					\textbf{Smart Fortwo ED importados} ($x_{ed}$) a un costo
+					de \$18.000.000 cada uno.
+				\item
+					\textbf{Volkswagen e-up! importados} ($x_{up}$) a un
+					costo de \$23.000.000 cada uno.
+				\item
+					\textbf{Smart Fortwo ED vendidos} ($y_{ed}$) a 
+					\$22.000.000 menos la comisión para el vendedor de 
+					\$2.200.000. Ganancia total de \$19.800.000.
+				\item
+					\textbf{Volkswagen e-up!} ($y_{up}$) a un costo de
+					\$30.000.000 menos el 10\% para el vendedor que equivale a
+					\$3.000.000. Ganancia total de \$2.700.000.
+				\item
+					\textbf{Los empleados} (\texttt{T}) a los que debemos pagar
+					un sueldo de \$1.200.000 mensual, sin contar su comisión por
+					venta.
+			\end{enumerate}
+			Luego la función objetivo será:
+			$$ \textbf{F.O.:} \quad
+				\max{Z} = 19800000 \cdot y_{ed} + 
+						  27000000 \cdot y_{up} - 
+						  18000000 \cdot x_{ed} - 
+						  23000000 \cdot x_{up} - 
+						  1200000 \cdot \texttt{T} $$
+		\item 
+			\textbf{Analisando restricciones:} Del texto podemos extraer las
+			siguientes restricciones: 
+			\begin{align}
+				\hspace{4cm}
+				x_{ed} &\geq 20 &\emph{(Importar al menos 20 ED)} 
+				\label{2:1}\\
+				x_{ed} - y_{ed} &\geq 3 &\emph{(Dejar al menos 3 ED
+				para exhibir)} \label{2:2}\\
+				x_{up} - y_{up} &\geq 3 &\emph{(Dejar al menos 3 UP
+				para exhibir)} \label{2:3}\\
+				y_{ed} - 0.6 \cdot x_{ed} &\geq 0 &\emph{(Vender al
+				menos el 60\% de los ED)} \label{2:4}\\
+				y_{up} - 0.6 \cdot x_{up} &\geq 0 &\emph{(Vender al
+				menos el 60\% de los UP)} \label{2:5}\\
+				0.2 \cdot x_{ed} + 0.2 \cdot x_{up} &= \texttt{T}
+				&\emph{(Contratar 1 empleado cada 5 autos)} \label{2:6}\\
+				\texttt{T} &\leq 40 &\emph{(Contratar a los más a 40 empleados)}
+				\label{2:7}
+			\end{align}
+			Estas restricciones son las que utilizamos en el código (ver el 
+			anexo: sección~\ref{sec:anexo}), el resultado obtenido se muestra
+			a continuación, pero para hacer el tableau podemos reducir un poco
+			el problema.
+			\begin{verbatim}
+				Value of objective function: 567600000.00000048
+				Actual values of the variables:
+				v_ed                           17
+				v_up                          177
+				i_ed                           20
+				i_up                          180
+				t                              40
+			\end{verbatim}
+			Teniendo en cuenta que es una maximización las restricciones 
+			(\ref{2:4}) y (\ref{2:5}) pueden ser obviadas, además de de la unión
+			de (\ref{2:6}) y (\ref{2:7}) podemos obtener la siguiente
+			restricción que incluye ambas:
+			\begin{equation} 
+				\label{2:8}
+				x_{ed} + x_{up} \leq 200
+			\end{equation}
+		\item
+			\textbf{Normalizando las ecuaciones:} Ahora debemos normalizar las
+			restricciones (\ref{2:1}), (\ref{2:2}), (\ref{2:3}) y (\ref{2:8}),
+			definir la función objetivo y luego construir el tableau.
+			\begin{align*}
+				\textbf{F.O.:} \quad
+				\max{Z} = 19800000  y_{ed} + 
+						  27000000  y_{up} - 
+						  18240000  x_{ed} - 
+						  23240000  x_{up} +
+						  0s_1 + \sum_{i=1}^{4} 0s_i -Ma_i
+			\end{align*}
+			\vspace{-1cm}
+			\begin{align*}
+				\textbf{S.T.:} \hspace{2cm}
+				x_{ed} + x_{up} + s_1&= 200 \\
+				x_{up} - y_{up} - e_2 + a_2 &= 3 \\
+				x_{ed} - y_{ed} - e_3 + a_3 &= 3 \\
+				x_{ed} - e_4 + a_4 &= 20
+			\end{align*}
+		\item
+			\textbf{Resolución por Tableau:}\\
+			\textbf{Nota:} Para simplificar la escritura escribiremos los
+			millones como unidad, es decir: $1000000 \rightarrow 1$
+	\end{enumerate}
+	\newpage
+
+	\begin{landscape}
+		\vspace*{\fill}
+			\begin{itemize}
+				\item \textbf{1º iteración}
+					\input{tablas/tabla1}\\
+					Sale $a_3$ y entra $x_{ed}$.\\
+					Realizamos las operaciones fila correspondientes: 
+					$f_3\cdot(-1) + f_1$ y $f_3\cdot(-1) + f_4$
+				\item \textbf{2º itearación}
+					\input{tablas/tabla2}\\
+					Sale $a_4$ y entra $y_{ed}$.\\
+					Realizamos las operaciones fila correspondientes: 
+					$f_4\cdot(-1) + f_1$ y $f_4\cdot{1} + f_3$
+				\item \textbf{3º itearación}
+					\input{tablas/tabla3}\\
+					Sale $a_2$ y entra $x_{up}$.\\
+					Realizamos las operaciones fila correspondientes:
+					$f_2\cdot(-1) + f_1$
+			\end{itemize}
+		\vspace*{\fill}
+		\newpage
+
+		\vspace*{\fill}
+			\begin{itemize}
+				\item \textbf{4º itearación}
+					\input{tablas/tabla4}\\
+					Sale $s_1$ y entra $y_{up}$.\\
+					Realizamos las operaciones fila correspondientes:
+					$f_1\cdot{1} + f_2$
+				\item \textbf{5º itearación}
+					\input{tablas/tabla5}\\
+					Vemos que todos los costos de oportunidad o precios sombras
+					son negativos o 0, por tanto estamos en un vértice óptimo,
+					con lo que la función objetivo es: 537600000.
+					Las diferencias con LPsolve son mínimas, lo que se debe a la
+					precisión de cálculo del software, en términos prácticos,
+					obtuvimos el mismo resultado, pues los valores de las 
+					variables son los mismos.
+			\end{itemize}
+		\vspace*{\fill}
+	\end{landscape}
+
+	\newpage
+\section{Pregunta 3}
+	\input{pregunta3}
+\section{Conclusiones}
+	\input{conclucion}
+\section{Anexo} \label{sec:anexo}
+	%hack para acentos:
+	\lstset{literate=
+		{á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+		{Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+		{à}{{\`a}}1 {è}{{\'e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+		{À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+		{ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+		{Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+		{â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+		{Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+		{œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+		{ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+		{€}{{\EUR}}1 {£}{{\pounds}}1
+	}
+	%Anexo con código utilizado
+	\lstinputlisting[
+	             frame=single,
+	             showstringspaces=false,
+	             commentstyle=\color{gris},
+	             title=\lstname,
+	             tabsize=4]{pregunta2.lp}
+\vfill\hfill HV/AS/\LaTeXe
+\end{document}

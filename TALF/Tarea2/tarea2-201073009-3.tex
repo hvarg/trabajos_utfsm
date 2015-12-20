@@ -1,0 +1,208 @@
+\documentclass[spanish, fleqn]{article}
+\usepackage{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{wasysym}
+\usepackage[colorlinks, urlcolor=blue]{hyperref}
+\usepackage{fourier}
+\usepackage[top = 2.5cm, bottom = 2cm, left = 2cm, right = 2cm]{geometry}
+
+\title{
+	Introducción a la Informática Teórica \\
+	Tarea \#2 \\
+	``Ordinarius Lingua quod Non Ordinarius Lingua''
+}
+
+\author{
+	Hernán Vargas Leighton \\ 201073009-3
+}
+
+\date{4 de abril 2014}
+
+\begin{document}
+	\maketitle
+	\thispagestyle{empty}
+	\section*{Respuestas}
+	\begin{enumerate}
+		\item
+%			Sea \(\Sigma = \{0, 1\}\) y sea \(w = a_{1}a_{2} \cdots
+%			a_{n-1}a_{n} \in \Sigma^{*}\). Se define su reverso como \(w^{R} =
+%			a_{n}a_{n-1} \cdots a_{2}a_{1}\). Sea \(\mathcal{P}\) el lenguaje
+%			de los palíndromos tal que \(\mathcal{P} = \{w \in \Sigma^{*}: 
+%			w^{R} = w\} \). Muestre que \(\mathcal{P}\) no es regular.
+			Sea el lenguaje $\mathcal{P} = \{w \in \Sigma^{*}: w^{R} = w\}$ con
+			$\Sigma = \{0, 1\}$ demostraremos por contradicción mediante el
+			método del bombeo que $\mathcal{P}$ no es regular:
+			\begin{enumerate}
+				\item
+					El lema del bombeo nos dice que: Para toda palabra $w$ de
+					un lenguaje infinito $\mathcal{L}$ con $|w| \geq N \geq 1$,
+					$N$ constante del lema, se cumple con que existe una 
+					concatenación $\alpha\beta\gamma = w: |\alpha\beta| \leq N 
+					\land |\beta| \geq 1$ que cumple con $\alpha\beta^{k}
+					\gamma \in \mathcal{L} \forall k \geq 0$. Es decir:\\
+					\begin{equation*}
+						\forall w \in \mathcal{L} \exists N: |w| \geq N \geq 1
+						\Rightarrow
+						(\exists \alpha\beta\gamma = w \in \mathcal{L}: |\alpha
+						\beta| \leq N \land |\beta| \geq 1) \land 
+						(\alpha\beta^{k}\gamma \in \mathcal{L} \forall k\geq 0)
+					\end{equation*}
+					Como sabemos que $\neg p \Rightarrow \neg q$ entonces
+					podemos decir que un lenguaje no será regular si:
+					\begin{equation*}
+						\exists w \in \mathcal{L} \exists N: |w| \geq N \geq 1
+						\Rightarrow
+						(\forall \alpha\beta\gamma = w \in \mathcal{L}: |\alpha
+						\beta| \leq N \land |\beta| \geq 1) \land
+						(\exists k \geq 0: \alpha\beta^{k}\gamma \notin 
+						\mathcal{L})
+					\end{equation*}
+				\item
+					Supongamos $\mathcal{P}$ regular, entonces cumple con el
+					lema de bombeo. 
+					\begin{itemize}
+						\item
+							Digamos $N \in \mathbb{N}_{0}$ constante del lema.
+						\item
+							Digamos $w = 0^{N}10^{N} \in \mathcal{P}$, vemos 
+							que cumple con: $|w| = N + 1 + N = 2N+1 \geq N$
+						\item
+							Digamos $\alpha = 0^{N-t} \land \beta = 0^{t} \land
+							\gamma = 10^{N}$ con $t \geq 1$ será toda partición
+							que cumple con $|\alpha\beta| = N - t + t = N \leq 
+							N \land |\beta| = t \geq 1$
+						\item
+							Notamos que con $k = 0$ tenemos que 
+							$0^{n-t}0^{0}10^{N} \notin \mathcal{L}$ ya que $t
+							\geq 1$ por lo tanto la expresión tiene más ceros a
+							la derecha que a la izquierda, no es palíndromo y
+							por ello contradice el lema del bombeo.
+						\item
+							Concluimos que $\mathcal{P}$ no es regular.
+					\end{itemize}
+			\end{enumerate}
+
+        \item 
+%			Sea \(\mathcal{L} = \{w \in \Sigma^{*}: |w| = n^2, n \in 
+%			\mathbb{N}\}\) y \(\Sigma = \{a,b,c\}\) el lenguaje de las palabras
+%			cuyo largo es un cuadrado perfecto. Muestre que \(\mathcal{L}\) no
+%			es regular.
+			Tenemos $\mathcal{L} = \{w \in \Sigma^{*}: |w|=n^{2}\}$ con
+			$\Sigma = \{a,b,c\}$. Digamos $\mathcal{L}$ regular, entonces 
+			cumple con el lema de bombeo.
+			\begin{itemize}
+				\item
+					Digamos $N \in \mathbb{N}_{0}$ constante del lema.
+				\item
+					Digamos $w = a^{n^{2}} \in \mathcal{L}$, vemos que cumple
+					con: $|w| = N^{2} \geq N$
+				\item
+					Digamos $\alpha = a^{x} \land \beta = a^{y} \land \gamma = 
+					a^{z}$ con $x+y+z = N^{2}$ será toda partición que cumple
+					con $|\alpha\beta| = x + y \leq N \land |\beta| = y \geq 1$
+				\item
+					En general $|\alpha\beta^{k}\gamma| = N^{2} + (k-1)y,
+					\forall k \geq 0$. Con $k=2$ tenemos que $|\alpha\beta^{2}
+					\gamma| = N^{2} + y$.
+					Como $y \leq N$ (ya que $x+y \leq N$) tenemos que:
+					$N^{2} +y \leq N^{2} + N$
+				\item
+					Llamemos $s$ la siguiente palabra representable por el
+					lenguaje. Si $s \in \mathcal{L} \Rightarrow |s| = (N+1)^2$
+					pues es la palabra ``sucesora'' a $w$. Entonces $|\alpha
+					\beta^{2}\gamma| \geq |s|$ pero $N^{2} + y \leq N^{2} + N
+					\leq N^{2} + 2N + 1 = (N+1)^{2}$ lo cual es una 
+					contradicción.
+				\item
+					Se concluye que $\mathcal{L}$ no es regular.
+			\end{itemize}
+
+		\item 
+%			Sea \(\mathcal{L} = \{a^{pq}: p, q \text{ son primos }\}\).
+%			Muestre que \(\mathcal{L}\) no es regular.
+			Tenemos $\mathcal{L} = \{a^{pq}: p,q \in \mathbb{P}\}$ con
+			$\mathbb{P}$ en conjunto de los números primos. Digamos 
+			$\mathcal{L}$ regular, entonces cumple con el lema de bombeo.
+			\begin{itemize}
+				\item
+					Digamos $N \in \mathbb{N}_{0}$ constante del lema.
+				\item
+					Digamos $w = a^{2N} \in \mathcal{L}$, vemos que cumple
+					con: $|w| = 2N \geq N$, además $2 \in \mathbb{P} 
+					\Rightarrow N \in \mathbb{P}$.
+				\item
+					Digamos $\alpha = a^{N-t} \land \beta = a^{t} \land \gamma
+					= a^{N}$ será toda partición que cumple	con $|\alpha\beta| 
+					= N - t + t = N \leq N \land |\beta| = t \geq 1$.
+				\item
+					En general $|\alpha\beta^{k}\gamma| = N - t + kt + N = 2N
+					+ t(k-1)$ que debe cumplir con ser la multiplicación de dos
+					primos.
+				\item
+					Sabemos $2N + t(k-1) = 2(N + \frac{k-1}{2}t) \Rightarrow
+					N + \frac{k-1}{2}t = \frac{pq}{2}$. Como $2$ es primo
+					asumimos que $p=2$ ya que los divisores de $pq$ son $d \in 
+					(1,p,q)$. Entonces: $N + \frac{k-1}{2}t \in 
+					\mathbb{P} \forall k \geq 0$.
+				\item
+					Por el lema sabemos que $N,t,k \in \mathbb{N}_{0} \land N,t
+					\geq 1 \land k \geq 0$ entonces podemos elegir 
+					convenientemente un $k: (N + \frac{k-1}{2}t) \notin
+					\mathbb{P}$ lo cual es una contradicción.
+				\item
+					Se concluye que $\mathcal{L}$ no es regular.
+			\end{itemize}
+		\item
+%			Un estudiante aventajado muestra que la expresión regular 
+%			\(a^{3}b^{+}\) genera el mismo lenguaje que \(\mathcal{L} = 
+%			\{a^{3}b^{n}: n \geq 1\}\). El estudiante aplica el lema de bombeo
+%			sobre \(\mathcal{L}\) así: Se toma la constante \(N\) para una
+%			subcadena \(\alpha\beta = a^{3}b^{t}\) tal que \(|\alpha\beta|
+%			\leq N\). Sea \(\alpha=a\) y \(\beta=a^{2}b^{t}\), entonces 
+%			\(\gamma=b^{N-t}\), y cuando \(k=0\), \(\sigma = 
+%			\alpha\beta^0\gamma = \alpha\gamma = ab^{N-t}\), cadena que no
+%			pertenece a  \(\mathcal{L}\) y, por tanto,  el lenguaje no es
+%			regular. Explique con sus palabras el error que realiza este alumno
+%			al aplicar el lema de bombeo.
+			El lema de bombeo establece que \textbf{existe} una partición
+			$\alpha\beta\gamma$ que puede ser bombeada, en este caso el alumno
+			solo elige una partición no adecuada. Para probar que el lenguaje
+			$\mathcal{L}$ no es regular se debe probar que \textbf{ninguna} 
+			partición puede ser bombeada y no, solamente, que existe una que no
+			puede (como hizo el alumno).
+		\item 
+%			Sea \(\mathcal{L} \subseteq \Sigma^{*} \) un lenguaje. Se define
+%			\(\textsc{sufijo}(\mathcal{L}) = \{v \in \Sigma^{*} : \exists u \in
+%			\Sigma^{*}, uv \in \mathcal{L}\}\). Muestre usando propiedades de
+%			clausura que si \(\mathcal{L}\) es regular entonces
+%			\(\textsc{sufijo}(\mathcal{L})\) es regular.
+%			\emph{Hint: utilice homomorfismos para identificar sufijos y
+%			prefijos.}
+			Sabemos $\mathcal{L} \subseteq \Sigma^{*}$ además $u,v \in 
+			\Sigma^{*}$ con $\textsc{sufijo}(\mathcal{L}) = \{v: uv \in 
+			\Sigma^{*}\}$
+			\begin{itemize}
+				\item
+					Definamos el homomorfismo $H(w), \forall w = uv \in \Sigma^{*}$
+					como:
+					\begin{itemize}
+						\item
+							$H(u) = \epsilon$ (prefijo)
+						\item
+							$H(v) = v$ (sufijo)
+					\end{itemize}
+				\item
+					Digamos $w = uv \in \Sigma^{*}$ cualquiera, tenemos que:
+					$H(w) = H(u)\cdot H(v) = \epsilon \cdot v = v = 
+					\textsc{sufijo}(w)$
+				\item
+					Si $v$ es regular entonces $\epsilon \cdot v$ es regular,
+					por lo tanto $\textsc{sufijo}(\mathcal{L})$ es regular si
+					$\mathcal{L}$ es regular.
+			\end{itemize}
+	\end{enumerate}
+
+\vfill\hfill HV/\LaTeXe
+\end{document}

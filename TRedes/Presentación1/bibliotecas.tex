@@ -1,0 +1,63 @@
+%tex_origin: ppt.tex
+\subsection{Sockets.h}
+\begin{frame}
+  \frametitle{Sockets}
+  \begin{itemize}
+  \item	
+	  Un socket es un mecanismo por el cual se traspasan mensajes entre
+	  aplicaciones, generalmente en diferentes computadores.
+  \item	
+	  Está definido al menos por las direcciones IP, números de puerto y el 
+	  protocolo de transporte.
+  \item
+	  Los protocolos más utilizados son TCP y UDP.
+  \item
+	  Implementan la arquitectura cliente-servidor, el programa que inicia la 
+	  comunicación será el cliente, mientras que el que responde actúa como
+	  servidor.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{socket.h}
+  \begin{itemize}
+  \item	
+	  API para el trabajo con sockets en c para linux.
+  \item
+	  Soporta tanto IPv4 como IPv6.
+  \item
+	  Incorpora funciones para la creación de sockets, convención entre
+	  formatos, y transmisión de datos.
+  \item
+	  Define estructuras para el manejo de direcciones.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{socket.h (continuación)}
+	En general el procedimiento es el siguiente:
+	\begin{itemize}
+		\item
+			Se crea la estructura para manejar la dirección.
+			\texttt{sockaddr\_in} para IPv4 y \texttt{sockaddr\_in6} para IPv6.
+		\item
+			Se crea el socket y se le asigna un descriptor.
+			\texttt{socket();}
+		\item
+			Se asocia el socket y la estructura de dirección. \texttt{bind();} 
+		\item
+			Se pone al socket como ``escucha'' esperando conexiones.
+			\texttt{accept();}
+		\item
+			Cuando una conexión es detectada se crea un nuevo socket, al que se
+			le llama ``socket conectado''.
+		\item
+			Se puede lanzar un subproceso para continuar ``escuchando'' y 
+			trabajar con el ``socket conectado''.
+	\end{itemize}
+\end{frame}
+
+%\begin{frame}
+%	\frametitle{Ejemplo de servidor iterativo.}
+%	
+%\end{frame}

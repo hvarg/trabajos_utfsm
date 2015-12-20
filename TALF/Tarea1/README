@@ -1,0 +1,7 @@
+Para la compilación del .tex se necesitan los paquetes:
+	texlive-diagbox
+	texlive-babel-spanish
+	texlive-fourier
+
+De cualquier manera se adjunta el pdf resultante de ejecutar:
+	pdflatex tarea1-201073009-3.tex

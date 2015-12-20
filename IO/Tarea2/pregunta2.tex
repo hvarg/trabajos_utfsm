@@ -1,0 +1,43 @@
+%tex_origin: Tarea2-IO1-SandovalVargas.tex
+\section{Ranking Top, difusión nacional.}
+\begin{enumerate}
+	\item
+		\textbf{SUPUESTO: Solo se puede poner una antena por región.} \\
+		Las variables binarias serán la existencia de la antena y su respectiva 
+		ampliación. Por simplicidad nos referiremos a la región metropolitana
+		por el número 0. Además ordenaremos los datos suministrados de la misma
+		manera. Tenemos entonces:
+		\begin{align*}
+			x_i \forall i \in [0,15] \subset \mathbb{N} \quad 
+				&\text{Antena en la región $i$.} \\
+			y_i \forall i \in [0,15] \subset \mathbb{N} \quad
+				&\text{Ampliación de la antena $i$.}\\
+			C_i \forall i \in [0,15] \subset \mathbb{N} \quad
+				&\text{Costo de construcción en la región $i$.}\\
+			D_i \forall i \in [0,15] \subset \mathbb{N} \quad
+				&\text{Demanda de la región $i$.}
+		\end{align*}
+		La función objetivo será aquella que minimice los costos de 
+		construcción, luego:
+		$$ \text{\textbf{F.O.:}}\min Z=\sum_0^{15}(x_i\cdot C_i +2\cdot y_i) $$
+		Ya que el costo de ampliación es constante lo dejamos explícitamente
+		expresado.\\
+		Por ultimo tenemos las restricciones de demanda y de cableado en
+		Santiago. Para Santiago simplemente basta con establecer una restricción
+		por región afectada (dos en total). Mientras que para la restricción de
+		demanda debemos relacionar las antenas de cada región con las de las
+		regiones adyacentes y sus respectivas demandas. Queda expresado como:
+		$$  x_0 + x_5 \leq 1 \quad \land \quad x_0 + x_6 \leq 1 
+			\quad \text{Restricciones para Santiago.} $$
+		$$	D_i \leq C_i \cdot x_i + 400 \cdot y_i +
+			C_{i+1} \cdot x_{i+1} + 400 \cdot y_{i+1} - D_{i+1} +
+			C_{i-1} \cdot x_{i-1} + 400 \cdot y_{i-1} - D_{i-1} $$
+		 $$	\forall i \in [0,15] \quad \text{Restricciones de demanda con:}
+		 \quad x_{-1} = y_{-1} = x_{16} = y_{16} = 0 $$ 
+		 Nuevamente como el aumento de abastecimiento por la ampliación de una 
+		 antena es constante se escribe explícitamente.
+	\item
+		De la ejecución del código (ver anexo) obtenemos los siguientes 
+		resultados:
+		\verbinput{p2-IO-lab2-output.txt}
+\end{enumerate}

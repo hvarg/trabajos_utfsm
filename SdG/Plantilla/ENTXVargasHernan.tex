@@ -1,0 +1,78 @@
+\documentclass[spanish, fleqn]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+%\usepackage{wasysym}
+%\usepackage{mathrsfs}
+\usepackage[colorlinks, urlcolor=blue]{hyperref}
+\usepackage[top = 2.5cm, bottom = 2cm, left = 2.5cm, right = 2.5cm]{geometry}
+\usepackage{fancyhdr, graphicx}
+\usepackage{caption}
+
+\usepackage{changepage}
+\usepackage{wrapfig}
+
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{\includegraphics[width=3cm]{Logo_INFO.png}}
+\fancyhead[R]{\includegraphics[width=3.2cm]{Logo_UTFSM.png}}
+
+
+\title{ TODO: Titulo}
+\author{Hernán Vargas, 201073009-3 \\ hernan.vargas@alumnos.usm.cl}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	\thispagestyle{empty}
+%	\newpage
+%	\null
+%	\vskip 4em
+%	\begin{center}
+%		\textsc{\Large Universidad Técnica Federico Santa María.}\\[0.4cm]
+%		\textsc{\Large Sistemas y Organizaciones.}\\[0.2cm]
+%		\textsc{\LARGE Análisis de la Estructura Organizacional.}\\[1.2cm]
+%	\end{center}
+
+	\thispagestyle{fancy}
+	\section{Introducción.} %Poner buen título.
+
+	\section{Resumen.} %Titulo..
+	ref\cite{r2}
+	\newpage
+	\newgeometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+	\section{Aplicación.} %tit
+	algo\footnote{nota al pie.}
+	\begin{minipage}{0.75\textwidth}
+		imagen:
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.25\textwidth}
+    	\begin{center}
+    	   % \includegraphics[width=0.85\textwidth]{new_afiche.png}
+	    	referencia\cite{r1}.
+		\end{center}
+	\end{minipage}
+
+	\section{Consecuencias y conclusiones.}
+	%Concluciones generales, terminar con una buena frase.
+
+	\renewcommand{\refname}{\selectfont 5 \, Referencias} % Hack para nombre
+	\begin{thebibliography}{x}
+		\bibitem{r1}
+			\textit{TODO: titulo1} - Descripción o link 1.
+		\bibitem{r2}
+			\textit{TODO: titulo2} - Descripción o link 2.
+	\end{thebibliography}
+
+	%Referencias.
+	\begin{flushright}
+		\textbf{Palabras clave:} \emph{TODO}
+		\begin{flalign*}
+			&&\text{\textbf{Tiempo SCT}: \emph{Análisis del artículo}} &= 0:00 \\
+										 &&\emph{Creación del informe} &= 0:00 \\
+											            &&\text{Total} &= 0:00
+		\end{flalign*}
+	\end{flushright}
+
+\end{document}

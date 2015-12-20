@@ -1,0 +1,104 @@
+%tex_origin: Tarea2-IO1-SandovalVargas.tex
+\begin{tikzpicture}[shorten >=1pt, node distance=4cm, on grid, >=stealth, 
+		every state/.style={draw=navyblue!50, very thick,
+		fill=navyblue!20}, bend angle=25]
+	%%%%    NODOS    %%%%
+	\node[state]	(x0)				{$5$};
+	%Primera etapa
+	\node[state]	(x1)	[right =of x0]		{$3$};
+	\node[state]	(x2)	[above =of x1]		{$4$};
+	\node[state]	(x3)	[above =of x2]		{$5$};
+	\node[state]	(x4)	[below =of x1]		{$2$};
+	\node[state]	(x5)	[below =of x4]		{$1$};
+	\node[state]	(x6)	[below =of x5]		{$0$};
+	%segunda etapa
+	\node[state]	(x7)	[right=of x1]		{$3$};
+	\node[state]	(x8)	[right=of x2]	 	{$4$};
+	\node[state]	(x9)	[right=of x3]		{$5$};
+	\node[state]	(x10)	[right=of x4]		{$2$};
+	\node[state]	(x11)	[right=of x5]		{$1$};
+	\node[state]	(x12)	[right=of x6]		{$0$};
+	%tercera etapa
+	\node[state]	(x13)	[right=of x7]		{$3$};
+	\node[state]	(x14)	[right=of x8]	 	{$4$};
+	\node[state]	(x15)	[right=of x9]		{$5$};
+	\node[state]	(x16)	[right=of x10]		{$2$};
+	\node[state]	(x17)	[right=of x11]		{$1$};
+	\node[state]	(x18)	[right=of x12]		{$0$};
+	%cuarta etapa
+	\node[state, accepting]	(x20)	[right=of x13]		{$0$};
+
+	%%%%    CONEXIONES    %%%%
+	\path[->]
+		%primera etapa
+		(x0) edge 	node[above left]{$0$}	(x3)
+		(x0) edge 	node[above left]{$4$}	(x2)
+		(x0) edge 	node[above]{$7$}	(x1)
+		(x0) edge 	node[above right]{$9$}	(x4)
+		(x0) edge 	node[above right]{$12$}	(x5)
+		(x0) edge 	node[above left]{$15$}	(x6)
+		%Segunda etapa
+		(x3) edge 	node[blue, pos=0.2,above left]{$0$}	(x9)
+		(x3) edge 	node[blue, pos=0.2,above left]{$6$}	(x8)
+		(x3) edge 	node[blue, pos=0.2,above]{$8$}		(x7)
+		(x3) edge 	node[blue, pos=0.2,above]{$10$}		(x10)
+		(x3) edge 	node[blue, pos=0.2,above]{$11$}		(x11)
+		(x3) edge 	node[blue, pos=0.13,above left]{$12$}	(x12)
+
+		(x2) edge 	node[red, pos=0.2,above left]{$0$}	(x8)
+		(x2) edge 	node[red, pos=0.2,above]{$6$}		(x7)
+		(x2) edge 	node[red, pos=0.2,above]{$8$}		(x10)
+		(x2) edge 	node[red, pos=0.2,above]{$10$}		(x11)
+		(x2) edge 	node[red, pos=0.13,above left]{$11$}	(x12)
+
+		(x1) edge 	node[green, pos=0.2,above]{$0$}		(x7)
+		(x1) edge 	node[green, pos=0.2,above]{$6$}		(x10)
+		(x1) edge 	node[green, pos=0.2,above]{$8$}		(x11)
+		(x1) edge 	node[green, pos=0.13,above left]{$10$}	(x12)
+
+		(x4) edge 	node[purple, pos=0.2,above]{$0$}	(x10)
+		(x4) edge 	node[purple, pos=0.2,above]{$6$}	(x11)
+		(x4) edge 	node[purple, pos=0.2,above left]{$8$}	(x12)
+		
+		(x5) edge 	node[orange, pos=0.2,above]{$0$}	(x11)
+		(x5) edge 	node[orange, pos=0.2,above]{$6$}	(x12)
+
+		(x6) edge 	node[above left]{$0$}	(x12)
+
+		%Tercera etapa
+		(x9) edge 	node[blue, pos=0.2,above left]{$0$}	(x15)
+		(x9) edge 	node[blue, pos=0.2,above left]{$5$}	(x14)
+		(x9) edge 	node[blue, pos=0.2,above]{$9$}		(x13)
+		(x9) edge 	node[blue, pos=0.2,above]{$11$}		(x16)
+		(x9) edge 	node[blue, pos=0.2,above]{$10$}		(x17)
+		(x9) edge 	node[blue, pos=0.13,above left]{$9$}	(x18)
+
+		(x8) edge 	node[red, pos=0.2,above left]{$0$}	(x14)
+		(x8) edge 	node[red, pos=0.2,above]{$5$}		(x13)
+		(x8) edge 	node[red, pos=0.2,above]{$9$}		(x16)
+		(x8) edge 	node[red, pos=0.2,above]{$11$}		(x17)
+		(x8) edge 	node[red, pos=0.13,above left]{$10$}	(x18)
+
+		(x7) edge 	node[green, pos=0.2,above]{$0$}		(x13)
+		(x7) edge 	node[green, pos=0.2,above]{$5$}		(x16)
+		(x7) edge 	node[green, pos=0.2,above]{$9$}		(x17)
+		(x7) edge 	node[green, pos=0.13,above left]{$11$}	(x18)
+
+		(x10) edge 	node[purple, pos=0.2,above]{$0$}	(x16)
+		(x10) edge 	node[purple, pos=0.2,above]{$5$}	(x17)
+		(x10) edge 	node[purple, pos=0.2,above left]{$9$}	(x18)
+		
+		(x11) edge 	node[orange, pos=0.2,above]{$0$}	(x17)
+		(x11) edge 	node[orange, pos=0.2,above]{$5$}	(x18)
+
+		(x12) edge 	node[above left]{$0$}	(x18)
+		%cuarta etapa
+		(x15) edge 	node[blue, pos=0.2,above]{$16$}	(x20)
+		(x14) edge 	node[red, pos=0.2,above]{$14$}	(x20)
+		(x13) edge 	node[green, pos=0.2,above]{$12$}	(x20)
+		(x16) edge 	node[purple, pos=0.2,above]{$7$}	(x20)
+		(x17) edge 	node[orange, pos=0.2,above]{$3$}	(x20)
+		(x18) edge 	node[black, pos=0.13,above]{$0$}	(x20)
+
+		;
+\end{tikzpicture}

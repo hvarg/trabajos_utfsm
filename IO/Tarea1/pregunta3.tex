@@ -1,0 +1,313 @@
+Primero, normalizaremos el modelamiento:
+\begin{align*}
+\textbf{F.O.:} \quad \max z &= 25{x_1} + 15{x_2} + 16{x_3} + 0{s_1} + 0{s_3} + 0{s_4} - M{a_2}
+\end{align*}
+\vspace{-1cm}
+\begin{align*}
+	\textbf{S.T.:} \quad
+		4{x_2} + 8{x_3} + s_1 &= 1600\\
+		10{x_1} + 2{x_2} + a_2 &= 2100\\ 
+		x_3 + s_3 &= 300\\ 
+		x_2 + s_4 &= 250
+\end{align*}
+
+\begin{enumerate}
+	\item
+		Como $x_2 = 250$ y $x_3 = 75$, tenemos para la restricción 1:
+		\begin{align*}
+			\hspace{4cm}
+				4\cdot250 + 8\cdot75 + s_1 &= 1600 \\ 
+				1600 + s_1 &= 1600 \\
+				s_1 &= 0
+		\end{align*}
+		Por lo tanto, $s_1$ no es basal, se ocupan todos los 
+		recursos en la restricción 1.
+
+	\item 
+		Modificando el coeficiente de $x_2$ en el tableau:
+		%%%Tableau
+		\begin{table}[ht]
+			\centering
+			\begin{tabular}{ cc|ccccccc|c }
+				& & $x_1$ & $x_2$ & $x_3$ & $s_1$ & $a_2$ & $s_3$ & $s_4$ &\\ 
+				Base & $c_j$ & 25 & $15 + \delta$ & 16 & 0 & -M & 0 & 0 & $b_j$ \\
+				\hline
+				$x_3$ & 16 & 0 & 0 & 1 & 1/8 & 0 & 0 & -1/2 & 75 \\ 
+				$x_1$ & 25 & 1 & 0 & 0 & 0 & 1/10 & 0 & -1/5 & 160 \\
+				$s_3$ & 0  & 0 & 0 & 0 & -1/8 & 0 & 1 & 1/2 & 225 \\
+				$x_2$ & $15 + \delta$ & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 250 \\
+				\hline
+				& $z_j$ & 25 & $15 + \delta$ & 16 & 2 & 5/2 & 0 & $2 + \delta$ &  \\ 
+				& $c_j - z_j$ & 0 & 0 & 0 & -2 & -M-5/2 & 0 & $-2-\delta$ & \\ 
+			  \end{tabular}
+		\end{table}
+		\\Luego el rango de insignificancia para $x_2$ es:
+		\begin{align*}
+			\hspace{5.33cm}
+				-2-\delta &\leq 0  	\quad\emph{(caso max en el que no seguimos iterando)}.\\
+				-\delta &\leq 2 \\
+				\delta &\geq -2 \\ 
+				+\infty &\geq \delta \geq -2 	\quad\emph{(rango de insignificancia)}.
+		\end{align*}
+		Si el coeficiente de $x_2$ cambia a 10:
+		\begin{align*}
+			\hspace{5.33cm}
+				\Delta{c_j} &= c_j' - c_j \\
+			  	\Delta{c_j} &= 10 - 15 \\ 
+			  	\Delta{c_j} &= -5 = \delta
+		\end{align*}
+	  	$-5$ está fuera del rango de insignificancia, por tanto: $-2 - \delta = -2 + 5 = 3 \geq 0$.
+		\\Es decir, $s_4$ entra a la base, calculando los $b_j/a_{ij}:$
+		\begin{table}[ht]
+			\centering
+			\begin{tabular}{ cc|cc }
+				... & $s_4$ & & \\
+				... & 0& $b_j$ & $b_j/a_{ij} $\\
+				\hline
+				... & -1/2 & 75 & -\\
+				... & -1/5 & 160 & - \\
+				... & 1/2 & 225 & \textcolor{red}{225/2} \\
+				... & 1 & 250 & 250 \\
+				\hline
+				... & -3 & & \\
+				... & 3 & & \\
+			\end{tabular}
+		\end{table}
+		\\Por lo tanto, cambia nuestro óptimo (se debe volver a iterar) y la restricción 3 se vuelve limitante
+		(se sale de la base, por lo tanto vale 0 lo que quiere decir que se usan todos los recursos en dicha
+		restricción.)
+	\item
+		\begin{itemize}
+			\item 
+				\textbf{No activa:} Significa variable artificial $\neq 0$ o
+				que está en la base: $s_3 = 225 \Rightarrow$ Restricción 3 es
+				inactiva.
+			\item 
+				\textbf{Activa:} Caso contrario al anterior, restricciones 1,2 
+				y 4 no están en base por ende sus variables artificiales son 0,
+				por ello son restricciones activas.
+		\end{itemize}
+	\item Tenemos que:
+		\begin{align*}
+			%%matriz
+			\left[{
+				\begin{array}{c}
+					Nueva\\
+					\\
+					soluci\acute{o}n\\			
+				\end{array} 
+			} \right] 
+			=
+			\left[{
+				\begin{array}{c}
+					Soluci\acute{o}n\\
+					\\
+					actual\\
+				\end{array} 
+			} \right] 
+			+
+			\Delta{b_i}a_{ij} \geq 0
+		\end{align*}
+		Reemplazando por los valores correspondientes a la solución actual y a
+		los coeficientes de la variable artificial correspondiente a la
+		restricción 1 y naturaleza de las variables, encontraremos el rango para
+		$\Delta{b_i}$:.
+		\begin{align*}
+			\hspace{5.33cm}
+				\left[{
+					\begin{array}{c}
+						75\\
+						160\\
+						225\\
+						250	
+					\end{array} 
+				} \right] 
+				+
+				\Delta{b_1}
+				\left[{
+					\begin{array}{c}
+						1/8\\
+						0\\
+						-1/8\\
+						0	
+					\end{array} 
+				} \right]  
+				\geq 0
+		\end{align*}
+		Luego, el rango para $b_1$:
+		\begin{align*}
+			\hspace{4cm}
+				75 + \Delta{b_1}/8 &\geq 0 \quad \rightarrow \quad \Delta{b_1} \geq -600\\
+				225 - \Delta{b_1}/8 &\geq 0 \quad \rightarrow \quad \Delta{b_1} \leq 1800\\
+				-600 &\leq \Delta{b_1} \leq 1800 \quad\emph{(Rango dentro del cual no cambia la base)}
+		\end{align*}
+		Si la solución varía en +1000:
+		\begin{align*}
+			%%matriz
+			\left[{
+				\begin{array}{c}
+					Nueva\\
+					\\
+					soluci\acute{o}n\\			
+				\end{array} 
+			} \right] 
+			=
+			\left[{
+				\begin{array}{c}
+					75\\
+					160\\
+					225\\
+					250
+				\end{array} 
+			} \right] 
+			+
+			1000
+			\left[{
+				\begin{array}{c}
+					1/8\\
+					0\\
+					-1/8\\
+					0	
+				\end{array} 
+			} \right]
+			=
+			\left[{
+				\begin{array}{c}
+					75 + 1000/8\\
+					160\\
+					225 - 1000/8\\
+					250	
+				\end{array} 
+			} \right]
+			=
+			\left[{
+				\begin{array}{cc}
+					200 & x_3*\\
+					160 & x_1*\\
+					100 & s_3*\\
+					250 & x_2*	
+				\end{array} 
+			} \right]
+			\quad \emph{Nueva solución}
+		\end{align*}
+		Evaluando en la \textbf{F.O.}: $25\cdot160 + 15\cdot250 + 16\cdot200 + 0\cdot100 = 10950$\\
+		{\medskip}\\
+		\textbf{Casos Extremos}
+		\begin{description}
+			\item[Caso 1] $\Delta{b_1} = -600$\\
+				\begin{align*}
+					%%sol nueva
+					\left[{
+						\begin{array}{c}
+								Nueva\\
+							\\
+							soluci\acute{o}n\\			
+						\end{array} 
+					} \right] 
+					=
+					%%vieja solución
+					\left[{
+						\begin{array}{c}
+							75\\
+							160\\
+							225\\
+							250
+						\end{array} 
+					} \right] 
+					-
+					600
+					\left[{
+						\begin{array}{c}
+							1/8\\
+							0\\
+							-1/8\\
+							0	
+						\end{array} 
+					} \right]
+					=
+					%%sol final
+					\left[{
+						\begin{array}{c}
+							75 - 600/8\\
+							160\\
+							225 + 600/8\\
+							250	
+						\end{array} 
+					} \right]
+					=
+					\left[{
+						\begin{array}{cc}
+							0 & x_3*\\
+							160 & x_1*\\
+							300 & s_3*\\
+							250 & x_2*	
+						\end{array} 
+					} \right]
+					\quad \emph{Nueva solución}
+				\end{align*}
+				En este caso, $x_3$ sale de la base.
+				\textbf{F.O.} $z = 25\cdot160 + 15\cdot250 + 16\cdot0 + 0\cdot300 = 7750$
+			\item[Caso 2] $\Delta{b_1} = 1800$\\
+				\begin{align*}
+					%%sol nueva
+					\left[{
+						\begin{array}{c}
+								Nueva\\
+							\\
+							soluci\acute{o}n\\			
+						\end{array} 
+					} \right] 
+					=
+					%%vieja solución
+					\left[{
+						\begin{array}{c}
+							75\\
+							160\\
+							225\\
+							250
+						\end{array} 
+					} \right] 
+					+
+					1800			
+					\left[{
+						\begin{array}{c}
+							1/8\\
+							0\\
+							-1/8\\
+							0	
+						\end{array} 
+					} \right]
+					=
+					%%sol final
+					\left[{
+						\begin{array}{c}
+							75 + 1800/8\\
+							160\\
+							225 - 1800/8\\
+							250	
+						\end{array} 
+					} \right]
+					=
+					\left[{
+						\begin{array}{cc}
+							300 & x_3*\\
+							160 & x_1*\\
+							0 & s_3*\\
+							250 & x_2*	
+						\end{array} 
+					} \right]
+					\quad \emph{Nueva solución}
+				\end{align*}
+				En este caso, $s_3$ sale de la base.
+				\textbf{F.O.} $z = 25\cdot160 + 15\cdot250 + 16\cdot300 + 0\cdot0 = 12550$
+		\end{description}
+	\item
+		Evaluemos las variables implicadas en la nueva restricción ($x_1 = 160, x_2=250, x_3=75$):
+		\begin{align*}
+			\hspace{4cm}
+				6x_1 + 3x_2 + 4x_3 &\leq 1900\\
+				6\cdot160 + 3\cdot250 + 4\cdot75 &= 2010 \geq 1900
+		\end{align*}
+		Luego, no se cumple la restricción. Para resolver el problema, debemos retroceder en el tableau y chequear la restricción
+		hasta que se cumpla, luego volver a iterar hasta hallar la nueva solución.
+\end{enumerate}

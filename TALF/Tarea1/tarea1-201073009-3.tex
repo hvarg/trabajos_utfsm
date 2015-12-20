@@ -1,0 +1,458 @@
+\documentclass[spanish, fleqn]{article}
+\usepackage[top = 2.5cm, bottom = 2cm, left = 2cm, right = 2cm]{geometry}
+%\usepackage{babel}
+\usepackage[spanish, es-noshorthands]{babel}                                    
+\usepackage[utf8]{inputenc}
+\usepackage[colorlinks, urlcolor=blue]{hyperref}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{wasysym}
+\usepackage{fourier}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{diagbox}
+\usetikzlibrary{automata, positioning}
+%\definecolor{navyblue}{RGB}{0,148,222}		%Color
+
+\newcommand{\num}{1}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\cycle}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}	 % Stirling 1a especie
+
+\title{
+	Introducción a la Informática Teórica \\
+	Tarea \#\num \\
+	``La Maldición del Tercer Ojo de Visnú''
+}
+
+\author{
+	{Hernán Vargas Leighton}, 
+	{201073009-3}
+}
+\date{2 de abril 2014}
+
+\begin{document}
+	\maketitle
+	\thispagestyle{empty}
+	\section*{Respuestas}
+	\begin{enumerate}
+%		\item
+%			Existe una vieja leyenda en la India relatada por varios sabios
+%			matemáticos como Aryabhata y Brahmagupta, que si las secuencias de
+%			números del 1 al 5 contenían algunos patrones maléficos	creados por
+%			el dios Visnú a través de su tercer ojo, podrían sufrir diversos
+%			males aquellos individuos que las construyeran.
+%			Para nuestra fortuna, los diabólicos patrones son conocidos:
+%				\begin{itemize}
+%					\item
+%						Quien escriba una secuencia con dos \(4's\)
+%						consecutivos tendrá una muerte lenta y dolorosa.
+%					\item
+%						Impar cantidad de \(5's\) traerá la enfermedad y la
+%						hambruna.
+%					\item
+%						Una tabla antigua contiene la siguiente inscripción:
+%						¨2 seguido de 3, en TALF estarás otra vez''.
+%				\end{itemize}
+%			Sólo aquellos que logren construir un DFA que \emph{evite} conjurar
+%			estos místicos patrones podrán salvarse. Recuerde mostrar 
+%			claramente alfabeto, estados y transiciones (no queremos que le
+%			pase algo si se equivoca).
+
+		\item
+			Para satisfacer las tres condiciones, necesitamos un autómata capaz
+			de detectar las secuencias \(44\) y \(23\), además, debe ser capaz
+			de diferenciar cuando el \emph{string} tiene un número par de 
+			\(5's\). Para ello digamos:
+				\begin{equation*}
+					M = ( Q, \Sigma, \delta, q_{0}, F)
+				\end{equation*}
+			Con:
+				\begin{equation*}
+					Q = \{a,b,c,d,e,f,g\} \\
+					\Sigma = \{1,2,3,4,5\} \\
+					q_{0} = a \\
+					F = \{a,f,g\} \\
+				\end{equation*}
+			Y con \(\delta\): función de transición. Con ello tenemos que la 
+			tabla de transiciones será:
+			  \begin{center}
+				\begin{tabular}{|c|r|r|r|r|r|r|r|}
+					\hline
+					\backslashbox{entrada}{estado} & 
+					\(a\)	& \(b\)	& \(c\)	& \(d\)	& \(e\)	& \(f\)	& \(g\)
+					\\\hline
+					1	& \(a\)	& \(b\)	& \(b\)	& \(b\)	& \(e\)	& \(a\)	& \(a\)
+					\\\hline
+					2	& \(g\)	& \(d\)	& \(d\)	& \(b\)	& \(e\)	& \(g\)	& \(g\)
+					\\\hline
+					3	& \(a\)	& \(b\)	& \(b\)	& \(e\)	& \(e\)	& \(a\)	& \(e\)
+					\\\hline
+					4	& \(f\)	& \(c\)	& \(e\)	& \(c\)	& \(e\)	& \(e\)	& \(f\)
+					\\\hline
+					5	& \(b\)	& \(a\)	& \(a\)	& \(a\)	& \(e\)	& \(b\)	& \(b\)
+					\\\hline
+				\end{tabular}
+			  \end{center}
+			Notar que si se llega al estado \(e\) ya no podremos salvarnos de
+			la maldición de Visnú.\\
+			Con la tabla hecha nos basta escribir el autómata determinista:
+				\begin{center}
+					\begin{tikzpicture}[shorten >=1pt, node distance=5cm,
+							on grid, >=stealth,	initial text=Inicio,
+	%						every state/.style={draw=navyblue!50, very thick,
+	%											fill=navyblue!20},
+							bend angle=10]
+					%%%%	NODOS	%%%%
+						\node[state,initial,accepting]	(a)				{$a$};
+						\node[state]			(b)[right=of a]			{$b$};
+						\node[state]			(c)[above right=of b]	{$c$};
+						\node[state]			(d)[below right=of b]	{$d$};
+						\node[state]			(e)[right=of b]			{$e$};
+						\node[state,accepting]	(f)[above right=of a]	{$f$};
+						\node[state,accepting]	(g)[below right=of a]	{$g$};
+					%%%%	CONEXIONES	  %%%%
+						\path[->]
+							%%%%	a	 %%%%
+							(a)	edge[loop above]	node		{1,3}	()
+							(a)	edge[bend left]		node[left]	{2}		(g)
+							(a)	edge[bend left]		node[left]	{4}		(f)
+							(a)	edge[bend left]		node[above]	{5}		(b)
+							%%%%	b	 %%%%
+							(b)	edge[loop right]	node		{1,3}	()
+							(b)	edge[bend left]		node[above]	{2}		(d)
+							(b)	edge[bend left]		node[left]	{4}		(c)
+							(b)	edge[bend left]		node[below]	{5}		(a)
+							%%%%	c	 %%%%
+							(c)	edge[bend left]		node[below]	{1,3}	(b)
+							(c)	edge[bend left]		node[left]	{2}		(d)
+							(c)	edge 				node[right]	{4}		(e)
+							(c)	edge[bend right]	node[below]	{5}		(a)
+							%%%%	d	 %%%%
+							(d)	edge[bend left]		node[left]	{1,2}	(b)
+							(d)	edge 				node[right]	{3}		(e)
+							(d)	edge[bend left]		node[left]	{4}		(c)
+							(d)	edge[bend left]		node[above]	{5}		(a)
+							%%%%	e	 %%%%
+							(e)	edge[loop right]	node	{1,2,3,4,5}	()
+							%%%%	f	 %%%%
+							(f)	edge[bend left]		node[left]	{1,3}	(a)
+							(f)	edge[bend right]	node[left]	{2}		(g)
+							(f)	edge[bend left]		node[below]	{4}		(e)
+							(f)	edge[bend left]		node[right]	{5}		(b)
+							%%%%	g	 %%%%
+							(g)	edge[bend left]		node[left]	{1}		(a)
+							(g)	edge[loop below]	node		{2}		()
+							(g)	edge[bend right]	node[above]	{3}		(e)
+							(g)	edge[bend right]	node[left]	{4}		(f)
+							(g)	edge[bend right]	node[right]	{5}		(b);
+					\end{tikzpicture}
+				\end{center}
+
+				Sobre los estados finales podemos decir los siguiente:
+				\begin{itemize}
+					\item
+						Estado \textbf{\(a\):} Para \emph{strings} terminados 
+						en 1, 3 o 5 (par).
+					\item
+						Estado \textbf{\(f\):} Para \emph{strings} terminados
+						en 4.
+					\item
+						Estado \textbf{\(g\):} Para \emph{strings} terminados
+						en 2.
+				\end{itemize}
+				Cabe destacar que los estados \(c\) y \(d\) son variantes para 
+				número de \(5\) impar de los estados \(f\) y \(g\) 
+				respectivamente, en este caso no se cumplen las condiciones.\\
+				Además el estado \(e\) es al cual se cae cuando ya no es 
+				posible evitar la maldición.\\
+%		\item
+%			Visnú creó poderosos talismanes en forma de cadenas formadas por
+%			piedras talladas con las iniciales de los dioses Ammavaru, 	Brahma
+%			y Chandra. Estas cadenas, hechas para esparcir la maldición, deben
+%			tener cantidad par de símbolos, no poseer la inicial de Chandra dos
+%			veces seguidas y al menos una vez Ammavaru y Brahma están juntos en
+%			dicho orden. Encuentre las cadenas y expréselas como expresión
+%			regular.
+
+		\item
+			En primer lugar definiré nuestro alfabeto con las iniciales de 
+			Ammavaru, Brahma y Chandra:
+			\begin{equation*}
+				\Sigma = \{A,B,C\}
+			\end{equation*}
+			Se debe cumplir con:
+			\begin{enumerate}
+				\item El \emph{string} debe tener un largo par.
+				\item El \emph{string} debe contener al menos un \(AB\).
+				\item El \emph{string} no debe tener \(CC\).
+			\end{enumerate}
+			Para cumplir con estas reglas debemos:
+			\begin{enumerate}
+				\item 
+					Construir la expresión en con base en palabras de
+					largo 2.
+				\item
+					Escribir la expresión regular \(AB\). Como su largo es 2 no
+					interfiere con la regla \(a)\).
+				\item
+					Asegurar que ninguna palabra de largo 2 sea \(CC\). Además
+					se debe tener la precaución que una palabra terminada en
+					\(C\) no esté junto a una palabra que comience con \(C\) y
+					viceversa.
+			\end{enumerate}
+			Podemos construir una expresion regular que cumpla con estas tres
+			reglas definiendo las siguientes palabras:
+			\begin{equation*}
+				a = (A|B)(A|B) \\
+				b = CA \\
+				c = CB \\
+				d = AC \\
+				e = BC \\
+				f = CC \\
+			\end{equation*}
+			Inmediatamente notamos que \(a\) serán las palabras sin problemas 
+			\emph{incluida} \(AB\). Por otro lado \(b,c,d,e\) son las que
+			debemos tener en cuenta y \(f\) no debe estár incluida.\\
+			Entonces:
+			\begin{itemize}
+				\item
+					\((a|b|c)\) denota una palabra que \textbf{no termina en
+					\(C\)}.
+				\item
+					\((d|e)^+a\) denota una palabra que 
+					\textbf{no comienza con \(C\), no termina en \(C\) y no 
+					tiene \(CC\) intermedias pero si puede tener \(C\)}.
+				\item
+					\( ( (a|b|c) | (d|e)^+a ) ^* \) está compuesta por las
+					anteriores y denota toda palabra de largo par sin \(CC\)
+					que \textbf{no termine en C}
+				\item
+					Para aceptar la opción de que el \emph{string} termine en
+					\(C\) (sin quebrar las otras reglas) nos basta con agregar
+					\((d|e)\) o \((\epsilon)\) al final de la expresión actual.
+					\\Convenientemente escribimos: 
+					\( (( (a|b|c) | (d|e)^+a ) ^*)(\epsilon | (d|e)) \)
+				\item
+					Por último, para asegurar que exista al menos un \(AB\)
+					agregamos directamente un \(AB\) y lo \emph{rodeamos} por
+					la expresion anterior. Como resultante tenemos:
+					\( (( (a|b|c) | (d|e)^+a ) ^*)(\epsilon | (d|e)) 
+					AB
+					 (( (a|b|c) | (d|e)^+a ) ^*)(\epsilon | (d|e))\)
+			\end{itemize}
+			Ahora nos basta volver al alfabeto inicial. Para ello tenemos que:
+			\begin{equation*}
+				(a|b|c) = (A|B|C)(A|B) \\
+				(d|e) = (A|B)C 
+			\end{equation*}
+			Además de las definiciones. Con esto tenemos que la expresión 
+			regular que cumple con las tres reglas y por lo tanto denota los 
+			poderosos talismanes de Visnú es:
+			\begin{equation*}
+				\Biggl(
+					\Bigl(
+						\bigl( A|B|C \bigr)
+						\bigl(A|B \bigr)
+					\Bigr)
+					|
+					\Bigl(
+						\bigl(
+							\left( A|B \right)
+						C \bigr)^+ 
+						\bigl( A|B \bigr)
+						\bigl( A|B \bigr) 
+					\Bigr)
+				\Biggr)^* 
+				\Biggl(
+					\epsilon 
+					| 
+					\bigl( A|B \bigr) C
+				\Biggr)
+				AB
+				\Biggl(
+					\Bigl(
+						\bigl( A|B|C \bigr)
+						\bigl(A|B \bigr)
+					\Bigr)
+					|
+					\Bigl(
+						\bigl(
+							\left( A|B \right)
+						C \bigr)^+ 
+						\bigl( A|B \bigr)
+						\bigl( A|B \bigr) 
+					\Bigr)
+				\Biggr)^* 
+				\Biggl(
+					\epsilon 
+					| 
+					\bigl( A|B \bigr) C
+				\Biggr)
+			\end{equation*}
+%		\item
+%			Físicos de alta energía, con la ayuda de  historiadores, aseguran
+%			haber encontrado que los rayos maléficos enviados por el tercer ojo
+%			de Visnú serían en realidad rayos de ondas gravitatorias, las 
+%			cuales fueron representadas bajo una combinación, sin sentido para
+%			nosotros, de símbolos grabados en una tabla: \{0, 1\}. Ayude a este
+%			equipo a representar esta valiosa información, sabiendo que los
+%			rayos contienen una cantidad impar de \(1's\). Sólo pueden haber
+%			\(0's\) seguidos de dos \(1's\) y la cadena debe terminar en 1.
+
+		\item
+			Las tres condiciones son:
+			\begin{enumerate}
+				\item Numero impar de \(1's\).
+				\item Si hay \(0's\) serán \((011)'s\).
+				\item El \emph{string} siempre termina en \(1\)
+			\end{enumerate}
+			Gracias a las reglas \(a)\) y \(c)\) podemos simplemente buscar un
+			\emph{string} de largo par y agregar un \(1\) al final.\\
+			Este nuevo \emph{string} estara denotado por:
+			\begin{itemize}
+				\item \((011)^*\) si está compuesto solo de \((011)'s\).
+				\item \(( 1 (011)^* 1 )^*\) si son solo \((11)'s\) o si 
+					\((011)'s\) estan rodeados por un \(1\).
+			\end{itemize}
+			Notar que éstas reglas cumplen con mantener la cantidad par de 
+			\(1's\), además:
+			\begin{equation*}
+				\bigl( 011 | 1 \left( 011 \right)^* 1 \bigr)^*
+			\end{equation*}
+			Aceptará cualquier conbinación de \((011)'s\) y \(1's\) con un 
+			número par de \(1's\). Nos basta solo agregar un \(1\) al final de
+			está expresión regular, pero éste \(1\) puede ser en la forma de
+			\((1)\) o \((011)\) es decir: \( (1|011) \).\\
+			Con esto tenemos que la expresión regular que representa la 
+			información de los rayos del tercer ojo de Visnú es:
+			\begin{equation*}
+				\bigl( 011 | 1 \left( 011 \right)^* 1 \bigr)^*
+				\bigl( 1 | 011 \bigr)
+			\end{equation*}
+			\\
+
+%		\item
+%			Ammavaru, Brahma y Chandra, buscando opacar a Visnú y su maldad,
+%			codificaron cadenas sagradas de defensa en lo que actualmente
+%			conocemos como una expresión regular. Sea \(\mathcal{L}\) el
+%			lenguaje de dichas cadenas tal que
+%				\(\mathcal{L}(R) = C^{*}(A|BC^{*})^{*}\).
+%			Como usted necesita ver gráficamente las posibles cadenas sagradas,
+%			construya el DFA que reconoce dichas cadenas.
+
+		\item
+			Digamos: \( \Sigma = \{A,B,C\} \), buscamos un autómata finito 
+			determinista \(M = ( Q, \Sigma, \delta, q_{0}, F) \) que cumpla 
+			con: \(\mathcal{L}(R) = C^{*}(A|BC^{*})^{*}\).\\
+			Sabemos que \(C^*\), \(A|BC^*\) y \( (A|BC^* )^* \) son 
+			respectivamente:
+			
+			\begin{center}
+				\begin{tikzpicture}[shorten >=1pt, node distance=2cm,
+						on grid, >=stealth,	initial text=Inicio,
+		%				every state/.style={draw=navyblue!50, very thick,
+		%									fill=navyblue!20},
+						bend angle=10]
+				%%%%	NODOS	%%%%
+					%%	C^*	 %%
+					\node[state,initial,accepting]	(aa)				{$a$};
+					%%	A|BC*  %%
+					\node[xshift=1cm, state, initial](ba)[right=of aa]	{$a$};
+					\node[state, accepting]		(bb)[above right=of ba]	{$b$};
+					\node[state, accepting]		(bc)[below right=of ba]	{$c$};
+					%%	(A|BC*)*  %%
+					\node[xshift=3cm, state, initial](ca)[right=of ba]	{$a$};
+					\node[state, accepting]		(cb)[above right=of ca]	{$b$};
+					\node[state, accepting]		(cc)[below right=of ca]	{$c$};
+				%%%%	CONEXIONES	  %%%%
+					\path[->]
+						%%%%	a*	 %%%%
+						(aa)	edge[loop above]	node		{$C$}	()
+						%%%%	b*	 %%%%
+						(ba)	edge[bend left]		node[above left]{$A$} (bb)
+						(ba)	edge[bend right]	node[below left]{$B$} (bc)
+						(bc)	edge[loop right]	node		{$C$}	()
+						%%%%	g*	 %%%%
+						(ca)	edge[bend left]		node[above left]{$A$} (cb)
+						(ca)	edge[bend right]	node[below left]{$B$} (cc)
+						(cb)	edge[loop right]	node		{$A$}	()
+						(cb)	edge[bend right]	node[left]	{$B$}	(cc)
+						(cc)	edge[loop right]	node		{$C$}	()
+						(cc)	edge[loop below]	node		{$B$}	()
+						(cc)	edge[bend right]	node[right]	{$A$}	(cb);
+				\end{tikzpicture}
+			\end{center}
+
+			Con esto nos basta hacer la unión y agregar las \emph{entradas}
+			faltantes para obtener el autómata finito determinista resultante:
+
+			\begin{center}
+				\begin{tikzpicture}[shorten >=1pt, node distance=3cm,
+						on grid, >=stealth,	initial text=Inicio,
+		%				every state/.style={draw=navyblue!50, very thick,
+		%									fill=navyblue!20},
+						bend angle=10]
+				%%%%	NODOS	%%%%
+					%%	C*(A|BC*)*  %%
+					\node[state, accepting, initial]	(a)				{$a$};
+					\node[state, accepting]		(b)[above right=of a]	{$b$};
+					\node[state, accepting]		(c)[below right=of a]	{$c$};
+					\node[state]				(d)[right=of b]	{$d$};
+				%%%%	CONEXIONES	  %%%%
+					\path[->]
+						(a)	edge[loop above]	node		{$C$}			()
+						(a)	edge[bend left]		node[above left]	{$A$} (b)
+						(a)	edge[bend right]	node[below left]	{$B$} (c)
+						(b)	edge[loop above]	node		{$A$}		()
+						(b)	edge[bend right]	node[left]	{$B$}		(c)
+						(b)	edge				node[above]	{$C$}		(d)
+						(c)	edge[loop right]	node		{$C$}		()
+						(c)	edge[loop below]	node		{$B$}		()
+						(c)	edge[bend right]	node[right]	{$A$}		(b)
+						(d)	edge[loop right]	node		{$A,B,C$}	();
+				\end{tikzpicture}
+			\end{center}
+			
+			Sobre los estados finales podemos decir los siguiente:
+			\begin{itemize}
+				\item
+					Estado \textbf{\(a\):} Para \emph{strings} compuestos
+					exclusivamente de \(C's\).
+				\item
+					Estado \textbf{\(b\):} Para \emph{strings} terminados en 
+					\(A\).
+				\item
+					Estado \textbf{\(c\):} Para \emph{strings} terminados en
+					\(B\) o \(C\).
+			\end{itemize}
+			Cabe destacar que el estado \(d\) es alcanzado cuando la cadena no
+			es sagrada, es decir cuando el \emph{string} no calza con la
+			expresión regular \(\mathcal{L}\)\\
+			Ahora podemos definir \(M = ( Q, \Sigma, \delta, q_{0}, F) \) con:
+			\begin{equation*}
+				Q = \{a,b,c,d\} \\
+				\Sigma = \{A,B,C\} \\
+				q_{0} = a \\
+				F = \{a,b,c\} \\
+			\end{equation*}
+			Y con \(\delta\): función de transición. Con ello tenemos que la 
+			tabla de transiciones será:
+			  \begin{center}
+				\begin{tabular}{|c|r|r|r|r|}
+					\hline
+					\backslashbox{entrada}{estado} & 
+					\(a\)	& \(b\)	& \(c\)	& \(d\)
+					\\\hline
+					A	& \(b\)	& \(b\)	& \(b\)	& \(d\)	
+					\\\hline
+					B	& \(c\)	& \(c\)	& \(c\)	& \(d\)	
+					\\\hline
+					C	& \(a\)	& \(d\)	& \(c\)	& \(d\)	
+					\\\hline
+				\end{tabular}
+			  \end{center}
+
+	\end{enumerate}
+
+\vfill\hfill HV/\LaTeXe
+\end{document}

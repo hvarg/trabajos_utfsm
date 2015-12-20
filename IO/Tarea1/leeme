@@ -1,0 +1,18 @@
+Para compilar correctamente el .tex se necesitan los siguientes paquetes:
+	- pdflscape
+	- listings
+	- color
+	- tikz
+además de los paquetes generales del idioma español.
+
+El pdf adjunto fue obtenido como resultado de usar:
+	pdflatex 201073009-3-201073011-5.tex
+intentar compilar cualquier otro .tex no dará resultado.
+Por razones que desconozco, a veces, la primera compilación deja el .pdf con las
+referencias rotas, compilar nuevamente soluciona este problema.
+
+Los archivos fueron escritos con 1tab = 4space. Su visualización se recomienda
+bajo esos parámetros.
+
+Aunque el enunciado no lo especifica se han puesto los archivos en una carpeta
+por precaución.

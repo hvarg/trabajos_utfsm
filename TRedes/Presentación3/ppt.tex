@@ -1,0 +1,58 @@
+\documentclass{beamer}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{multicol} % indice en 2 columnas
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+
+%configura la figura de las listas itemize
+\setlist[itemize]{label={\color{blue}$\bullet$}}
+\usetheme{Warsaw}
+\usecolortheme{dolphin}
+\useoutertheme{shadow}
+\useinnertheme{rectangles}
+
+% 1º ppt
+\title[IPv6]{Migrando aplicaciones a IPv6}
+\subtitle{Estado actual y fundamentos de nuestro proyecto}
+\author[Sandoval, Vargas]
+{Alonso Sandoval A. \and Hernán Vargas L.}
+\institute[UTFSM]
+{
+  Universidad Técnica Federico Santa María
+  \and
+  \texttt{asandova@alumnos.inf.utfsm.cl, hvargas@alumnos.inf.utfsm.cl}
+}
+\date{\today}
+
+%2º ppt
+\AtBeginSection{
+\begin{frame}
+  \frametitle{Índice}
+  \tableofcontents[currentsection]   
+\end{frame}
+}
+
+\AtBeginSubsection{
+\begin{frame}
+  \frametitle{Índice}
+  \tableofcontents[currentsection,currentsubsection]
+\end{frame}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+  \frametitle{Índice}
+  \tableofcontents
+\end{frame}
+
+
+\input{1parte.tex}
+
+\input{2parte.tex}
+  
+\end{document}

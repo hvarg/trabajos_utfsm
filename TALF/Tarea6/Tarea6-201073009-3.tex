@@ -1,0 +1,195 @@
+\documentclass[spanish, fleqn]{article}
+%\usepackage{babel}
+\usepackage[spanish, es-noshorthands]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{wasysym}
+\usepackage[colorlinks, urlcolor=blue]{hyperref}
+\usepackage{fourier}
+\usepackage[top = 2.5cm, bottom = 2cm, left = 2cm, right = 2cm]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+
+\title{Introducción a la Informática Teórica \\ Tarea 6\\
+	   \emph{Hamiltonian Guy} }
+\author{Hernán Vargas Leighton \\ 201073009-3}
+\date{\today}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\section*{Respuestas}
+
+\begin{enumerate}
+	\item
+%		\emph{Vertex Cover}. Dado un grafo \(G = (V, E)\) se debe encontrar el
+%		mínimo conjunto \(V' \in V \) de vértices tal que todos los vértices del
+%		grafo son adyacentes a éstos. Demuestre que \emph{Vertex covering
+%		problem} es $NP$-completo.
+%		\emph{Hint: puede reducir el 3-SAT a este hermoso problema}
+		Buscamos el menor subconjunto de nodos tal que todas las aristas sean 
+		adyacentes a estos. Para ello debemos recorrer cada nodo y verificar
+		sus aristas, por lo tanto la evaluación caso a caso será en tiempo
+		polinomial. Como buscamos el menor subconjunto debemos siempre recorrer
+		el grafo hasta el final, encontrar todos los subconjuntos que son
+		\emph{vertex cover}, y elegir de ellos el más pequeño, entonces el
+		problema es \texttt{NP}.\\
+		Para que el problema sea \texttt{NP}-completo debe ser \texttt{NP} y 
+		\texttt{NP}-duro, esta última condición se satisface haciendo la 
+		reducción de 3-SAT a nuestro problema:
+		\begin{itemize}
+			\item
+				3-SAT nos dice que el problema de verificar si existen valores
+				booleanos tal que una expresión compuesta por clausulas de tres
+				literales sea verdadera es \texttt{NP}-completo, es decir:
+				$ S_1 \times S_2 \times .. S_n = \texttt{True}$, con $\times$
+				una operación booleana (\texttt{or, and, not}) y $S_i$ una
+				clausula de la forma $(L_1 \times L_2 \times L_3)$
+			\item
+				Digamos las clausulas $S_i$ de manera que $L_1, L_2, L_3$ sean
+				valores \texttt{True} o \texttt{False} arbitrarios, así $\times$
+				puede ser reducido a \texttt{and} u \texttt{or} (el \texttt{not}
+				no es necesario pues basta cambiar el valor de $L_i$ por su 
+				complemento).
+			\item
+				Ahora, si la expresión está compuesta por dos \texttt{or}, le
+				asignamos un grafo con tres nodos y dos aristas de manera de que
+				un nodo sea adyacente a los otros dos. En cualquier otro caso
+				asignamos un grafo con tres nodos y tres aristas entonces cada
+				nodo estará conectado con los demás. Así, asignamos a cada
+				clausula grafos de tres nodos, de alguna de estas formas:
+				\begin{center}
+					\begin{tikzpicture}[-,>=stealth',shorten >=1pt,auto,node
+								distance=1.5cm,thick,main node/.style={circle,
+								fill=gray!40,draw,minimum size=10pt}]
+						\node[main node] (1) {$L_1$};
+						\node[main node] (2) [below right of=1] {$L_2$};
+						\node[main node] (3) [above right of=2] {$L_3$};
+	
+						\node[main node] (4) [right of=3]{$L_1$};
+						\node[main node] (5) [below right of=4] {$L_2$};
+						\node[main node] (6) [above right of=5] {$L_3$};
+						\path[]
+							(1) edge node [] {} (2)
+							(2) edge node [] {} (3)
+	
+							(4) edge node [] {} (5)
+							(5) edge node [] {} (6)
+							(6) edge node [] {} (4);
+					\end{tikzpicture}
+				\end{center}
+			\item
+				Cada uno de estos grafos tendrá al menos un nodo con dos
+				aristas, llamemos a éste el nodo principal.
+			\item 
+				Crearemos un nuevo grafo pero ahora con la expresión que evalúa
+				las clausulas, para ello cuando las expresiones estén con un
+				\texttt{and} pondrán los nodos linealmente mientras que las con
+				\texttt{or} unirán solo uno de sus nodos a los \texttt{and}, por
+				ejemplo una expresión como $S_1 \land S_2 \land (S_3 \lor S_4
+				\lor S_5) \land	S_6$ será:
+				\begin{center}
+					\begin{tikzpicture}[-,>=stealth',shorten >=1pt,auto,node
+								distance=1.5cm,thick,main node/.style={circle,
+								fill=gray!40,draw,minimum size=10pt}]
+						\node[main node] (1) {$S_1$};
+						\node[main node] (2) [above right of=1] {$S_2$};
+						\node[main node] (3) [below right of=2] {$S_3$};
+						\node[main node] (4) [above right of=3]{$S_4$};
+						\node[main node] (5) [below right of=3] {$S_5$};
+						\node[main node] (6) [below right of=1] {$S_6$};
+						\path[]
+							(1) edge node [] {} (2)
+							(2) edge node [] {} (3)
+							(3) edge node [] {} (6)
+							(3) edge node [] {} (4)
+							(3) edge node [] {} (5)
+							(6) edge node [] {} (1);
+					\end{tikzpicture}
+				\end{center}
+			\item
+				Ahora a cada nodo $S_i$ se le agrega una arista y se conecta con
+				el nodo principal de los literales de cada clausula. Con este
+				proceso se logra transformar una expresión booleana 3-SAT a un
+				grafo.
+			\item
+				Buscar si la expresión booleana satisface el 3-SAT será
+				equivalente a solucionar el problema \emph{Vertex Cover}, por lo
+				tanto se logra la reducción.
+		\end{itemize}
+
+	\item
+%		\emph{Set Cover}. Dado un conjunto \(U\) de \(n\) elementos, y \(m\)
+%		subconjuntos \(S_i\), ¿se pueden encontrar a lo más \(k\) subconjuntos
+%		tal que unidos cubran \(U\)? Reduzca el problema \emph{Vertex Cover}
+%		resuelto anteriormente al \emph{Set Cover}.
+		Reducción de \emph{Vertex Cover} a \emph{Set Cover}:
+		\begin{itemize}
+			\item
+				Digamos nuestro grafo para el \emph{Vertex Cover} como $G = (V,
+				E)$, con $V$ el conjunto de los nodos y $E$ el conjunto de las
+				aristas.
+			\item
+				Digamos los elementos de $V$ como $V_i \forall i \in 1..p$, 
+				entonces $V_i$ representará al nodo $i$ de un total de $p$.
+			\item
+				Digamos los elementos de $E$ como $E_i \forall i \in 1..q$, 
+				$E_i$ será la arista $i$ de un total de $q$.
+			\item
+				Definamos el conjunto U como la unión de los nodos y las aristas
+				de nuestro grafo, es decir $ U = V \cup E $. 
+			\item
+				Los subconjuntos $S_i$ serán elegidos de manera que se contengan
+				un nodo y todos los nodos y aristas adyacentes, por ejemplo para
+				un nodo $V_1$ que es adyacente a $E_1, E_2, V_2, V_3$ tendremos
+				el subconjunto $\{V_1, E_1, E_2, V_2, V_3\}$. Hacer esta
+				transcripción implica recorrer los nodos uno por uno y revisar
+				sus vecinos, por lo tanto su tiempo es polinomial.
+			\item
+				Tendremos entonces que el número de elementos $n = p+q$ y el
+				número de subconjuntos $m=n$.
+			\item
+				Ahora encontrar el \emph{Vertex Cover} de $G$ será equivalente a
+				encontrar un mínimo $k$ tal que su unión sea $U$, por lo tanto
+				se logra la reducción.
+		\end{itemize}
+
+	\item
+%		\emph{Half-Clique}. Dado un grafo \(G\) con un número par de vértices.
+%		¿Existe un \emph{clique} de G que contenga exactamente la mitad de la
+%		cantidad de nodos de \(G\)? Demuestre que este es un problema
+%		\texttt{NP}-completo.\\
+%		\emph{Hint:} Reduzca el problema \emph{Clique} (visto en clases) al
+%		\emph{Half-Clique}.
+		En primer lugar el algoritmo para resolver el \emph{Half-Clique} será
+		polinomial pues nos basta con tomar toda combinación posible de nodos
+		que sean la mitad de los nodos totales y verificar si todos están 
+		conectados entre si, así el problema es \texttt{NP}.\\
+		Para probar que el problema es \texttt{NP}-duro y por ello \texttt{NP}-
+		completo basta reducir el problema \emph{Clique} al \emph{Half-Clique}:
+		\begin{itemize}
+			\item
+				\emph{Clique} nos dice que el problema de encontrar un $k$ tal
+				que un grafo $G$ tenga un  subconjunto $G'$ con $k$ nodos de
+				manera que estos estén todos conectados entre si, es \texttt{NP}
+				-completo.
+			\item
+				Digamos un grafo $G$ con $n$ nodos.
+			\item
+				Por definición de \emph{Half-Clique} sabemos que $n$ será par,
+				entonces $n/2$ es un natural mayor o igual a $1$.
+			\item
+				Basta con decir $k=n/2$, ahora el problema \emph{Clique} fue
+				reducido a un problema \emph{Half-Clique}.
+			\item
+				Notamos que \emph{Half-Clique} es un caso particular de
+				\emph{Clique}.
+		\end{itemize}
+		Con esto se concluye que \emph{Clique} es \texttt{NP}-completo.
+
+\end{enumerate}
+\vfill\hfill HV/\LaTeXe
+\end{document}

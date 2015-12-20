@@ -1,0 +1,200 @@
+\documentclass[spanish, fleqn]{article}
+\usepackage{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{wasysym}
+\usepackage[colorlinks, urlcolor=blue]{hyperref}
+\usepackage{fourier}
+\usepackage[top = 2.5cm, bottom = 2cm, left = 2cm, right = 2cm]{geometry}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\title{Introducción a la Informática Teórica \\
+       Tarea 4\\
+       ``¡Quiero mi Premio Turing Ahora!''
+      }
+\author{Hernán Vargas Leighton \\ 201073009-3}
+\date{\today}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\section*{Respuestas}
+
+\begin{enumerate}
+	\item
+%		Construya la Máquina de Turing que acepte el lenguaje \(\mathcal{L}\) 
+%		cuyas cadenas contienen la misma cantidad de ceros que unos. Defina
+%		claramente símbolos y estados. Utilice la tabla \ref{tablatm} para
+%		describir la máquina.
+		La Máquina de Turing que acepta el lenguaje $\mathcal{L} = \{w: 
+		\#1 = \#0\}$ será $ M_1 = (Q, \Sigma, \Gamma, \delta, q_0, B, F) $, con:
+		\begin{align*}
+			Q &= \{q_0,q_1,q_2,q_3,q_4,q_5\} \\
+			\Sigma &= \{0, 1 \} \\
+			\Gamma &= \{X, Y \} \\
+			\delta &= \text{Función de transición.} \\
+			q_0 &= \text{Estado inicial.} \\
+			B &= \text{Blanco}, B \in \Gamma, B \notin \Sigma \\
+			F &= q_5 \in Q
+		\end{align*}
+		La estrategia consiste en reemplazar el primer símbolo por $Y$ para
+		poder determinar donde está el inicio de la cinta y no caer de ella, 
+		si esté símbolo fue $1$ se pasa a un estado en el que se busca un $0$
+		y se le reemplaza por $X$, si fue $0$ se hace lo contrario, una vez
+		reemplazado el segundo símbolo se va a un estado que retrocederá en la
+		cinta hasta encontrar la $Y$, ahora se lee un $0$ o un $1$ y se
+		reemplaza con $X$ y se pasa a los estados que usamos cuando escribimos
+		la $Y$. La maquina aceptará cuando, después de retroceder hasta la $Y$
+		avance hasta $B$ sin encontrar $1$ o $0$.
+		\begin{table}[h]
+			\centering
+			\begin{tabular}{|c|c|c|c|c|}
+				\hline
+					Estado actual & Simbolo leído & Símbolo escrito & 
+					Movimiento & Estado siguiente \\
+				\hline
+				\hline
+				$q_0$ & 0 & Y & R & $q_1$ \\
+				$q_0$ & 1 & Y & R & $q_2$ \\
+				\hline 	
+				$q_1$ & 0 & 0 & R & $q_1$ \\
+				$q_1$ & X & X & R & $q_1$ \\
+				$q_1$ & 1 & X & L & $q_3$ \\
+				\hline
+				$q_2$ & 1 & 1 & R & $q_2$ \\
+				$q_2$ & X & X & R & $q_2$ \\
+				$q_2$ & 0 & X & L & $q_3$ \\
+				\hline
+				$q_3$ & 0 & 0 & L & $q_3$ \\
+				$q_3$ & 1 & 1 & L & $q_3$ \\
+				$q_3$ & X & X & L & $q_3$ \\
+				$q_3$ & Y & Y & R & $q_4$ \\
+				\hline
+				$q_4$ & X & X & R & $q_4$ \\
+				$q_4$ & 0 & X & R & $q_1$ \\
+				$q_4$ & 1 & X & R & $q_2$ \\
+				$q_4$ & B & B & R & $q_5$ \\
+				\hline
+			\end{tabular}
+			\caption{Tabla de transiciones de $M_1$}
+			\label{tablatm}
+		\end{table}
+		
+	\item
+%		Construya la Máquina de Turing que realice la multiplicación de dos
+%		números enteros utilizando una notación binaria adecuada. Defina
+%		claramente símbolos y estados. Utilice la tabla \ref{tablatm} para
+%		describir la máquina.
+%		\begin{table}[h]
+%			\centering
+%			\begin{tabular}{c|c|c|c|c}
+%				\hline
+%					Estado actual & Simbolo leído & Símbolo escrito & 
+%					Movimiento & Estado siguiente \\
+%				\hline
+%				\hline
+%				& & & & \\
+%			\end{tabular}
+%			\caption{Tabla de transiciones de la TM}
+%			\label{tablatm}
+%		\end{table}
+		Para construir una Máquina de Turing podemos basarnos en diferentes
+		algoritmos de multiplicación binaria, en este caso me basaré en el 
+		``Algoritmo de Booth\footnotemark[1]''. Para ello se pedirá la entrada
+		de dos numero binarios separados por espacio y se puede seguir el 
+		algoritmo como se ve en la página 
+		\url{http://morphett.info/turing/turing.html}.
+		\footnotetext[1]{
+			\url{http://es.wikipedia.org/wiki/Algoritmo_de_Booth}}
+
+		Por otro lado podemos implementar el algoritmo de multiplicación 
+		normal. Para ello digamos una Máquina de Turing $M_2 = (Q, \Sigma, 
+		\Gamma, \delta, q_0, B, F)$ con:
+		\begin{align*}
+			\Sigma &= \{0, 1\}\\
+			\Gamma &= \{0, 1, \times, =, +\}
+		\end{align*}
+		La máquina recibe como entrada un string de la forma $1011\times 1001$.
+		En primer lugar pondrá el símbolo = al principio de la cinta y luego la
+		recorrerá hasta encontrar el ultimo $0$ o $1$. Si el número es $1$
+		copiará lo que está entre = y $\times$ al lado izquierdo de la igualdad
+		y luego elimina el número. Si es $0$ pondrá tantos ceros como largo
+		tenga el string entre el = y el $\times$ y después eliminará el $0$
+		(en ambos casos el ultimo elemento en la cinta). Una vez escrito este
+		número se agregará un $+$ al principio de la cinta y tantos $0$'s como
+		$+$ hallan al lado izquierdo de la igualdad. Este paso se repite hasta
+		que no queden más $0$'s o $1$'s después del $\times$.\\
+		Una vez hecho todo este proceso puede descartarse la parte a la derecha
+		de la igualdad y pasa a ser un problema de suma de números binarios el
+		cual puede ser resuelto por otra máquina de Turing.\\
+		Tenemos por ejemplo:
+		\begin{align*}
+			&1011\times 1001 \\
+			=&1011\times 1001 \\
+			1011=&1011\times 100 \\
+			0+1011=&1011\times 100 \\
+			00000+1011=&1011\times 10 \\
+			00+00000+1011=&1011\times 10 \\
+			000000+00000+1011=&1011\times 1 \\
+			000+000000+00000+1011=&1011\times 1 \\
+			1011000+000000+00000+1011=&1011\times \\
+			1011000+000000+00000+1011=&
+		\end{align*}
+		La cinta de salida de esta máquina se toma como entrada de una máquina
+		que sume números binarios y como resultado se tendrá la multiplicación.
+		\\ No se escribe la tabla de estados ni la maquina para sumar ya que
+		son muy largos.
+		% Cambiar esto si hay tiempo %
+
+	\item
+%		Sea M la Máquina de Turing tal que 
+%		$$M = \left(\{q_0, q_1, q_2, q_f\}, \{0,1\}, \{0,1,B\},
+%		\delta,q_0,B, \{q_f\}\right)$$
+%		Describa con sus palabras y de forma clara el lenguaje
+%		\(\mathcal{L}(M)\) si la función de transición \(\delta\) se define
+%		como:
+%		\begin{itemize}
+%			\item 
+%				\(\delta(q_0, 0)=(q_1, 1, R)\);\(\delta(q_1, 1)=(q_2, 0, L)\)
+%			\item
+%				\(\delta(q_2, 1)=(q_0, 1, R)\);\(\delta(q_1, B)=(q_f, B, R)\)
+%		\end{itemize}
+		El lenguaje $\mathcal{L}(M)$ aceptado por la Máquina de Turing $M$ será
+		$\mathcal{L}(M)= \{w:w=(01)^*\}$ ya que $q_0$ pasa con $0$ a $q_1$
+		moviéndose a la derecha y este a su vez pasa a $q_2$ con $1$ moviéndose
+		a la izquierda. En $q_2$ se verifica que tengamos un $1$ en el cursor,
+		pero esto siempre será así ya que $q_0$ cambió el $0$ por $1$, ahora
+		volvemos a estar en el estado inicial y el cursor se movió a la derecha
+		por lo que éste proceso puede repetirse infinitas veces. Si se llega a
+		$B$ en el estado $q_0$ se pasa a $q_f$ y se acepta.
+	\item
+%		Esboce cómo puede usarse la no decibilidad del problema de detectar
+%		``Hola, mundo'' para demostrar que el determinar si alguna vez se
+%		asigna un valor a la variable \texttt{a} en un programa en C no es
+%		decidible.
+		Sabemos que el problema de decidir si un programa imprime ``Hola
+		mundo'' dada cierta entrada es indecidible. Intentaré reducir el
+		problema de ``determinar si se le asigna valor a una variable
+		\texttt{a} en un programa en C'' al problema de ``Hola mundo''.
+		\begin{enumerate}
+			\item
+				Primero digamos que el programa en C tiene declarada la
+				variable \texttt{a} como un arreglo de \texttt{char}.
+			\item
+				Digamos que se le asigna el valor \texttt{Hola mundo} a la 
+				variable \texttt{a}.
+			\item
+				Asignar un valor a una variable significa que ésta se imprime
+				en la memoria.
+			\item
+				Ahora el problema se reduce a imprimir \texttt{Hola mundo} que
+				sabemos es un problema indecidible.
+		\end{enumerate}
+
+\end{enumerate}
+
+\vfill\hfill HV/\LaTeXe
+\end{document}
