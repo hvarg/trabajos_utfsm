@@ -1,0 +1,217 @@
+\documentclass[spanish, fleqn]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+%\usepackage{wasysym}
+%\usepackage{mathrsfs}
+\usepackage[colorlinks, urlcolor=blue]{hyperref}
+\usepackage[top = 2.5cm, bottom = 2cm, left = 2.5cm, right = 2.5cm]{geometry}
+\usepackage{fancyhdr, graphicx}
+\usepackage{caption}
+\usepackage{changepage}
+\usepackage{wrapfig}
+\usepackage{titling}
+
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{\vbox{\includegraphics[height=2cm]{Logo_INFO.png} \vspace{0.3cm}}}
+\fancyhead[C]{
+    \vbox{\textsc{\large Universidad Técnica Federico Santa María.}\\[0.14cm]
+          \textsc{\LARGE Departamento de Informática.} \\[0.14cm]
+          \textsc{\Large ICI 309 - Seminario de Memoria.}
+          \noindent\makebox[\linewidth]{\rule{18cm}{0.5pt}} }}
+\fancyhead[R]{\vbox{\includegraphics[height=2cm]{Logo_UTFSM.png}\vspace{0.3cm}}}
+
+\title{Análisis de Memoria.} 
+\author{Hernán Vargas Leighton -- 201073009-3 \\ hernan.vargas@alumnos.usm.cl}
+\date{\today}
+
+\let\b\textbf
+\let\e\emph
+\newcommand{\x}{$\times$}
+\newcommand{\tbr}[2][c]{%
+      \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+\newcommand{\tbrc}[2][c]{%
+      \begin{tabular}[#1]{@{}l@{}}#2\end{tabular}}
+\begin{document}
+\maketitle
+\thispagestyle{empty} \thispagestyle{fancy}
+\section{Datos principales}
+\begin{table}[h!]\centering
+    \begin{tabular}{|l|l|}
+    \hline
+    \b{Nombre del estudiante}      & Yonathan Helmuth Dossow Acuña  \\ \hline
+    \b{Título al que opta}         & Ingeniero Civil en Informática \\ \hline
+    \b{Fecha}                      & Junio del 2014                 \\ \hline
+    \b{Tema}                       & Propuesta de migración a IPv6 para la UTFSM
+                                                                     \\ \hline
+    \b{Profesores de la comisión}  & 
+        \begin{tabular}{@{}ll@{}}
+            \b{Guía:} & Javier Cañas \\
+            \b{Correferente:} & Horst von Brand
+        \end{tabular} \\ \hline
+    \b{Número de páginas}          &
+        \tbrc{\b{Documento:} 118\\ \b{Escrito:} 59 \\ \b{Anexos:} 39}\\ \hline
+    \b{Capítulos}                  &
+        \begin{tabular}{@{}l@{}}
+            1.- Introducción \\
+            2.- Estado del arte \\
+            3.- Implementación de IPv6 \\
+            4.- Pruebas y resultados \\
+            5.- Conclusiones 
+        \end{tabular} \\ \hline
+    \end{tabular}
+\end{table}
+
+\section{Análisis de forma del escrito}
+    La memoria analizada está correctamente seccionada de manera de facilitar su
+    lectura. Comienza con un índice general seguido por el de las figuras y por
+    último el de los anexos lo que facilita enormemente la labor de encontrar
+    información especifica dentro del documento.
+
+    La versión analizada por mi fue la digital en formato \texttt{pdf} en ella
+    pude notar que el documento y gran parte de las figuras fueron hechas en
+    \texttt{latex} y por ello están vectorizadas, lo que significa que puedo
+    hacer \e{zoom} sin perder calidad, esto es fundamental a la hora de analizar
+    diagramas de red como los presentados, en un libro físico podemos perder
+    parte de la información de una red muy grande por las limitaciones de
+    espacio, acá leer todas las direcciones con facilidad gracias a esta
+    característica. 
+
+    Por otro lado, al utilizar este tipo de documento el formato de letra,
+    imágenes, tablas y demás es consistente a través de todo el documento.
+    Además se utiliza un formato ideal para la impresión ya que genera margenes
+    diferentes para las hojas que están a la derecha y a la izquierda,
+    impidiendo que los margenes se pierdan por la unión de las paginas, por
+    último la letra \e{serif} que utiliza es muy clara y evita distracciones y
+    es a la que estamos acostumbrados a leer cuando vemos documentos técnicos.
+
+    Se utiliza correctamente las referencias, citas y bibliografía en general.
+    Cuando es necesario se utilizan notas al pie de pagina para evitar
+    confusiones y cada diagrama tiene una etiqueta representativa y un número
+    utilizado para referirse a ella.
+
+\newpage\newgeometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\section{Análisis de fondo del escrito}
+    En esta sección se analiza el fondo del documento detallado por capitulo del
+    mismo, se da una pequeña descripción y se presentan comentarios generales.
+    \subsection{Introducción}
+    Se plantean los objetivos del escrito, se identifica el problema y se
+    enuncia como será tratado. 
+
+    Es un capitulo para entender las razones por las cuales se debería leer el
+    documento y su por carácter general es de especial importancia para aquellos
+    que no están tan familiarizados con el tema pues les indica en palabras
+    simples de que trata.
+
+    \subsection{Estado del arte}
+    Se introducen los tópicos a tratar en el escrito, se define \texttt{IPv4}
+    e \texttt{IPv6} y se explican sus características y funcionamiento. Por otra
+    parte se analizan los problemas actuales y algunos métodos utilizados
+    actualmente para atacarlos, se contextualiza la situación para su
+    implementación dentro de la UTFSM y se analizan las aplicaciones que están
+    sujetas a los posibles cambios.
+
+    En este capitulo podemos ver todos los avances que ya existen en el tema,
+    muy útil para informarse de las tecnologías actuales y las limitantes
+    conocidas. Especialmente relevante para aquellos que tienen conocimientos
+    técnicos del área pero no se especializan en el tópico de este documento por
+    que genera un punto de comparación con otros conocimientos y es una buena
+    forma de sumergirse en los capítulos siguientes
+
+    \subsection{Implementación de IPv6}
+    El capitulo más largo pues es el que presenta todo el desarrollo técnico
+    realizado por el memorista. Se enuncian diferentes propuestas de soluciones
+    para los mismos problemas enumerando las ventajas de cada una y como deben
+    ser implementadas. 
+
+    Esta es la parte medular de la memoria, presenta mucha información
+    especifica y relacionada al problema que se está tratando. El análisis de
+    las posibles soluciones es completo y detallado y explica por medio de
+    diagramas como funcionan algunas partes del mismo, lo que hace muy fácil el
+    entendimiento. Especialmente útil para comprender como funcionan los
+    servicios de \texttt{Dual Stack} y como trabajar con ellos.
+
+    \subsection{Pruebas y resultados}
+    En este capitulo se hacen comparativas y gráficas para poder notar los
+    cambios entre \texttt{IPv4} e \texttt{IPv6}. 
+
+    Desde un inicio se ve que esta sección es la que presenta mayor cantidad de
+    diagramas ya que son muy útiles a la hora de compara comportamientos y
+    gracias a su buen uso se puede expresar mucha información en poco espacio lo
+    que permite al lector poder sacar sus propias conclusiones y no quedarse
+    solamente con lo planteado por el autor.
+ 
+    \subsection{Conclusiones}
+    Se concluyen los elementos claves vistos a lo largo de la memoria. Podemos
+    ver diferentes tipos de conclusiones: las prácticas que hablan directamente
+    de lo que se hizo y sus resultados; las generales que abarcan el tema
+    completamente y las que guían el trabajo futuro, para que otros estudiantes
+    puedan comenzar su trabajo con base en estos puntos.
+
+    \subsection{Anexos}
+    Si bien esta sección no es un capitulo, considero que es muy importante pues
+    gran parte del trabajo realizado se presenta en forma de configuraciones de
+    programas y código en general, por lo cual poder analizarlo en profundidad
+    contribuye mucho al entendimiento de como utilizar las tecnologías de
+    \texttt{IPv6} correctamente, en especial para otros estudiantes o personas
+    que buscan solución a problemas específicos.
+
+\newpage 
+\section{Análisis usando la rúbrica del MIT}
+\begin{table}[h!]\centering\begin{tabular}{|l|c|c|c|c|c|} \hline
+    &\tbr{\b{Needs}\\\b{Improvement}} &\b{Acceptable} &\b{Good} 
+    &\tbr{\b{Very}\\\b{Good}} &\tbr{\b{Not}\\\b{Applicable}} \\ \hline
+    \tbrc{Main objective is easily identified and\\supported by the content}
+                                                           & & & & \x &\\ \hline
+    \tbrc{Content, Structure, and language are\\ geared to the intended audience}
+                                                           & & & & \x &\\ \hline
+    \tbrc{Main points are emphasized and the\\relationship between ideas is clear}
+                                                           & & & & \x &\\ \hline
+    \tbrc{Arguments area clearly supported and\\in sufficient detail}
+                                                           & & & \x & &\\ \hline
+    Content is properly footnoted                          & & & & \x &\\ \hline
+    Conclusions are valid and reasonable                   & & & & \x&\\ \hline
+    \tbrc{Significance and implications area clearly\\addressed}
+                                                           & & & & \x &\\ \hline
+    Writing is clear, organized, and coherent              & & & & \x &\\ \hline
+    \tbrc{A sufficient number of appropriate\\sources are cited}
+                                                           & & & & \x &\\ \hline
+    \tbrc{Attention is given to grammar\\punctuation, spelling and formatting}
+                                                           & & & & \x &\\ \hline
+\end{tabular}\end{table}
+
+\section{Reflexión y comentarios}
+    Hace algún tiempo tomé el ramo "Taller de redes computacionales" dictado
+    por Javier Cañas, mismo profesor que fue el guía de Dossow en esta memoria.
+    En el desarrollo de un proyecto para dicho ramo decidimos hacer una
+    implementación de los protocolos \texttt{IPv4} e \texttt{IPv6} en
+    \texttt{sockets} en \texttt{c}, ante lo cual el profesor nos recomendó leer
+    la memora analizada en este documento. Es una memoria fácil de leer de un
+    tema en el cual he trabajado y me interesa, por ello la considero útil ya
+    que en su tiempo me ayudo bastante con otro ramo y así decidí analizar
+    la misma acá.
+
+    Creo que la importancia de la memoria radica en lo expresado anteriormente,
+    más allá de ser un requisito para titularse es un documento que culminará
+    nuestro paso por la universidad y por ello debemos cuidar que sea algo útil
+    para las generaciones venideras, de esta manera nuestro último trabajo como
+    estudiantes se transformará en parte del aprendizaje de los más jóvenes e
+    influirá en su desarrollo como profesional.
+    
+%TIEMPO SCT
+\begin{flushright}
+    \begin{flalign*}
+        &&\text{\textbf{Tiempo SCT}:
+              \emph{Planificación}}               &= 0:20 \\
+            &&\emph{Búsqueda de información}      &= 0:30 \\
+            &&\emph{Análisis}                     &= 4:30 \\
+            &&\emph{Desarrollo}                   &= 3:00 \\
+            &&\emph{Edición}                      &= 0:25 \\
+            &&\text{Total}                        &= 8:45
+    \end{flalign*}
+\end{flushright}
+
+\vfill\hfill  HVL / \LaTeXe
+
+\end{document}

@@ -1,0 +1,157 @@
+\documentclass[spanish, fleqn]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+%\usepackage{wasysym}
+%\usepackage{mathrsfs}
+\usepackage[colorlinks, urlcolor=blue]{hyperref}
+\usepackage[top = 2.5cm, bottom = 2cm, left = 2.5cm, right = 2.5cm]{geometry}
+\usepackage{fancyhdr, graphicx}
+\usepackage{caption}
+\usepackage{changepage}
+\usepackage{wrapfig}
+\usepackage{titling}
+
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{\vbox{\includegraphics[height=2cm]{Logo_INFO.png} \vspace{0.3cm}}}
+\fancyhead[C]{
+    \vbox{\textsc{\large Universidad Técnica Federico Santa María.}\\[0.14cm]
+          \textsc{\LARGE Departamento de Informática.} \\[0.14cm]
+          \textsc{\Large ICI 309 - Seminario de Memoria.}
+          \noindent\makebox[\linewidth]{\rule{18cm}{0.5pt}} }}
+\fancyhead[R]{\vbox{\includegraphics[height=2cm]{Logo_UTFSM.png}\vspace{0.3cm}}}
+
+\title{Análisis de Examen de Título.} 
+\author{Hernán Vargas Leighton -- 201073009-3 \\ hernan.vargas@alumnos.usm.cl}
+\date{\today}
+
+\let\b\textbf
+\let\e\emph
+\newcommand{\x}{$\times$}
+\begin{document}
+\maketitle
+\thispagestyle{empty} \thispagestyle{fancy}
+\section{Datos principales}
+\begin{table}[h!]\centering
+    \begin{tabular}{|l|l|}
+    \hline
+    \b{Nombre del memorista}        & Jorge Maldonado Soto \\ \hline
+    \b{Título al que opta}          & Ingeniero Civil Informático \\ \hline
+    \b{Fecha}                       & Lunes 16 de Noviembre 2015, 16.00 Hrs 
+                                      \\ \hline
+    \b{Lugar}                       & Auditorio \e{Claudio Matamoros}, F106 
+                                      UTFSM Casa Central, Valparaíso\\ \hline
+    \b{Tema}                        & \begin{tabular}{@{}l@{}}
+     Animación Facial 3D a partir del seguimiento de un rostro real utilizando\\
+     el dispositivo Kinect 
+                                      \end{tabular} \\ \hline
+    \b{Profesores de la comisión}   & Hubert Hoffmann N. (\b{Guía}) y 
+                                      Javier Cañas (\b{Correferente })\\ \hline
+    \b{Duración}                    & 50 minutos (30 minutos exposición + 
+                                                  20 minutos defensa)\\ \hline
+    %\b{Nota final}                 & \\ \hline
+    \b{Número de asistentes}        & 27 Personas\\ \hline
+    \end{tabular}
+\end{table}
+
+\section{Análisis de forma de la presentación}
+    Se nota la experiencia del memorista a la hora de presentar en público. Usa
+    correctamente su cuerpo y voz para mostrar la importancia de las ideas que
+    está planteando, toma el tiempo necesario para explicar correctamente cada
+    uno de sus diagramas y ejemplifica las partes más complicadas.
+
+    El orden de la presentación es claramente establecido al comienzo de la
+    misma y se cumple a cabalidad, se introducen y desarrollan correctamente los
+    temas a tratar y se ejecutan a tiempo. Se finaliza tanto con conclusiones
+    generales como especificas y se enmarca el trabajo futuro en esta área.
+
+    El apoyo audio visual es muy preciso, muestra variadas imágenes de como se
+    ha desarrollado la tecnología en el ámbito de su presentación y como se
+    utiliza actualmente. Presenta diagramas e imágenes de su proyecto y muestra
+    resultados finales en un vídeo generado por su aplicación.
+
+    Al responder preguntas muestra sus dudas y no ataca directamente el tema
+    preguntado, por lo mismo demora mucho en llegar a la respuesta adecuada y
+    generalmente plantea sus opiniones pero no explica las razones de ellas.
+
+\section{Análisis de fondo de la presentación}
+    La presentación comienza con un análisis histórico de la tecnología
+    utilizada para la animación digital y los grandes exponentes de la misma
+    (pixar, disney, etc). El análisis es exhaustivo, pero no se centra en la
+    tecnología en sí, si no que aborda temas como el éxito de las compañías y 
+    los gastos privados por lo que se pierde parte de la importancia de su
+    proyecto y al final le terminan preguntando mucho más sobre los costos y
+    alcances de la animación digital en nuestro país que por las ideas
+    especificas de su proyecto.
+
+    Al explicar el funcionamiento de su proyecto nos habla del \e{framework} de
+    \e{kinect} y como por medio de un \e{script} en \e{python} logra modelar los
+    datos para el programa de modelamiento y animación 3D \e{blender}. Esta
+    explicación es precisa logra que se entienda por la generalidad del público.
+    En la ronda de preguntas explica más exhaustivamente el funcionamiento y por
+    qué eligió esas tecnologías contra algunas opciones más estudiadas en la
+    universidad (\e{openGL}).
+
+\newpage \newgeometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\section{Análisis usando la rúbrica del MIT}
+\begin{table}[h!]\centering\begin{tabular}{|l|c|c|c|c|c|} \hline
+    \b{Presentation quality} &\b{Poor} &\b{Fair} &\b{Good} &\b{Exc.}&\b{NA}
+                                                                     \\ \hline
+    Main objective of presentation is clearly stated       & & & \x & &\\ \hline
+    Presenter maintains good eye contact with the audience & & & & \x &\\ \hline
+    Presenter uses voice effectively                       & & & & \x & \\ \hline
+    Presenter is poised and professional                   & & & & \x & \\ \hline
+    Transitions to the next presenter are smooth and effective 
+                                                           & & & & & \x \\ \hline
+    \b{Technical content} & & & & & \\ \hline
+    Technical content is accurate and significant          & & & & \x & \\ \hline
+    Technical content shows sufficient development         & & & \x & & \\ \hline
+    Main points are emphasized and relationship between ideas is clear
+                                                           & & & & \x & \\ \hline
+    Ideas are supported with sufficient details and clear drawings
+                                                           & & & & \x & \\ \hline
+    Graphics and demonstrations are effectively designed and used
+                                                           & & & & \x & \\ \hline
+    Alternatives are presented with a rationale for those selected
+                                                           & & & \x & & \\ \hline
+    Key issues are addressed                               & & & & \x & \\ \hline
+    Questions are answered accurately and concisely        & & & \x & & \\ \hline
+\end{tabular}\end{table}
+
+\section{Comentarios}
+    Elegí esta tesis debido a que sólo conocía a Jorge por su labor en la
+    Federación de estudiantes UTFSM y quería ver su lado más profesional, por
+    lo que el tema de su memoria en un principio me pareció más opcional pero
+    luego de escucharla noté como muchas de los conocimientos utilizados para
+    realizar su proyecto son trasversales en el área de la ingeniería.
+
+    Uno de los factores que más me impresionó fue lo precisas que fueron las
+    preguntas de los profesores. Atacaron directamente los puntos que tenían
+    falencias por lo que hicieron dudar al memorista, lamentablemente estos
+    puntos eran más que nada sobre como se vendería la tecnología y aspectos más
+    que nada comerciales mientras que a mi me interesaba más la parte técnica.
+
+    Por otro lado se notó que los profesores habían tenido reuniones previas a
+    la presentación con el memorista por que algunas preguntas eran sobre
+    decisiones de elección de tecnologías o del análisis interno de las mismas.
+    Estos temas no habían sido explicados completamente, supongo que para no
+    hacer la presentación innecesariamente larga, pero gracias a las preguntas
+    se lograron incluir entre los tópicos tratados.
+
+%TIEMPO SCT
+\begin{flushright}
+    \begin{flalign*}
+        &&\text{\textbf{Tiempo SCT}:
+              \emph{Planificación}}               &= 0:15 \\
+            &&\emph{Búsqueda de información}      &= 0:20 \\
+            &&\emph{Análisis}                     &= 1:30 \\
+            &&\emph{Desarrollo}                   &= 2:20 \\
+            &&\emph{Edición}                      &= 0:20 \\
+            &&\text{Total}                        &= 4:45
+    \end{flalign*}
+\end{flushright}
+
+\vfill\hfill  HVL / \LaTeXe
+
+\end{document}
