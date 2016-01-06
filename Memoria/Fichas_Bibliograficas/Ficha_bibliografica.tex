@@ -1,0 +1,226 @@
+\documentclass[spanish, fleqn]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[colorlinks, urlcolor=blue]{hyperref}
+\usepackage[top = 2.5cm, bottom = 2cm, left = 2.5cm, right = 2.5cm]{geometry}
+\usepackage{fancyhdr, graphicx}
+\usepackage{caption}
+\usepackage{changepage}
+\usepackage{wrapfig}
+\usepackage{titling}
+
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{\vbox{\includegraphics[height=2cm]{figures/di} \vspace{0.3cm}}}
+\fancyhead[C]{
+    \vbox{\textsc{\large Universidad Técnica Federico Santa María}\\[0.14cm]
+          \textsc{\LARGE Departamento de Informática} \\[0.14cm]
+          \textsc{\Large ICI-309 -- Seminario de Memoria}
+\noindent\makebox[\linewidth]{\rule{18cm}{0.5pt}} }}
+\fancyhead[R]{\vbox{\includegraphics[height=2cm]{figures/utfsm}\vspace{0.3cm}}}
+
+\title{Fichas Bibliográficas} 
+\author{Hernán Vargas Leighton -- 201073009-3 \\ hernan.vargas@alumnos.usm.cl}
+\date{\today}
+
+%17:20
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\thispagestyle{fancy}
+
+\section{Bibliografía revisada}
+\subsection{Linked data-the story so far\cite{bizer2009linked}}
+\subsubsection*{Descripción:}
+Este paper presenta las bases para un estudio de la web de datos enlazados
+(\emph{linked data} en ingles), comienza planteando la problemática, hace un
+recorrido histórico e introduce las tecnologías de la web semántica junto a
+diversas herramientas relacionadas.
+
+Uno de los principales hitos para el desarrollo de la web como la conocemos fue
+la creación de buscadores e indices que facilitan enormemente la navegación para
+los usuarios, pero estos sistemas de búsqueda y relación son deficientes a la
+hora de ser tratados por una maquina. Esta es la problemática que intenta
+resolver la web semántica: generar enlaces entre los datos de la web para que
+estos puedan ser recuperados por consultas hechas por un ordenador.
+
+El documento introduce el concepto de URI (\emph{Uniform Resource Identifiers}),
+RDF (\emph{Resource Description Framework}) y los \emph{Linked data principles}
+que son reglas para enlazar datos en la web enunciadas por 
+Berners-Lee\cite{berners2011linked} como siguen:
+\begin{itemize}
+    \item Usar URIs para nombrar las cosas del mundo.
+    \item Las URIs deben ser HTTP para que la gente pueda ver el contenido.
+    \item Proveer información útil, utilizar los estandares (RDF, SPARQL).
+    \item Incluir enlaces hacia otras URIs para poder navegar entre ellas.
+\end{itemize}
+
+Se continua con una explicación de como se crea y que compone un triple RDF 
+($\langle sujeto, predicado, objeto \rangle$), los vocabularios básicos para
+describir el mundo y sus relaciones (RDFSchema y OWL) e información sobre el
+proyecto \emph{linked open data project} y algunos de sus más importantes
+participantes como son la DBpedia, datos gubernamentales y varios datasets que
+también son parte del proyecto Bio2RDF.
+
+Finalmente se dan consejos para publicar datos en la web (creación del modelo,
+incluir metadata, etc) se enumeran algunas herramientas de publicación (D2R
+Server, Virtuoso Universal Server, etc) y se muestran algunas aplicaciones para
+visualizar estos datos (navegadores, buscadores, indices y aplicaciones
+especializadas como la BDpedia mobile).
+
+\subsubsection*{Utilidad:}
+Este paper presenta los conceptos básicos para cualquier investigación en el
+campo de la web semántica y por ello facilita la comprensión de los tópicos a
+tratar en el desarrollo de la memoria, específicamente lo relacionado a las
+tecnologías de la web semántica como son RDF, RDFS, OWL, SPARQL, etc.
+
+\newpage \newgeometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+
+\subsection{Bio2RDF: towards a mashup to build bioinformatics knowledge systems\cite{belleau2008bio2rdf}}
+\subsubsection*{Descripción:}
+Este documento introduce el proyecto Bio2RDF, plantea la existencia de variados
+datasets biológicos y la necesidad de hacer un \emph{mashup} de ellos pues para
+cada dataset el dominio y las relaciones difieren.
+
+Se señalan las tecnologías utilizadas para hacer esta integración (los
+\emph{``rdfizers''}, OWL, sesame, etc), el modelo de obtención de datos, la
+creación de un dataset común y la generación de la vista por parte del usuario.
+También se introducen los datasets participantes (Kegg, PDB, MGI, HGNC, etc) y
+se presenta un caso de uso a modo de ejemplo (Parkinson).
+
+El proyecto Bio2RDF genera una antología común para todos los datasets que lo
+componen y normaliza las URIs de la siguiente manera: 
+\texttt{https://bio2rdf.org/<namespace>:<identifier>} por ejemplo, para una
+entidad del dataset pubmet tenemos \url{http://bio2rdf.org/pubmed:12728276}
+
+\subsubsection*{Utilidad:}
+La memoria utiliza como data principal las consultas SPARQL hechas a este
+proyecto por lo que saber sus bases y funcionamiento se hace imperativo.
+
+\subsection{Bio2rdf release 2: Improved coverage, interoperability and provenance of life science linked data\cite{callahan2013bio2rdf}}
+\subsubsection*{Descripción:}
+Este paper es un estudio de la revisión hecha al proyecto Bio2RDF para su
+\emph{release} 2. Enumera las problemáticas encontradas en la versión previa y
+las mejoras hechas para esta versión.
+
+Entre las características de la versión 2 se encuentran la capacidad de acceder
+a un \emph{endpoint} SPARQL, descargar el dataset completo, mejoras en el
+\emph{rdfizer}, la generación automática de metadata (sobre la generación de
+datos), entre otras.
+Además se generaron métricas del proyecto que pueden ser consultadas con SPARQL 
+sobre \texttt{http://bio2rdf.org/bio2rdf-ctd-statistics}. El paper incluye
+ejemplos de la utilización de las mismas.
+
+\subsubsection*{Utilidad:}
+Al igual que el documento anterior, la información del proyecto Bio2RDF es
+importante para poder entender el análisis que se realizará en la memoria. Se
+incorporan métricas y metadata que puede ser consultada facilitando el posterior
+análisis. 
+
+\subsection{Graph structure in the web\cite{broder2000graph}}
+\subsubsection*{Descripción:}
+Este estudio analiza la web como un grafo. Para generar los grafos utiliza 
+\emph{web crawling algorithms} sobre datos de altavista (cerca de 200 millones
+de páginas web y 1.500 millones de enlaces entre ellas). Una vez creado el
+modelo de grafo se procede a analizar los resultados y recopilar estadísticas
+como el \emph{incoming degree}, el \emph{outgoing degree}, etc.
+
+Entre los resultados notables se obtiene que los enlaces entre páginas web
+siguen una distribución de probabilidad según una ley potencial (\emph{power
+law}), hecho que será una de las bases de estudios posteriores.
+
+\subsubsection*{Utilidad:}
+Determinar como se comportan los datos en la web ``normal'' nos presenta algunas
+ideas de como deberían comportarse los datos enlazados de un dataset RDF. Los
+resultados de este paper se contrastarán con el siguiente.
+
+\subsection{Link Analysis of Life Science Linked Data\cite{hu2015link}}
+\subsubsection*{Descripción:}
+Documento principal para el desarrollo de la memoria. En este paper se estudia
+el proyecto Bio2RDF como un grafo y con ello se generan estadísticas (como las 
+de ~\cite{broder2000graph}). Se introducen varios términos importantes para el
+análisis y se enfoca el mismo en tres perspectivas:
+\begin{itemize}
+    \item 
+        \textbf{Dataset link analysis:} Se estudia el grafo de enlaces entre
+        los datasets que componen el proyecto (los nodos son los datasets y los
+        arcos son la cantidad de enlaces entre ellos). Se obtienen como 
+        estadísticas el componente más conectado, la distancia media más larga,
+        la cantidad de entidades por dataset, etc.
+
+        Entre los resultados notables tenemos que se produce el fenómeno de
+        mundo pequeño (\emph{small world phenomenom}) lo que denota una gran
+        conectividad y por otro lado que las entidades están normalmente
+        distribuidas entre los datasets.
+    \item
+        \textbf{Entity link analysis:} Se estudian las relaciones entre las
+        entidades de los datasets. Como la relación más común es la llamada
+        \texttt{x-relation} (cerca del $76\%$ del total) se genera un grafo
+        utilizando ésta como arco. Se investiga el grado de distribución,
+        la simetría, la transitividad, entre otros.
+
+        Se concluye que tanto el \emph{incoming degree} como el \emph{outgoing
+        degree} no siguen una distribución según una ley potencial (a diferencia
+        de los resultados de ~\cite{broder2000graph}). Además la simetría se da
+        generalmente entre pares del mismo dataset y la transitividad se
+        debilita a medida que se hacen más largos los caminos a recorrer por la
+        misma; se considera que estos resultados son debido a la divergencia
+        entre los modelos de cada dataset.
+
+    \item
+        \textbf{Term link analysis:} Para este estudio se utilizó como nodos los
+        términos y como arcos si existe un \emph{mapping} entre dos de ellos.
+
+        Se obtuvo como resultado que la mayoría de los \emph{mappings} pueden
+        ser encontrados por comparación lingüística (\emph{string comparison})
+        y se generó estadística sobre los términos más utilizados: Para
+        \emph{Class} sería \emph{Resource} y \emph{Gene}, para \emph{Object
+        properties} tenemos \emph{x-uniprot} y \emph{x-ncbigene} y para
+        \emph{Data properties} se obtuvo \emph{synonym} y \emph{definition}.
+\end{itemize}
+
+\subsubsection*{Utilidad:}
+Este es uno de los documentos más importantes de la memoria pues resume varios
+tópicos fundamentales al tratar un conjunto de datasets RDF como un grafo. Los
+resultados obtenidos en este trabajo son el punto de partida de la investigación
+sobre las consultas SPARQL hechas por los usuarios al proyecto Bio2RDF y se
+espera que los resultados de la memoria sean complementarios a este estudio y
+determinen como se utilizan los enlaces analizados aquí.
+
+Por otro lado este estudio nos permite notar que existen diferencias 
+sustanciales entre un modelo de grafos RDF y uno generado por \emph{web
+crawling} sobre la web normal. Como sabemos que generalmente las páginas web
+enlazan la información de manera que sea accesible por los usuarios se hace
+interesante investigar como utilizan los mismos la base de datos RDF para
+recuperar la información del proyecto Bio2RDF.
+
+
+%Los resultados obtenidos en este paper serán una de las principales fuentes de
+%datos para el desarrollo de la memoria y puede ser consultada en:
+%\url{http://es.nju.edu.cn/bio2rdf-analysis/}
+
+%\section{Bibliografía recomendada}
+%\subsection{On graph features of semantic web schemas}
+%\subsection{Power-law distributions in empirical data}
+%\subsection{Relatedness between vocabularies on the Web of data: A taxonomy and an empirical study}
+%\section{SameAs networks and beyond: analyzing deployment status and implications of owl: sameAs in linked data}
+
+\renewcommand{\refname}{\selectfont Referencias.} % Hack para nombre
+\bibliographystyle{ieeetr}
+\bibliography{bibliografia}
+
+%TIEMPO SCT
+\begin{flushright}
+    \begin{flalign*}
+        &&\text{\textbf{Tiempo SCT}: 
+                \emph{Planificación}}       &= 0:20 \\
+              &&\emph{Creción de informe}   &= 3:40 \\
+              &&\emph{Edición}              &= 0:40 \\
+              &&\text{\textbf{Total}}       &= 4:40 \\
+              &&\text{Lectura de papers}    &\simeq 8:00
+    \end{flalign*}
+\end{flushright}
+
+\end{document}
