@@ -1,0 +1,53 @@
+\documentclass[12pt, letterpaper, oneside]{book}
+%\documentclass[12pt, letterpaper]{book}
+
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{microtype}
+\usepackage{emptypage}
+\usepackage{usmtesis}
+
+\usepackage{layout} %debug only
+
+\RequirePackage{fancyhdr}
+\newcommand{\hsp}[1][20]{\hspace{#1pt}}
+\fancyhf{}
+\fancypagestyle{plain}{%
+	\fancyhf{} 
+	\fancyhead[L]{\scriptsize \rightmark}
+	\fancyhead[R]{\scriptsize \leftmark}
+	\fancyfoot[R]{\bfseries \thepage}
+	\fancyfoot[L]{Departamento de Informática. UTFSM.}
+	\renewcommand{\headrulewidth}{0.1pt}
+	\renewcommand{\footrulewidth}{0.1pt}
+}
+%\setlength{\footheight}{110pt} 
+
+\begin{document}
+\frontmatter
+\thispagestyle{empty}
+\input{portada}
+\newpage
+
+%debug
+%\layout
+%\newpage
+
+% Hack para el abstract corregir si se puede.
+\chapter*{ }
+\vspace{-3cm}
+\section*{Abstact} \chaptermark{Abstract}
+\section*{Resumen}
+
+\begin{spacing}{1}
+\tableofcontents \chaptermark{Tabla de contenidos}
+\listoftables
+\listoffigures
+\end{spacing}
+
+\mainmatter
+
+\input{introduccion}
+\input{estado_del_arte}
+
+\end{document}
