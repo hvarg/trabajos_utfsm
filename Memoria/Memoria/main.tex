@@ -6,8 +6,12 @@
 \usepackage{microtype}
 \usepackage{emptypage}
 \usepackage{usmtesis}
+\usepackage{url}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{listings}
 
-\usepackage{layout} %debug only
+%\usepackage{layout} %debug only
 
 \RequirePackage{fancyhdr}
 \newcommand{\hsp}[1][20]{\hspace{#1pt}}
@@ -23,31 +27,40 @@
 }
 %\setlength{\footheight}{110pt} 
 
+%macros
+\renewcommand{\tt}[1]{\texttt{#1}}
+\renewcommand{\bf}[1]{\textbf{#1}}
+
 \begin{document}
 \frontmatter
 \thispagestyle{empty}
-\input{portada}
+\input{0_Portada}
 \newpage
 
 %debug
 %\layout
 %\newpage
 
-% Hack para el abstract corregir si se puede.
-\chapter*{ }
-\vspace{-3cm}
-\section*{Abstact} \chaptermark{Abstract}
-\section*{Resumen}
+%% Hack para el abstract corregir si se puede.
+%\chapter*{ }
+%\vspace{-3cm}
+%\section*{Abstact} \chaptermark{Abstract}
+%\section*{Resumen}
 
 \begin{spacing}{1}
 \tableofcontents \chaptermark{Tabla de contenidos}
-\listoftables
+%\listoftables
 \listoffigures
 \end{spacing}
 
 \mainmatter
 
-\input{introduccion}
-\input{estado_del_arte}
+\input{1_Introduccion}
+\input{2_Preeliminares}
+
+\bibliographystyle{ieeetr}
+\bibliography{Bibliografia/images,Bibliografia/bibliografia}
+
+%Time 2h+ 5h+ 3h+
 
 \end{document}
