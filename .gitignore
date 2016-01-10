@@ -6,3 +6,6 @@
 *.lot
 *.toc
 *.swp
+*.bbl
+*.blg
+Memoria/Memoria/main.pdf
