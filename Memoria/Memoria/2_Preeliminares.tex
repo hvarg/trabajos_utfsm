@@ -136,7 +136,7 @@ decir, una URL es una URI que apunta a un recurso físico en la web, mientras qu
 una URI no necesariamente debe apuntar a una localización que exista realmente.
 
 \subsection{XML}
-XML es la abreviación del ingles \emph{Extensible Markup Language}. Es un
+XML es el acrónimo del ingles \emph{Extensible Markup Language}. Es un
 lenguaje de marcas desarrollado por el W3C para almacenar datos de manera
 legible tanto por personas como por máquinas. 
 El diseño de XML busca la simplicidad, generalidad y usabilidad a través de
@@ -191,7 +191,8 @@ medio de tres mecanismos:
 Gracias a estos factores un fichero XML Schema puede representar un modelo de
 datos completo y robusto, con relaciones entre las entidades y asignaciones de 
 tipos de datos básicos.
-Esta característica es fundamental para la web semántica.
+Esta característica es fundamental para la web semántica pues todos los tipos de
+datos de XSD son compatibles con RDF.
 
 \begin{figure}[htpb]
   \centering
@@ -222,6 +223,14 @@ Así podemos decir que un triple RDF sigue la clásica notación
 \tt{entidad-atributo-valor} de los modelos orientados a objetos, permitiendo
 además, gracias a su simpleza, modelar conceptos abstractos.
 
+Llamaremos vocabulario a la definición de conceptos y relaciones (términos)
+utilizados para describir y representar un área de conocimiento.
+Otro concepto a tener en cuenta son las ontologías, aunque no existe una clara 
+división entre éstas y los vocabularios, generalmente se les considera más
+complejas y formales.
+En la web semántica una colección de triples RDF puede denotar un vocabulario o
+ontología.
+
 Un conjunto de triples RDF será representado naturalmente por un grafo dirigido.
 Esta característica faculta la tecnología para ser parte fundamental de la web 
 semántica pues permite relacionar información de diferentes fuentes sin mayor
@@ -250,24 +259,47 @@ de los triples. Algunas de las reglas para escribir un archivo Turtle
     definidos.
 \end{itemize}
 
-Podemos encontrar una descripción completa de Turtle en
-~\cite{beckett2014turtle} y de RDF/XML en ~\cite{beckett2004rdf}.
+Podemos encontrar una descripción completa de las características y sintaxis de
+Turtle en~\cite{beckett2014turtle} y de RDF/XML en ~\cite{beckett2004rdf}.
 
-El vocabulario incluido en la especificación RDF es básico y por ello fue
-extendido a \emph{RDF Schema}.
+El vocabulario incluido en la especificación RDF es muy básico y por ello fue
+extendido a \emph{RDF Schema}, por lo que la gran mayoría de los \emph{dataset}
+RDF contienen ambos vocabularios.
 
 En la figura \ref{fig:triples} podemos ver un ejemplo básico de la utilización 
-de Turtle para la generación de triples y como estos pueden ser visualizados
-como un grafo dirigido.
-
+de Turtle para la generación de triples (figura \ref{fig:triples:ttl}), el
+mismo ejemplo escrito en XML/RDF (figura \ref{fig:triples:rdf}) y como estos
+pueden ser visualizados como un grafo dirigido (\ref{fig:triples:grafo}).
 \begin{figure}[htpb]
   \centering
-  \begin{tabular}{c}
-  \lstinputlisting[basicstyle=\ttfamily\scriptsize]{Codigo/example-turtle.ttl}
-  \end{tabular}
-  %TODO Agregar tikz con el grafo.
-  \caption{Ejemplo de un triple RDF.}
-  \label{fig:triples}
+  \begin{subfigure}[b]{\textwidth}
+    \centering
+    \begin{tabular}{c}
+      \lstinputlisting[basicstyle=\ttfamily\scriptsize]{
+        Codigo/example-turtle.ttl}
+    \end{tabular}
+    \caption{Ejemplo en Turtle.}
+    \label{fig:triples:ttl}
+  \end{subfigure}
+  \\[0.5cm]
+  \begin{subfigure}[b]{\textwidth}
+    \centering
+    \begin{tabular}{c}
+      \lstinputlisting[basicstyle=\ttfamily\scriptsize]{
+        Codigo/example-xml-rdf.rdf}
+    \end{tabular}
+    \caption{Mismo ejemplo en XML/RDF.}
+    \label{fig:triples:rdf}
+  \end{subfigure}
+  \\[0.5cm]
+  \begin{subfigure}[]{\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/example-rdf_graph-1.png}
+    \includegraphics[width=.5\textwidth]{figures/example-rdf_graph-2.png}
+    \caption{Grafo generado.}
+    \label{fig:triples:grafo}
+  \end{subfigure}
+  \caption{Ejemplo de triples RDF.}\label{fig:triples}
 \end{figure}
 
 \subsection{RDFS}
@@ -275,13 +307,68 @@ RDFS (de las siglas del ingles \emph{Resource Description Framework Schema},
 también llamado RDF Schema) es un vocabulario que extiende RDF proveyendo un
 set de clases y propiedades que mejoran la creación de modelos como son:
 \tt{Class} para declarar clases, \tt{subClassOf} para denotar herencia,
-\tt{domain} y \tt{range} para el rango y dominio de cierta propiedad
+\tt{range} y \tt{domain} para el rango y dominio de cierta propiedad
 (\tt{rdf:Property}), entre otras.
 
 RDF fue presentado en 1998 e introducido finalmente como recomendación del W3C
-el 2004\cite{bikakis2013semantic}
+el 2004\cite{bikakis2013semantic}.
+
+RDFS provee el vocabulario necesario para la construcción de cualquier ontología
+más avanzada y por ello es la base de otros vocabularios del como OWL y SKOS.
+
+La especificación completa del vocabulario puede encontrarse en ~\cite{brickley2014rdfs}.
+%en https://en.wikipedia.org/wiki/RDF_Schema#RDFS_entailment hay un ejemplo.
 
 \subsection{OWL}
+OWL (del ingles \emph{Web Ontology Language}) es una familia de lenguajes para
+la creación de ontologías complejas.
+Agrega lógica computacional para que las relaciones
+hechas con este lenguaje puedan ser procesadas con el fin de verificar la
+consistencia de la información o generar información implicita.
+
+La versión actual de OWL se conoce como ``OWL 2'' y fue publicada el 2009 como 
+una revisión y extensión de la versión inicial publicada el
+2004\cite{bikakis2013semantic}. Generalmente cuando se hablar de ``OWL'' nos
+referimos a la versión del 2004.
+
+Actualmente OWL tiene tres variantes (sublenguajes) enumerados del más simple al
+más complejo como sigue\cite{mcguiness2004owl}:
+\begin{enumerate}
+  \item \bf{OWL Lite}:
+    Se ideó pensando en dar soporte a restricciones simples y jerarquía básica,
+    por ejemplo la cardinalidad de los números. 
+    Se esperaba que fuera más facil generar y mantener herramientas para OWL
+    Lite que para sus variantes más avanzadas, pero debido a que casi todas las
+    características de OWL DL pueden ser implementadas como una combinación de
+    las de OWL Lite, los desarrolladores han probado que no es 
+    así\cite{grau2008owl}. Actualmente OWL Lite no es ampliamente utilizado.
+  \item \bf{OWL DL}:
+    Fue diseñado para proveer la máxima expresividad posible sin perder la
+    decidibilidad y completitud computacional. Posee el vocabulario completo de
+    OWL pero solo puede ser utilizado cumpliendo ciertas restricciones.
+  \item \bf{OWL Full}:
+    Fue diseñado para mantener la compatibilidad con RDFS, permite todo el
+    vocabulario sin restricciones pero es indecidible por lo que un programa de
+    razonamiento no puede asegurar la completitud de los resultados.
+\end{enumerate}
+Así, toda ontología o conclusión valida en OWL Lite tambien lo será en OWL DL y
+estás a su vez lo serán en OWL Full.
+
+OWL 2 tiene tres perfiles dependiendo de la función que cumple.
+\begin{enumerate}
+  \item \bf{OWL 2 EL}: 
+    Es el fragmento del lenguaje decidible en tiempo polinomial, diseñado para
+    trabajar con grandes volúmenes de propiedades y clases.
+  \item \bf{OWL 2 QL}:
+    Fue diseñado para facilitar el acceso a \emph{datasets} con un gran número
+    de instancias donde las consultas son más importantes que el razonamiento.
+  \item \bf{OWL 2 RL}:
+    Está optimizado para el análisis de reglas lógicas, en aplicaciones que
+    requieren un razonamiento escalable sin perder la expresividad del lenguaje.
+\end{enumerate}
+Se pueden ver las características completas de los perfiles de OWL 2 en
+~\cite{motik2009owlprofiles}.
+
 \subsection{SPARQL}
 
 \section{Proyecto Bio2RDF}\label{ea:bio}
