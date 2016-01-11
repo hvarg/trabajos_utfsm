@@ -10,9 +10,10 @@ del \emph{dataset}.
 Para poder analizar el problema correctamente es necesario el conocimiento de
 las tecnologías que se enuncian en este capítulo. En la sección \ref{ea:ws} se
 describe qué es la web semántica y las tecnologías que la componen.
-En la sección \ref{ea:bio} se hace una revisión al proyecto Bio2RDF y en la
-sección \ref{ea:cent} se introduce el concepto de centralidad junto a sus
-métricas y algoritmos.
+En la sección \ref{ea:bio} se hace una revisión al proyecto Bio2RDF 
+%y en la
+%sección \ref{ea:cent} se introduce el concepto de centralidad junto a sus
+%métricas y algoritmos.
 %TODO
 
 \section{Web Semántica}\label{ea:ws}
@@ -62,7 +63,7 @@ en ingles y los números) y código porciento (por ejemplo '\%26' es '\&') el
 estándar fue extendido el 2005 a IRI (\emph{Internationalized resource
 identifier}) que puede contener caracteres Unicode/ISO 10646, incluyendo chino,
 japones, koreano, entre otros\cite{gangemi2006bourne}. En este documento no se
-diferenciará entre URI y IRI.
+diferenciará entre URI e IRI.
 
 La sintaxis actual de una URI fue definida por Berners-Lee et al. el
 2005 ~\cite{berners2004uniform} como sigue:\\
@@ -135,7 +136,7 @@ decir, una URL es una URI que apunta a un recurso físico en la web, mientras qu
 una URI no necesariamente debe apuntar a una localización que exista realmente.
 
 \subsection{XML}
-XML es la abreviación del ingles \emph{Extensible Markup Language} es un
+XML es la abreviación del ingles \emph{Extensible Markup Language}. Es un
 lenguaje de marcas desarrollado por el W3C para almacenar datos de manera
 legible tanto por personas como por máquinas. 
 El diseño de XML busca la simplicidad, generalidad y usabilidad a través de
@@ -162,7 +163,7 @@ En la figura \ref{fig:xmlex} vemos la libertad que nos da XML a la hora de
 representar cualquier tipo de información, pero esta libertad hace que
 interpretar la validez de un documento sea complicado, pues la información
 contenida en este puede ser sensible a la aplicación y el lenguaje definido con
-esta tecnología. En respuesta a esta problemática la W3C desarrolló \emph{XML
+esta tecnología. En respuesta a esta problemática el W3C desarrolló \emph{XML
 Schema} que cobra vital importancia para la web semántica.
 
 
@@ -174,7 +175,7 @@ lenguaje XML.
 
 A diferencia de otros lenguajes de esquemas para XML, XSD especifica también
 tipos de datos y sus restricciones, logrando un estándar a la hora de
-representar datos básicos \cite{biron2004xml}. 
+representar datos\cite{biron2004xml}. 
 Presenta 19 tipos de datos básicos: \tt{anyURI},
 \tt{base64Binary}, \tt{boolean}, \tt{date}, \tt{dateTime}, \tt{decimal},
 \tt{double}, \tt{duration}, \tt{float}, \tt{hexBinary}, \tt{gDay}, \tt{gMonth},
@@ -188,8 +189,9 @@ medio de tres mecanismos:
 \end{itemize}
 
 Gracias a estos factores un fichero XML Schema puede representar un modelo de
-datos completo y robusto, con relaciones entre los datos y tipos de datos
-básicos. Esta característica es fundamental para la web semántica.
+datos completo y robusto, con relaciones entre las entidades y asignaciones de 
+tipos de datos básicos.
+Esta característica es fundamental para la web semántica.
 
 \begin{figure}[htpb]
   \centering
@@ -205,11 +207,85 @@ básicos. Esta característica es fundamental para la web semántica.
 \end{figure}
 
 \subsection{RDF}
+RDF (del inglés \emph{Resource Description Framework}) es una familia de
+especificaciones del W3C diseñada como un modelo de datos para metadatos.
+Fue adoptado como una recomendación del W3C en 1999, mientras que la
+especificación 1.0 fue publicada el 2004 y la 1.1 el
+2014\cite{bikakis2013semantic}.
+
+El modelo de datos RDF se basa en la idea de hacer declaraciones sobre 
+recursos web (URIs) en forma de expresiones $\langle sujeto, predicado, objeto
+\rangle$ que son llamados triples RDF.
+El $sujeto$ indica el recurso mientras que el $predicado$ denota la relación
+con el $objeto$.
+Así podemos decir que un triple RDF sigue la clásica notación 
+\tt{entidad-atributo-valor} de los modelos orientados a objetos, permitiendo
+además, gracias a su simpleza, modelar conceptos abstractos.
+
+Un conjunto de triples RDF será representado naturalmente por un grafo dirigido.
+Esta característica faculta la tecnología para ser parte fundamental de la web 
+semántica pues permite relacionar información de diferentes fuentes sin mayor
+problema y representarla en un esquema fácilmente identificable.
+
+RDF es un modelo abstracto con varios formatos de serialización, por lo que la
+codificación de un triple varía dependiendo el tipo de archivo en el que se
+guarde. En esta memoria se trabajará con triples codificados en RDF/XML y
+Turtle\cite{beckett2014turtle}.
+
+RDF/XML fue la primera codificación estándar para serializar RDF (en un archivo
+XML) y si bien es potente, es difícil de leer por las personas. En base a esto
+utilizaremos Turtle pues su simpleza lo hace ideal para el entendimiento
+de los triples. Algunas de las reglas para escribir un archivo Turtle 
+(\tt{.ttl}) son las siguientes:
+\begin{itemize}
+  \item Toda sentencia termina con un punto (\tt{.}).
+  \item La sucesión de tres URIs es un triple.
+  \item 
+    Si una linea termina en punto y coma (\tt{;}) la siguiente linea mantiene el
+    $sujeto$ y solo es necesario escribir las URIs del $predicado$ y el
+    $objeto$.
+  \item 
+    Se pueden definir prefijos con \tt{@prefix rdf: <some\_URI> .}. Esta
+    característica es particularmente útil para agregar vocabularios ya
+    definidos.
+\end{itemize}
+
+Podemos encontrar una descripción completa de Turtle en
+~\cite{beckett2014turtle} y de RDF/XML en ~\cite{beckett2004rdf}.
+
+El vocabulario incluido en la especificación RDF es básico y por ello fue
+extendido a \emph{RDF Schema}.
+
+En la figura \ref{fig:triples} podemos ver un ejemplo básico de la utilización 
+de Turtle para la generación de triples y como estos pueden ser visualizados
+como un grafo dirigido.
+
+\begin{figure}[htpb]
+  \centering
+  \begin{tabular}{c}
+  \lstinputlisting[basicstyle=\ttfamily\scriptsize]{Codigo/example-turtle.ttl}
+  \end{tabular}
+  %TODO Agregar tikz con el grafo.
+  \caption{Ejemplo de un triple RDF.}
+  \label{fig:triples}
+\end{figure}
+
 \subsection{RDFS}
+RDFS (de las siglas del ingles \emph{Resource Description Framework Schema},
+también llamado RDF Schema) es un vocabulario que extiende RDF proveyendo un
+set de clases y propiedades que mejoran la creación de modelos como son:
+\tt{Class} para declarar clases, \tt{subClassOf} para denotar herencia,
+\tt{domain} y \tt{range} para el rango y dominio de cierta propiedad
+(\tt{rdf:Property}), entre otras.
+
+RDF fue presentado en 1998 e introducido finalmente como recomendación del W3C
+el 2004\cite{bikakis2013semantic}
+
+\subsection{OWL}
 \subsection{SPARQL}
 
 \section{Proyecto Bio2RDF}\label{ea:bio}
-\section{Métricas de centralidad}\label{ea:cent}
+%\section{Métricas de centralidad}\label{ea:cent}
 
 %\section{Algoritmos de acceso eficiente a grafos}
 %\subsection{Algoritmos de búsqueda en grafos}
