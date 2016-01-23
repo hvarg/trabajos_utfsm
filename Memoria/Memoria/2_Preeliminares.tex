@@ -370,8 +370,76 @@ Se pueden ver las características completas de los perfiles de OWL 2 en
 ~\cite{motik2009owlprofiles}.
 
 \subsection{SPARQL}
+SPARQL (del ingles \emph{SPARQL Protocol and RDF Query Language} es un lenguaje
+estandarizado para consultar grafos RDF, se constituyó como una recomendación
+oficial por la W3C en el 2008\cite{bikakis2013semantic}. La versión actual de
+SPARQL es la 1.1\cite{world2013sparql}.
+
+SPARQL provee un set completo de operaciones analíticas para sus consultas
+definidas directamente en la especificación. Particularmente provee 4 formas de
+consultas:
+\begin{itemize}
+  \item \bf{\tt{SELECT}}:
+    Retorna valores en forma de tabla.
+  \item \bf{\tt{CONSTRUCT}}:
+    Retorna valores en forma de triple RDF.
+  \item \bf{\tt{ASK}}:
+    Retorna un resultado binario a la consulta (\tt{True/False}).
+  \item \bf{\tt{DESCRIBE}}:
+    Retorna un grafo RDF con contenido que el administrador del \emph{endpoint}
+    SPARQL considere información útil.
+\end{itemize}
+A excepción de \tt{DESCRIBE}, las demás consultas necesitan un bloque \tt{WHERE}
+para determinar las restricciones de búsqueda.
+
+Además de las consultas, SPARQL provee múltiples funciones como son 
+las condicionales (\tt{if}, \tt{exists}, etc), de conversión (\tt{str},
+\tt{lang}, etc), de comprobación (\tt{isNumber}, \tt{isBlank}, etc) y
+modificadores de respuesta como \tt{ORDER BY}, \tt{DINSTINCT}, \tt{REDUCED},
+\tt{LIMIT} y \tt{OFFSET}. Una descripción completa del lenguaje puede
+encontrarse en ~\cite{prud2008sparql} y en ~\cite{world2013sparql}.
+
+%TODO Agregar ejemplo SPARQL
 
 \section{Proyecto Bio2RDF}\label{ea:bio}
+Bio2RDF\cite{belleau2008bio2rdf,callahan2013bio2rdf} es un proyecto de código
+abierto que utiliza las tecnologías de la web semántica para construir la
+red más grande de datos enlazados de las ciencias biológicas.
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[page=1,viewport=138 412 480 630,clip]{figures/bio2rdf_graph.pdf}
+  %\includegraphics[width=.6\textwidth]{figures/Semantic_web_stack.png}
+  \caption{Grafo de los \emph{datasets} de Bio2RDF.}
+  \vspace{-.3cm}
+  \caption*{Extraído de \cite{hu2015link}.}
+  \label{fig:bio2rdfgraph}
+\end{figure}
+
+El proyecto une 35 \emph{datasets} en una ontología común generando enlaces
+entre ellos. La figura \ref{fig:bio2rdfgraph} muestra una representación de cada
+\emph{dataset} como grafo y los arcos están determinados por la cantidad de
+enlaces entre sus entidades. La tabla \ref{tab:bio2RDFdataset} por su parte
+muestra el número de entidades únicas y relaciones en cada \emph{dataset}.
+
+\input{figures/bio2RDF_table_dataset}
+
+En \cite{hu2015link} podemos encontrar estadísticas sobre el modelo de datos
+hecho para el proyecto Bio2RDF. Entre las conclusiones relevantes se destaca:
+\begin{itemize}
+  \item
+    Se produce el fenómeno de mundo pequeño, lo que denota una gran
+    conectividad. (\emph{small world phenomenom}).
+  \item
+    La distribución de las relaciones no sigue una ley potencial.
+  \item
+    La simetría y transitividad no logran transvasar las fronteras del propio
+    \emph{dataset} que contiene los datos.
+\end{itemize}
+
+Información sobre los \emph{endpoint} SPARQL para hacer consultas al proyecto
+puede ser encontrada en \cite{callahan2013bio2rdf}.
+
 %\section{Métricas de centralidad}\label{ea:cent}
 
 %\section{Algoritmos de acceso eficiente a grafos}
