@@ -1,0 +1,882 @@
+\documentclass[letter, 10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[dvips]{graphicx}
+\usepackage{url}
+\usepackage[top=3cm,bottom=3cm,left=3.5cm,right=3.5cm,footskip=1.5cm,headheight=1.5cm,headsep=.5cm,textheight=3cm]{geometry}
+\usepackage[]{algorithm2e}
+
+\begin{document}
+\title{
+    Inteligencia Artificial \\ 
+    \begin{Large}
+        Informe Final: Bus Evacuation Problem
+    \end{Large}
+}
+\author{Hernán Vargas \\ 201073009-3}
+\date{\today}
+\maketitle
+
+
+%--------------------No borrar esta sección--------------------------------%
+\section*{Evaluación}
+
+\begin{tabular}{ll}
+    Mejoras 1ra Entrega (10 \%): &  \underline{\hspace{2cm}}\\
+    Código Fuente (10 \%): &  \underline{\hspace{2cm}}\\
+    Representación (15 \%):  & \underline{\hspace{2cm}} \\
+    Descripción del algoritmo (20 \%):  & \underline{\hspace{2cm}} \\
+    Experimentos (10 \%):  & \underline{\hspace{2cm}} \\
+    Resultados (10 \%):  & \underline{\hspace{2cm}} \\
+    Conclusiones (20 \%): &  \underline{\hspace{2cm}}\\
+    Bibliografía (5 \%): & \underline{\hspace{2cm}}\\
+    &  \\
+    \textbf{Nota Final (100)}:   & \underline{\hspace{2cm}}
+\end{tabular}
+%---------------------------------------------------------------------------%
+
+\begin{abstract}
+    %Resumen del informe en no más de 10 líneas.
+    El Bus Evacuation Problem busca obtener la ruta de buses que minimiza el
+    tiempo de evacuación de una zona afectada por alguna catástrofe teniendo
+    buses y refugios con capacidades acotadas. En este documento se analiza la
+    definición del problema y sus alcances, se plantea el escenario actual de
+    investigación y se muestra el modelo matemático estándar, 
+    con el objetivo de entender el problema para luego poder modelarlo con
+    heurísticas basadas en algoritmos voraces  y comparar sus resultados con las
+    técnicas actuales.
+\end{abstract}
+
+\section{Introducción}\label{sec:intro}
+    %Una explicación breve del contenido del informe. Es decir, detalla:
+    %Propósito, Estructura del Documento, Descripción (muy breve) del Problema y
+    %Motivación.
+    En este informe se analizarán algunas de las heurísticas disponibles
+    actualmente para enfrentar el ``Bus Evacuation Problem'',  (\emph{problema
+    de evacuación en buses} en español) viendo cuales son sus diferencias, 
+    costos y ventajas asociadas, para luego explicar y implementar una
+    resolución por medio de algoritmos voraces.
+
+    El ``Bus Evacuation Problem'', consiste en la
+    minimización del tiempo de evacuación en buses de cierta zona afectada por
+    una catástrofe, sea natural o no. Suponemos que las personas a evacuar se
+    juntarán en puntos de encuentro determinados y esperarán los buses que pasan
+    a recogerlos para llevarlos a refugios con capacidades acotadas.
+    
+    Consideramos que es un problema
+    interesante de estudiar pues está muy relacionado a la realidad que vemos
+    en Chile el cual últimamente ha sido golpeado en reiteradas ocasiones
+    por este tipo de fenómenos, así la resolución del problema ayudará
+    considerablemente a la planificación en situaciones de catástrofe ya que
+    cada minuto perdido puede poner en riesgo vidas humanas. Además, debido a
+    que el problema no está enfocado en el desastre sino que en la necesidad de
+    evacuación, puede ser ampliamente utilizado para cualquier situación que
+    amerite desplazar gente desde puntos de encuentro hasta zonas determinadas.
+
+    En la sección \ref{sec:def} se definirá el problema y los términos claves
+    que debemos manejar para el correcto entendimiento del mismo, en la
+    sección \ref{sec:art} se hará un resumen de las técnicas utilizadas
+    actualmente para su resolución, para continuar con el modelo
+    matemático estándar en la sección \ref{sec:mod}.
+
+    En la sección \ref{sec:repr} se mostrará la representación computacional del
+    modelo que será resuelto por el algoritmo mostrado en la sección
+    \ref{sec:alg}. Se realizarán experimentos que serán relatados en la sección
+    \ref{sec:exp} cuyos resultados serán presentados en la sección \ref{sec:res}
+    para finalizar con conclusiones atingentes (sección \ref{sec:conc}).
+
+    El objetivo de este documento es proponer las bases para una 
+    investigación y resolución del problema por métodos voraces, los cuales no
+    necesitan una solución inicial (pues son constructivos) y, aunque no nos dan
+    las mejores soluciones, generan soluciones factibles rápidamente lo cual es
+    fundamental en este tipo de situaciones.
+
+\section{Definición del Problema}\label{sec:def}
+    %Explicación del problema que se va a estudiar, en que consiste, cuales son
+    %sus variables, restricciones y objetivos de manera general. Variantes más
+    %conocidas que existen.
+    El ``Bus Evacuation Problem'' (desde ahora BEP) busca evacuar a un número
+    determinado de personas en la zona de riesgo por medio de buses. La
+    sigueinte descripción es obtenida de la lectura y interpretación de 
+    \cite{bish2011planning} y \cite{goerigk2013branch}:
+    
+    El problema asume que las personas se reunirán en puntos de encuentro
+    sabidos de antemano y al momento de comenzar la evacuación no llegará más
+    gente ni se moverá entre ellos. Por otro lado tenemos una
+    cantidad de buses sabida con capacidades limitadas que pasarán a buscar a
+    las personas a los puntos de encuentro y las llevarán a refugios
+    determinados con capacidades establecidas de antemano.
+    Así el objetivo de nuestro problema es encontrar la ruta de buses por la
+    cual el tiempo que demora el último bus en terminar su recorrido es mínimo y
+    de esta manera el tiempo total de la evacuación será mínimo.
+
+    Para poder entender a cabalidad los alcances del problema se establecen los
+    siguientes parámetros:
+    \begin{enumerate}
+        \item \textbf{De las personas:}
+            \begin{itemize}
+                \item Número de personas totales a ser evacuadas.
+                \item 
+                    Número de personas en cada punto
+                    de encuentro al momento de comenzar la eva- cuación.
+            \end{itemize}
+        \item \textbf{De los puntos de encuentro:}
+            \begin{itemize}
+                \item Número de puntos de encuentro disponibles.
+                \item Ubicación de cada punto de encuentro.
+            \end{itemize}
+        \item \textbf{De los refugios:}
+            \begin{itemize}
+                \item Número de refugios disponibles.
+                \item Capacidad máxima de cada refugio en personas.
+                \item Ubicación de cada refugio.
+            \end{itemize}
+        \item \textbf{De los buses:}
+            \begin{itemize}
+                \item Número de buses disponibles para la evacuación.
+                \item Capacidad máxima de cada bus en personas.
+                \item Ubicación inicial de cada bus (Estación de partida).
+            \end{itemize}
+    \end{enumerate}
+    Para manejar las ubicaciones geográficas de los puntos de encuentro,
+    refugios y buses, por simplicidad, se utilizan matrices de distancias como
+    las siguientes:
+    \begin{itemize}
+        \item
+            Distancias entre los puntos de encuentro y los refugios:
+            $$D_{pr}\,\, /\,\, p \in [1..P], \, r \in [1..R]$$
+        \item
+            Distancias entre las estaciones de partidas de los buses y los
+            puntos de encuentro:
+            $$D^{\text{PB}}_{pb} \,\, /\,\, p \in [1..P], \, b \in [1..B]$$
+    \end{itemize}
+
+    Con estos parámetros podemos plantear el problema restringido básicamente
+    con:
+    \begin{itemize}
+        \item Se deben evacuar todas las personas.
+        \item No se debe exceder la capacidad de cada bus en cada viaje.
+        \item No se debe exceder la capacidad máxima de cada refugio.
+    \end{itemize}
+
+    Como nuestro objetivo es minimizar el tiempo total de la evacuación y
+    teniendo en cuenta que la distancia recorrida es proporcional al tiempo
+    empleado en recorrerla (suponiendo una velocidad similar entre los buses)
+    podemos simplemente minimizar la máxima distancia total recorrida por los
+    buses, ya que estos se mueven al mismo tiempo. Además, para que el estudio
+    sea útil debemos ser capaces de rescatar los datos relacionados al
+    desplazamiento de cada uno de los buses para así generar un recorrido 
+    óptimo.
+
+    Finalmente las variables utilizadas para modelar y resolver el problema
+    (obteniendo las rutas de los buses en el proceso) serán las siguientes:
+    \begin{itemize}
+        \item
+            Una variable binaria para representar a cierto bus, en uno de sus
+            viajes desde un punto de encuentro a un refugio.
+        \item
+            Una variable que medirá el tiempo que demora un bus en ir y en
+            volver para cierto viaje.
+        \item
+            Una variable que mostrará el tiempo máximo de viaje de todos los
+            buses.
+    \end{itemize}
+    La representación de estas variables y su relación con los parámetros y
+    restricciones del problema son explicados con mayor profundidad en la
+    sección \ref{sec:mod}.
+
+    Con esta definición del problema efectivamente podemos generar un plan de
+    acción para la evacuación de una zona en una situación que lo amerite. Aún
+    así, la simplicidad del modelo deja en manifiesto varios problemas que
+    ocurren en la realidad. La siguiente lista ejemplifica algunos de los
+    problemas que podemos interpretar de la definición actual:
+    \begin{itemize}
+        \item 
+            No se considera la llegada de las personas a los puntos de
+            reunión. Nuestra definición actualmente espera que todas las
+            personas a evacuar ya estén en los puntos de reunión y que no se
+            muevan entre ellos.
+        \item
+            No se consideran los tiempos que requieren las personas en ingresar
+            a los buses. Nuestras definiciones asumen que todas las personas
+            demorarán lo mismo a la hora del abordaje, cuando en la realidad
+            esto depende de a quien estemos evacuando, por ejemplo, evacuar un
+            asilo de ancianos puede ser mucho más lento que evacuar una
+            universidad.
+        \item
+            No se consideran los tiempos de conducción ni el combustible del
+            vehículo. Por definición, esperamos que no deban hacerse paradas
+            para el cambio de combustible o chofer.
+        \item
+            Se espera que los refugios tengan mayor capacidad que las personas
+            evacuadas, cuando en la realidad, aunque hayan más personas
+            evacuadas que capacidad de los refugios, aún así deben evacuarse
+            todas.
+    \end{itemize}
+
+    Son situaciones como las descritas anteriormente las que dan pie a diversas
+    variaciones y modificaciones que se le pueden hacer al problema para
+    adecuarlo mejor a la realidad.
+
+    Entre las variantes del problema se encuentra el ``Robust Bus Evacuation
+    Problem''\cite{goerigk2012robust} que viene a atacar el primer punto
+    mencionado anteriormente. Establece un número de evacuados incierto,
+    determinado por un modelo probabilístico.
+    Otro ejemplo de variación puede ser el presentado por Yue Liu y Jie
+    Yu\cite{liu2011emergency} que si bien agrega los tiempos de reunión de las
+    personas ignora la existencia de refugios y solo busca sacarlos de la zona
+    afectada por la catástrofe.
+    Más ejemplos de variaciones para diferentes casos de estudio pueden ser
+    encontrados en la sección \ref{sec:art}.
+    
+\section{Estado del Arte}\label{sec:art}
+    %Lo más importante que se ha hecho hasta ahora con relación al problema.
+    %Debería responder preguntas como las siguientes ?`cuando surge?, ?`qué
+    %métodos se han usado para resolverlo?, ?`cuales son los mejores algoritmos
+    %que se han creado hasta la fecha?, ?`qué representaciones han tenido los
+    %mejores resultados?, ?`cuál es la tendencia actual?, tipos de movimientos,
+    %heurísticas, métodos completos, tendencias, etc... Puede incluir gráficos
+    %comparativos, o explicativos.\\ La información que describen en este punto
+    %se basa en los estudios realizados con antelación respecto al tema. Dichos
+    %estudios se citan de manera que quien lea su estudio pueda también acceder
+    %a las referencias que usted revisó. Las citas se realizan mediante el
+    %comando \verb+\cite{ }+.  Por ejemplo, para hacer referencia al artículo de
+    %algoritmos híbridos para problemas de satisfacción de restricciones
+    %~\cite{Prosser93Hybrid}.
+
+    Si bien los problemas del área ``Evacuation Planing'' y ``vehicle routing
+    problem'' has sido ampliamente estudiados para situaciones particulares 
+    como los huracanes Katrina y
+    Rita\cite{kiefer2006incrementalism}\cite{litman2006lessons} o para lugares
+    particulares como Washington DC\cite{liu2008corridor} o New 
+    Orleans\cite{wolshon2002planning} estos estudios plantean una evacuación
+    principalmente por parte de los vehículos particulares. El 2011 Naghawi y
+    Wolshon\cite{naghawi2011performance}\cite{naghawi2011operation} registran 
+    una simulación del rendimiento de una evacuación con tránsito multi-modal
+    de la cual se concluye que la correcta utilización de buses puede
+    incrementar la cantidad de gente evacuada y minimizar los tiempos. 
+
+    En el ámbito de la evacuación efectuada en buses tenemos la investigación
+    de Perkins et al.\cite{perkins2001modeling} que aborda el transporte de
+    personas incapacitadas en una catástrofe repentina. En ésta se asume que los
+    buses parten en un garaje y optimiza sus tiempos de partida de manera que el
+    tiempo total del viaje sea minimizado. El problema modelado por Perkins et
+    al. esta limitado por una serie de rutas estáticas que cada bus debe seguir
+    para salir de la zona afectada, además, este problema no considera la
+    capacidad máxima de los buses y refugios.
+
+    El 2007 Sayyady\cite{sayyady2007optimizing} presenta un modelo basado en el
+    ``Minimum-cost flow problem'' en el cual asume que la gente ya se encuentra
+    en los puntos de reunión y solo basta que los buses los pasen a buscar para
+    sacarlos de la zona de peligro. Este modelo considera la utilización de un
+    algoritmo de búsqueda tabú para determinar las rutas óptimas de lo buses.
+    Este estudio y el anterior se limitan a un viaje por bus, es decir, una
+    vez el bus sale de la zona de peligro no vuelve a ingresar para buscar más
+    gente. En publicaciones más 
+    recientes\cite{sayyady2010optimizing}\cite{tunc2011optimizing} también se
+    han desarrollado algoritmos de programación lineal entera mixta para
+     encontrar las rutas óptimas para la evacuación.
+
+     Siguiendo la misma linea Margerus et al.\cite{margulis2006hurricane} 
+     generó un modelo de programación binaria para la asignación de buses a
+     puntos de reunión y refugios con el objetivo de maximizar la tasa de
+     evacuación para un determinado tiempo. Este estudio espera que los buses
+     se encuentren en su punto de reunión designado y una vez hecho un viaje
+     vuelvan a él.
+
+     El 2009 He et al.\cite{he2009optimal} desarrollaron un modelo de
+     optimización estocástico basado en el ``Location Routing Problem'' el
+     cual establece un plan de evacuación para cierto número de refugios
+     generando la ubicación de estos, el número de buses necesarios y sus
+     respectivas rutas con el objetivo de minimizar el tiempo total de la
+     operación. Aún así, la asunción de que los buses se encontrarán en los
+     refugios al acontecer una catástrofe en un lugar que sabemos de antemano 
+     no se adecua a la realidad.
+
+     El 2011, el problema fue tratado por Yue Liu y Jie
+     Yu\cite{liu2011emergency} con una formulación que contempla una
+     optimización de dos niveles, en primer lugar: guiar a las personas desde
+     edificios y zonas públicas hasta los puntos de reunión (paraderos de bus,
+     estaciones de metro, etc) y en segundo lugar generar las rutas óptimas para
+     que estos buses logren evacuar a toda la gente. La evacuación en este caso
+     se da por completada cuando todas las personas salen de la zona de peligro.
+     Este modelo considera tanto los tiempos de transporte como los de llegada
+     al punto de reunión, además se espera saber de antemano la cantidad de
+     gente evacuada y la capacidad del bus, por otro lado, el modelo limita a
+     los buses a siempre volver al mismo punto donde empezaron.
+
+    El mismo año Douglas R. Bish\cite{bish2011planning} nombra y plantea el
+    problema de la forma en la cual enunciamos en este informe. En este estudio
+    se caracteriza el problema por la aparición de refugios con capacidades
+    acotadas, lo cual implica que además de sacar a la gente de la zona de
+    conflicto es necesario llevarlos a un lugar con la capacidad de recibirlos.
+    Del modelo matemático y heurísticas planteadas por Bish nacen las posteriores
+    investigaciones que no modifican el modelo en sí, sino que intentan
+    adecuarlo más a la realidad.
+
+    Actualmente el problema ha sido tratado ampliamente por Marc Goerigk. Su
+    estudio del 2012 junto a Bob Grün titulado ``The Robust Bus
+    Evacuation Problem''\cite{goerigk2012robust} nos plantea una situación más
+    realista que la propuesta en un principio por Bish. Ahora el número de
+    personas a evacuar en principio no es conocido, en vez de ello tenemos un
+    escenario probabilístico y nuestra decisión determinará si se debe esperar a
+    que lleguen más personas o partir con las se encuentran actualmente en el
+    punto de reunión. El estudio presenta un sistema de programación lineal
+    entera mixta y se discuten diversas soluciones a este. En particular, se
+    presenta una búsqueda tabú para encontrar soluciones aceptables.
+
+    Una investigación más reciente de de Goerigk et al.\cite{goerigk2013branch}
+    plantea la búsqueda de soluciones por medio del método de ramificación y
+    acotamiento discutiendo diversas formas de abordar el problema para
+    determinar las mejores heurísticas que lo solucionan. De estos últimos
+    estudios podemos notar que la tendencia actual es agregar factores que
+    afectan la situación real al modelo para lograr mejores planes de acción y
+    tiempos más acotados.
+
+\section{Modelo Matemático}\label{sec:mod}
+    %Uno o más modelos matemáticos para el problema.
+    A continuación se presenta la formulación matemática estándar para el BEP
+    obtenido desde \cite{goerigk2013branch} con los siguiente parámetros:
+    \begin{itemize}
+        \item[\textbf{INPUT:}]
+            Un número $B$ de buses, $P$ puntos de encuentro y $R$ refugios. Una
+            matriz de distancias entre los puntos de encuentro y los refugios
+            $D_{ij}\,\forall i\in [P], j\in [R]$. Un vector con la cantidad de
+            gente en cada punto de encuentro $L_i\, \forall i\in [P]$
+            suministrada en múltiplos de la capacidad del bus (cada unidad en
+            $L_i$ representa un bus completo) y otro vector con
+            la capacidad de cada refugio $U_j\, \forall j\in  [R]$. Además se
+            necesita una matriz con las distancias iniciales entre los buses y
+            los puntos de encuentro; por simplicidad asumiremos que todos los
+            buses se encuentran en el mismo lugar así se defina el vector de
+            distancias entre los puntos de encuentro y los buses como: $D^B_i\,
+            \forall i\in [P]$.
+        \item[\textbf{FIND:}]
+            Nuestro objetivo es obtener el recorrido que minimiza el tiempo de
+            viaje del bus que demora más respetando las capacidades de los buses
+            y los refugios sin dejar a nadie en la zona de peligro.
+    \end{itemize}
+
+    Llamaremos además un \emph{tour} a la tupla $(i, j)$ con $i\in [P]$ y 
+    $j\in [R]$.
+
+    Para representar los viajes de los buses entre los distintos puntos de
+    reunión y refugios utilizaremos la variable binaria $x^{bv}_{ij}$ que
+    representa al bus $b$ viajando desde el punto de reunión $i$ hasta el
+    refugio $j$ en su viaje número $v$. Así definimos un número máximo de 
+    viajes que cada bus puede efectuar como $V^{max}$ para mantener el problema
+    en los limites de la programación lineal.
+
+    Por otro lado, para medir el tiempo que demorará el bus $b$ en sus viajes 
+    $j$ utilizaremos las variables $t^{bv}_{ir}$ y $t^{bv}_{volver}$ para ir y
+    volver respectivamente. Por último la variable $t_{max}$ denotará el máximo
+    tiempo de viaje entre todos los buses.
+
+    Así el problema queda planteado como:
+    \newcommand{\qweq}{\sum_{i\in [P]} \sum_{j\in [R]}}
+    \newcommand{\asda}{x^{bv}_{ij}}
+    \begin{align}
+        F.O:\quad&\min t_{max} \nonumber \\
+        S.T:\quad& t_{max} \geq \sum_{v\in [V]}(t^{bv}_{ir} + t^{bv}_{volver})
+        + \qweq D_i^Bx^{b1}_{ij} && \forall b\in [B]
+        \label{r1} \\
+        & t^{bv}_{ir} = \qweq D_{ij}\asda && \forall b\in [B], v\in [V]
+        \label{r2} \\
+        & t^{bv}_{vuelta} \geq D_{ij}( \sum_{k\in [P]}x^{bv}_{kj} + \sum_{k\in
+        [R]} x^{bv+1}_{il} - 1) && \forall b\in [B], v\in [V-1], i\in [P],
+         j\in [R] \label{r3} \\
+        & \qweq \asda \leq 1 && \forall b\in [b], v\in [V] \label{r4}\\
+        & \qweq \asda \geq \qweq x^{b,v+1}_{ij} && \forall b\in [B], v\in[V-1]
+        \label{r5} \\
+        & \sum_{j\in[R]}\sum_{b\in[B]}\sum_{v\in[V]} \asda \geq L_i && \forall
+        i\in[P] \label{r6}\\
+        & \sum_{i\in[P]}\sum_{b\in[B]}\sum_{v\in[V]} \asda \leq U_j && \forall
+        j\in[R] \label{r7}\\
+        &\asda \in \mathbb{B}&& \forall i\in[P],j\in[R],b\in[B],v\in[V]
+        \label{r8} \\
+        & t^{bv}_{ir}, t^{bv}_{volver}\in \mathbb{R}&&\forall b\in[B],v\in[V]
+        \label{r9} \\
+        & t^{max} \in \mathbb{R} \label{r10}
+    \end{align}
+
+    La restricción (\ref{r1}) establece como tiempo máximo al mayor de los 
+    tiempos de cada uno de los buses. (\ref{r2}) calcula el tiempo que demora
+    un bus en ir desde un punto de reunión hasta un refugio mientras que
+    (\ref{r3}) calcula el tiempo que demora en volver. Por su parte, la
+    restricción (\ref{r4}) verifica que cada bus solo haga un viaje entre el
+    punto de reunión y el refugio a la vez, mientras que la restricción
+    (\ref{r5}) conecta los tours de los buses e impide que estos se detengan
+    en algún lugar. Las restricciones (\ref{r6}) y (\ref{r7}) verifican que las
+    personas de cada punto de encuentro sean evacuadas y se respete la capacidad
+    de los refugios. Las restricciones (\ref{r8}), (\ref{r9}) y (\ref{r10}) son
+    la naturaleza de las variables asociadas.
+
+\section{Representación}\label{sec:repr}
+    %Representación matemática y estructura de datos que se usa (arreglos,
+    %matrices, etc.), por qué se usa, la relación entre la representación
+    %matemática y la estructura.
+    Para la representación computacional del problema modelado en la sección
+    \ref{sec:mod} se utilizaron las siguientes variables:
+    \begin{itemize}
+        \item (\texttt{int}) \texttt{nbus} guarda el número de buses $B$.
+        \item (\texttt{int}) \texttt{cbus} guarda la capacidad de los buses.
+        \item (\texttt{int}) \texttt{nest} guarda el número de estaciones.
+        \item (\texttt{int[]}) \texttt{cest} 
+            es un arreglo con la cantidad de buses en cada estación, así
+            \texttt{cest[$x$]} será la cantidad de buses en la estación $x$.
+        \item (\texttt{int}) \texttt{npep}
+            guarda el número puntos de encuentro $P$.
+        \item (\texttt{int}) \texttt{tpep} 
+            guarda el total de personas en los puntos de encuentro.
+        \item (\texttt{int[]}) \texttt{cpep}
+            es un arreglo con la cantidad de personas en cada punto de
+            encuentro, así \texttt{cpep[$y$]} será la cantidad de personas en el
+            punto de ecuentro $y$. Representa $L_i$ del modelo matemático.
+        \item (\texttt{int}) \texttt{nref} guarda el número de refugios $R$.
+        \item (\texttt{int}) \texttt{tref}
+            guarda la capacidad total de personas de los refugios.
+        \item (\texttt{int[]}) \texttt{cref}
+            es un arreglo con la capacidad de cada refugio, así
+            \texttt{cref[$z$]} será la capacidad del refugio $z$. Representa
+            $U_j$ en el modelo matemático.
+        \item (\texttt{int[][]}) \texttt{dest\_pep}
+            es un arreglo bidimensional con las distancias entre estaciones y
+            puntos de encuentro, $D^{B}_{ik}$ en el modelo matemático. Así
+            \texttt{dest\_pep[$x$][$y$]} será la distancia entre la estación $x$
+            y el punto de encuentro $y$.
+        \item (\texttt{int[][]}) \texttt{dpep\_ref}
+            es un arreglo bidimensional con las distancias entre los puntos de
+            encuentro y los refugios, $D_{ij}$ en el modelo matemático. Así
+            \texttt{dpep\_ref[$y$][$z$]} será la distancia entre el punto de
+            encuentro $y$ y el refugio $z$.
+    \end{itemize}
+    Además se creó la siguiente estructura para guardar los \emph{tours}
+    realizados por los buses:
+    \begin{verbatim}
+    struct route{
+        int     time;
+        short   where;
+        bool    in_depot;
+        char    *rec;
+}
+    \end{verbatim}
+    En ella \texttt{time} es el tiempo gastado por el bus, \texttt{where} es
+    donde se encuentra el bus, si \texttt{in\_depot} es \texttt{true}
+    representará el indice de una estación, en otro caso será el indice de un
+    refugio. Por ultimo el puntero \texttt{rec} apunta a un \texttt{string} que
+    guarda la información de los \emph{tours} como tuplas 
+    $(i,j),\,i\in[P],j\in[R]$.
+
+    Con esta estructura se crea la variable \texttt{tour[]} en la cual se
+    guarda el tour de cada bus. Así \texttt{tour[$b$]} guardará la información
+    del tour del bus $b$.
+
+    Por simplicidad se utilizó el tipo de datos $int$, pero
+    dependiendo de las condiciones del problema se puede cambiar a un $unsigned
+    short$ para utilizar menos memoria o un $unsigned int$ para ampliar el
+    rango, pues sabemos que estos parámetros no pueden ser negativos.
+
+\section{Descripción del algoritmo}\label{sec:alg}
+    %Cómo fue implementando, interesa la implementación más que el algoritmo
+    %genérico, es decir, si se tiene que implementar SA, lo que se espera es que
+    %se explique en pseudo código la estructura general y en párrafo explicativo
+    %cada parte como fue implementada para su caso particular, si se utilizan
+    %operadores se debe explicar por que se utilizó ese operador, si fuera el
+    %caso de una técnica completa, si se utiliza recursión o no, etc. En este
+    %punto no se espera que se incluya código, eso va aparte.
+    Para la resolución del problema se utilizó un algoritmo voraz de elaboración
+    propia tomando como base la creación de \texttt{tours} en tiempo de
+    ejecución que se describe en UB4\cite{goerigk2013branch}. El algoritmo
+    hace lo que se lista a continuación:
+    \begin{enumerate}
+        \item
+            Primero se selecciona el bus con menor tiempo actual, si hay un
+            empate se elige al azar. Como al inicio todos tienen tiempo cero
+            siempre se elegirá al azar la primera iteración.
+        \item
+            Se selecciona el punto de encuentro más cercano (con personas a
+            rescatar) a la estación o
+            refugio en el cual está el bus escogido en el punto anterior. Si hay
+            empate en las distancias se elige al azar entre los afectados.
+        \item
+            Se selecciona el refugio con capacidad más cercano al punto de 
+            encuentro elegido
+            en el punto anterior. Si hay empate se elige al azar entre los
+            afectados.
+        \item
+            Se actualiza la información, es decir, resta la capacidad del bus al
+            punto de encuentro y al refugio afectados, se suma el tiempo de
+            viaje al tour del bus y se modifica su posición.
+        \item
+            Finalmente se resta la capacidad del bus al total de personas a
+            rescatar, si este número no queda en cero se repite el proceso.
+    \end{enumerate}
+
+    El proceso es descrito en el siguiente pseudo código utilizando las
+    variables enunciadas en la sección anterior.\\
+
+    \begin{algorithm}[H]
+        \For{bus in buses}{
+            \texttt{tour[bus].time  = 0}\\
+            \texttt{tour[bus].where = estacion\_disponible()}\\
+            \texttt{tour[bus].rec = ``''}\\
+        }
+        \While{\texttt{tpep} $ > 0$}{
+            \texttt{bus = bus\_mejor\_tiempo()}\\
+            \texttt{pep = pep\_mas\_cercano(bus)}\\
+            \texttt{ref = ref\_mas\_cercano(pep)}\\
+            \texttt{tour[bus].time += dist\_bus\_pep(bus, pep) +
+            dist\_pep\_ref(pep, ref)}\\
+            \texttt{tour[bus].where = ref}\\
+            \texttt{tour[bus].rec += }``(pep,ref)''\\
+            \texttt{cpep[pep] -= cbus}\\
+            \texttt{cref[ref] -= cbus}\\
+            \texttt{tpep -= cbus}\\
+        }
+        \KwResult{Solución factible en tour[*].rec}
+    \end{algorithm}
+
+    Algunas de consideraciones a tener en cuenta sobre funcionamiento del
+    algoritmo son las siguientes:
+    \begin{itemize}
+        \item
+            Los buses parten en una estación pero nunca más vuelven a
+            ellas. En cada viaje después del primero el bus se moverá de un
+            refugio a otro recogiendo la gente en los puntos de encuentro.
+        \item
+            Como cada iteración contempla tanto el viaje de ida al punto de
+            encuentro como el viaje hacia el refugio más cercano, el número de
+            iteraciones será igual al número de viajes efectuados. Por ello
+            podemos calcular las iteraciones del problema de antemano como:
+            \texttt{tpep/cbus}.
+        \item
+            El algoritmo al ser constructivo será muy rápido pues solo tomo
+            decisiones teniendo en cuenta cual es la mejor situación en cada
+            paso. Se recomienda utilizar la solución generada como solución
+            inicial en algún algoritmo que mejore soluciones.
+    \end{itemize}
+
+\section{Experimentos}\label{sec:exp}
+    %Se necesita saber como experimentaron, como definieron parámetros, como los
+    %fueron modificando, cuales problemas se trataron, instancias, por que
+    %ocuparon esos problemas.
+    Para la experimentación se utilizaron las instancias de prueba
+    suministradas y algunas de generación propia.
+
+    Como partes fundamentales del algoritmo utilizan números aleatorios para
+    decidir que hacer, cada ejecución puede dar un resultado diferente
+    dependiendo de la semilla elegida para generar el \texttt{random}. Por ello
+    se ejecutó el programa múltiples veces registrando como variaron los
+    tiempos y resultados de cada instancia.
+
+    Después de utilizar las instancias de prueba otorgadas se optó por crear
+    nuevas instancias que llevarán los parámetros a limites más alto por dos
+    motivos principalmente:
+    \begin{enumerate}
+        \item 
+            Analizar el comportamiento del algoritmo en situaciones más
+            cercanas a la realidad donde el número de evacuados sea de miles de
+            personas.
+            Por ello se crearon múltiples instancias con más de $10000$
+            personas cada una.
+        \item
+            Probar las capacidades del algoritmo variando los parámetros de
+            diferentes maneras que no son muy posibles en la realidad. Algunas
+            de las situaciones analizadas fueron:
+            \begin{itemize}
+                \item
+                    Cantidad similar de puntos de encuentro y refugios.
+                \item
+                    Más refugios que puntos de encuentro.
+                \item
+                    Muy pocos buses para mucha gente.
+                \item
+                    Más estaciones que puntos de encuentro o refugios.
+            \end{itemize}
+    \end{enumerate}
+
+    Para todas las instancias creadas se utilizó una cantidad de buses de $24$
+    personas lo que nos permite remitirnos al ``peor de los casos''.
+
+    Por simplicidad para la generación de las nuevas instancias de prueba se
+    creo un simple \texttt{script} en \texttt{python} que genera los archivos
+    necesarios teniendo en cuenta lo siguiente:
+    \begin{itemize}
+        \item
+            El total de gente es un múltiplo de la capacidad de los buses. De
+            igual manera lo son la gente en los puntos de encuentro y la 
+            capacidad de los refugios.
+        \item
+            El total de gente es igual a la suma de la gente en los puntos de
+            encuentro.
+        \item
+            Los refugios tiene una capacidad total cercana al $115\%$ de las
+            personas a evacuar.
+        \item
+            No puede haber más estaciones que buses.
+        \item
+            Las distancias son elegidas al azar entre dos números. En 
+            nuestro caso, por simplicidad, entre $1$ y $9$.
+    \end{itemize}
+
+    Las $10$ instancias creadas con este \texttt{script} y las suministradas son
+    analizadas en profundidad en la sección \ref{sec:res} mediante 
+    la ejecución de cada prueba 5 veces para así poder notar variaciones en el
+    tiempo de ejecución y los resultados obtenidos.
+
+\section{Resultados}\label{sec:res}
+    %Que fue lo que se logró con la experimentación, incluir tablas y
+    %parámetros, gráficos si fuera posible, lo más explicativo posible.
+
+    Las siguientes tablas muestran algunos datos de interés y los resultados de
+    las repetidas ejecuciones del algoritmo voraz sobre las instancias
+    suministradas y las de elaboración propia.
+
+    Con:
+    \begin{itemize}
+        \item \textbf{B:} Número de buses.
+        \item \textbf{cB:} Capacidad de los buses.
+        \item \textbf{E:} Número de estaciones.
+        \item \textbf{P:} Número de puntos de encuentro.
+        \item \textbf{R:} Número de refugios
+        \item \textbf{T:} Total de personas.
+        \item el \textbf{peso} del archivo en bytes.
+        \item 
+            los \textbf{resultados} de cada ejecución del algoritmo sobre la
+            instancia seleccionada separados por una coma.
+        \item y el \textbf{tiempo} como la media de las 5 ejecuciones medidas
+            con \texttt{/usr/bin/time}.
+    \end{itemize}
+
+    \begin{table}[h!]
+        \centering
+        \caption{Resultados instancias suministradas.}
+        \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|}
+            \hline
+            \multicolumn{1}{|c|}{{\bf Instancia}} & {\bf Peso} & {\bf B} &
+                    {\bf cB} & {\bf E} & {\bf P} & {\bf R} & {\bf T} & 
+                    {\bf Resultados}   & {\bf Iter} & {\bf Time} \\ \hline
+            1-4-2-4    & 105  & 4  & 20 & 1 & 4  & 2  & 200  & 
+                    23, 23, 20, 20, 23 & 10 & 0,0046 \\ \hline
+            1-5-3-6    & 130  & 6  & 20 & 1 & 5  & 3  & 140  & 
+                    13, 13, 13, 13, 13 & 7  & 0.0054 \\ \hline
+            2-12-3-6   & 286  & 6  & 20 & 2 & 12 & 3  & 560  &
+                    42, 37, 43, 28, 41 & 28 & 0.0062 \\ \hline
+            2-22-4-10  & 583  & 10 & 20 & 2 & 22 & 4  & 1040 &
+                    37, 28, 29, 27, 33 & 52 & 0.0078 \\ \hline
+            2-32-5-18  & 826  & 18 & 20 & 2 & 32 & 5  & 1360 &
+                    27, 24, 30, 28, 33 & 68 & 0.0060 \\ \hline
+            2-9-7-5    & 315  & 5  & 36 & 2 & 9  & 7  & 579  &
+                    20, 20, 17, 20, 21 & 16 & 0.0042 \\ \hline
+            3-11-10-7  & 481  & 7  & 36 & 3 & 11 & 10 & 684  &
+                    20, 16, 18, 24, 21 & 19 & 0.0062 \\ \hline
+            5-25-12-15 & 1.3K & 15 & 36 & 5 & 25 & 12 & 1764 &
+                    24, 23, 23, 26, 23 & 49 & 0.0058 \\ \hline
+            8-40-20-20 & 2.9K & 20 & 36 & 8 & 40 & 20 & 2700 &
+                    21, 24, 20, 21, 23 & 75 & 0.0062 \\ \hline
+        \end{tabular}
+        \label{tabla1}
+    \end{table}
+
+    \begin{table}[h!]
+        \centering
+        \caption{Resultados instancias propias.}
+        \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|}
+            \hline
+            \multicolumn{1}{|c|}{{\bf Instancia}} & {\bf Peso} & {\bf B} &
+                    {\bf cB} & {\bf E} & {\bf P} & {\bf R} & {\bf T} & 
+                    {\bf Resultados}   & {\bf Iter} & {\bf Time} \\ \hline
+            10-1000-500-50 & 1006K & 50 & 24 & 10 & 1000 & 500 & 36000 &
+                    68, 67, 63, 68, 66      & 1500 & 0,2198 \\ \hline
+            10-100-50-30   & 13K   & 30 & 24 & 10 & 100  & 50  & 36000 &
+                    114, 118, 118, 116, 119 & 1500 & 0,0248 \\ \hline
+            10-110-50-30   & 15K   & 30 & 24 & 10 & 110  & 50  & 48000 &
+                    147, 147, 143, 145, 145 & 2000 & 0,0308 \\ \hline
+            10-200-110-18  & 49K   & 18 & 24 & 10 & 200  & 110 & 6720  &
+                    39, 38, 40, 39, 36      & 280  & 0,0140 \\ \hline
+            12-300-240-30  & 151K  & 30 & 24 & 12 & 300  & 240 & 10800 &
+                    34, 34, 37, 35, 37      & 450  & 0,0312 \\ \hline
+            15-280-220-40  & 132K  & 40 & 24 & 15 & 280  & 220 & 6720  &
+                    18, 18, 19, 21, 20      & 280  & 0,0240 \\ \hline
+            15-350-20-40   & 27K   & 40 & 24 & 15 & 350  & 20  & 12000 &
+                    34, 36, 37, 34, 37      & 500  & 0,0172 \\ \hline
+            6-180-60-30    & 25K   & 30 & 24 & 6  & 180  & 60  & 14400 &
+                    44, 49, 48, 50, 46      & 600  & 0,0176 \\ \hline
+            6-50-300-20    & 32K   & 20 & 24 & 6  & 50   & 300 & 12000 &
+                    61, 59, 62, 57, 62      & 500  & 0,0194 \\ \hline
+            6-650-300-30   & 395K  & 30 & 24 & 6  & 650  & 300 & 19200 &
+                    61, 58, 60, 62, 57      & 800  & 0,0660 \\ \hline
+        \end{tabular}
+        \label{tabla2}
+    \end{table}
+
+    Los resultados de las instancias suministradas se muestran en la tabla
+    \ref{tabla1} mientras que la tabla \ref{tabla2} muestra el comportamiento
+    del algoritmo en las instancias de prueba propias.
+
+    Del análisis general de estos resultados obtenemos las siguientes
+    conclusiones:
+    \begin{itemize}
+        \item
+            Como se esperaba; el número de iteraciones corresponde a el total de
+            personas dividido en la capacidad del bus. Este número es constante
+            pues el algoritmo es constructivo y el proceso para
+            generar una solución siempre hace las mismas operaciones y por lo
+            tanto toma aproximadamente el mismo tiempo.
+            Aún así, al recurrir al azar, los resultados pueden variar
+            drásticamente como evidencia la instancia \texttt{2-12-3-6} donde
+            generalmente se obtienen resultados cercanos al $42$ pero en una
+            ocasión se obtuvo un $28$ lo que representa una mejora considerable
+            en la solución de dicho problema.
+        \item
+            El tiempo de ejecución del programa es proporcional al tamaño del
+            archivo de entrada. Esto sumado al punto anterior evidencia que, si
+            bien el proceso de obtener una solución y sus respectivas
+            iteraciones tienen influencia en el tiempo de ejecución, la mayor
+            perdida de tiempo se hace a la hora de efectuar la lectura del
+            archivo de entrada. Una prueba de esta situación es la comparación
+            entre la instancia \texttt{10-1000-500-50} y la
+            \texttt{10-100-50-30} donde ambas tienen la misma cantidad de
+            iteraciones ($2000$) pero sus tiempos de ejecución varían
+            considerablemente por el tamaño del archivo ($1006$K en $0,2198$
+            contra $13$K en $0,0248$).
+
+            Razones evidentes de esta situación son la poca
+            optimización que presenta el código con respecto a la lectura del
+            archivo (hecha fácil de leer a costa de eficiencia) y la lentitud de
+            acceso a archivos en disco duro. Además, por las razones mencionadas
+            anteriormente, podemos suponer que estas instancias utilizarán más
+            memoria \texttt{ram}. La velocidad del algoritmo y la cantidad de
+            memoria utilizada pueden ser mejorados seleccionando un
+            \texttt{buffer} de menor tamaño ($256$ \texttt{bytes} pueden ejecutar
+            todas las instancias de prueba suministradas). 
+        \item
+            Los parámetros que más afectan los resultados son la cantidad de
+            buses y su capacidad en relación con la cantidad de gente total a
+            evacuar. Esta conclusión es evidente pues si tenemos más buses con
+            mayor capacidad disponibles para ir a rescatar a la gente
+            paralelamente serán mejores los resultados. Varias instancias
+            evidencian esta situación, por ejemplo las instancias
+            \texttt{15-350-20-40} y \texttt{6-50-300-20} tiene $12000$ personas
+            a evacuar, pero los resultados de la segunda casi doblan los de la
+            primera pues se tienen la mitad de los buses. 
+        \item 
+            En las instancias evaluadas no se nota una relación real entre la
+            cantidad de refugios y la de puntos de encuentro con los resultados
+            de la prueba. Esta situación ocurre por dos razones principales:
+            \begin{enumerate}
+                \item
+                    Las instancias de prueba fueron generadas aleatoriamente con
+                    un rango de distancias relativamente bajo y bien
+                    distribuido. Por ello, la distancia entre las estaciones,
+                    puntos de encuentro y refugios no hacen una contribución muy
+                    evidente en la variación de los resultados generales. Es de
+                    suponer que en la realidad las distancias cumplan un papel
+                    diferenciador entre una solución \emph{mala} y una
+                    \emph{buena}, aún así, el algoritmo voraz entregará en todos
+                    los casos una solución factible.
+                \item
+                    La capacidad de los refugios generados siempre es mayor que
+                    el total de personas a evacuar por un $15\%$ y sigue una
+                    distribución aleatoria bien distribuida. Así, siempre habrá
+                    un refugio relativamente cercano con capacidad disponible
+                    por lo que situaciones donde buses tengan que ir a un
+                    refugio lejano son poco probables.
+            \end{enumerate}
+    \end{itemize}
+
+\section{Conclusiones}\label{sec:conc}
+    %De acuerdo a la introducción que se hizo, entregar afirmaciones RELEVANTES
+    %basadas en los experimentos y sus resultados.
+    El ``Bus evacuation problem'' se diferencia de los la mayoría de los
+    problemas de ``Evacuation planing'' por dos puntos fundamentales:
+    \begin{enumerate}
+        \item 
+            Considera la evacuación de las personas utilizando el servicio
+            público, así genera una ruta optima de buses para sacar a los
+            afectados del peligro dejando de lado la acción particular para
+            generar un plan de acción centralizado. Algunos ejemplos de estudios
+            que utilizan la acción particular son: 
+            \cite{kiefer2006incrementalism} \cite{litman2006lessons}
+            \cite{liu2008corridor} \cite{wolshon2002planning}
+        \item
+            Plantea la existencia de refugios y sus respectivas capacidades,
+            elemento que es ignorado por la mayoría de los modelos previos que
+            solo buscaban sacar a la gente del peligro, pero no se preocupan de
+            donde llevarlos. Algunos ejemplos de modelos que
+            no consideran refugios son: \cite{perkins2001modeling}
+            \cite{sayyady2007optimizing} \cite{sayyady2010optimizing}
+            \cite{tunc2011optimizing}
+    \end{enumerate}
+    Estos dos puntos hacen del BEP una excelente opción a la hora de planificar
+    una eventual evacuación, debido a que ataca dos de los problemas recurrentes
+    en cualquier catástrofe.
+
+    Aún así, la definición del problema (sección \ref{sec:def}) ignora algunos
+    aspectos que la situación real debe afrontar de todos modos como son los
+    cambios de combustible y conductor y la posibilidad de que la gente no se
+    encuentre en los puntos de reunión o que se muevan entre ellos.
+
+    Por otra parte, aunque el problema está acotado a un área geográfica 
+    especifica y en teoría conocida, las
+    dimensiones del mismo hacen imposible su tratamiento por métodos
+    convencionales y se hace necesaria la creación y modificación de heurísticas
+    para su solución en tiempos acotados. Las investigaciones actuales han hecho
+    grandes avances por medio de la modificación de los algoritmos para
+    ``Vehicle routing problem'' o técnicas como la búsqueda tabú, pero siempre
+    hay espacio para la mejora.
+
+    Si bien, cuando los planes de evacuación son hechos con anterioridad, podemos
+    esperar obtener las mejores soluciones posibles, en un caso como éste, que
+    puede ocurrir en cualquier momento y en el cual cualquier retraso puede
+    significar poner en peligro vidas, es necesario que se encuentren soluciones
+    factibles rápidamente aunque estas no sean las más eficientes. En este
+    contexto podemos dividir la búsqueda de soluciones en dos frentes: las
+    heurísticas que mejoran soluciones factibles y las que generan las mismas.
+    Este documento se centra en estas últimas mediante la creación de un
+    algoritmo voraz generador de soluciones que posteriormente pueden ser
+    mejoradas por algunas de las heurísticas de la primera categoría.
+
+    En cuanto a la creación de algoritmos voraces para la generación de estas
+    soluciones el trabajo de Goerigk et al. ``Branch and bound algorithms for 
+    the bus evacuation problem'\cite{goerigk2013branch} presenta cuatro de ellos
+    de los cuales los primeros tres necesitan una lista de \emph{rutas} posibles
+    generadas con anticipación para los buses mientras que el cuarto las genera
+    en tiempo de ejecución. 
+    Nuestro algoritmo se basa en esta última idea y mediante el calculo de las
+    distancias mínimas en cada iteración obtiene una solución factible
+    rápidamente.
+
+    De los resultados de la experimentación podemos concluir que la velocidad
+    esperada de este tipo de algoritmos es su gran ventaja a la hora de buscar
+    soluciones. Problemas con más de $10000$ variables son resueltos en menos de
+    un segundo lo que nos hace presumir que el tiempo de ejecución no será una
+    limitante. Por otro lado, los efectos indeseados la variación de las 
+    soluciones entregadas debido a la aleatoriedad de algunos pasos pueden ser 
+    abolidos utilizando la misma velocidad que ganamos: nos basta con ejecutar
+    el programa varias veces y seleccionar el resultado con menor tiempo de
+    evacuación. Aún así, la solución siempre es factible pero nunca podemos
+    asegurar que sea la más eficiente por lo que se recomienda utilizarla como
+    solución inicial en un proceso que la mejore si hay tiempo suficiente para
+    ello.
+
+    La planificación de la evacuación en una catástrofe es un proceso delicado
+    que generalmente requiere la coordinación, anticipación y información
+    suficiente para actuar rápidamente cuando ésta ocurra. La resolución
+    del BEP necesita los tres elementos, pero los algoritmos voraces pueden
+    brindarnos soluciones al instante si tenemos la información necesaria. Por
+    ello su estudio y mejoramiento se hace importante no solo como soluciones
+    iniciales de cualquier otra heurística sino que también para actuar cuando
+    no se tiene el tiempo de buscar mejores soluciones ya que las entregadas por
+    nuestro algoritmo son lo suficientemente buenas como para ser replicadas en
+    la realidad.
+
+\section{Bibliografía}\label{sec:bib}
+    %Indicando toda la información necesaria de acuerdo al tipo de documento
+    %revisado. Las referencias deben ser citadas en el documento.
+
+\bibliographystyle{plain}
+\bibliography{Referencias}
+\end{document} 

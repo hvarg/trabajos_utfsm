@@ -1,0 +1,10 @@
+./generate.py 30 24 12 300 240 450 1 9 > extra-12-300-240-30.txt
+./generate.py 18 24 10 200 110 280 1 9 > extra-10-200-110-18.txt
+./generate.py 40 24 15 280 220 280 1 9 > extra-15-280-220-40.txt
+./generate.py 40 24 15 350 200 500 1 9 > extra-15-350-200-40.txt
+./generate.py 30 24 6 180 60 600 1 9 > extra-6-350-200-30.txt
+./generate.py 30 24 6 500 300 550 1 9 > extra-6-500-300-30.txt
+./generate.py 30 24 6 650 400 800 1 9 > extra-6-650-500-30.txt
+./generate.py 50 24 10 1000 500 1500 1 9 > extra-10-1000-500-50.txt
+./generate.py 30 24 10 100 50 1500 1 9 > extra-10-100-50-30.txt
+./generate.py 30 24 10 110 50 2000 1 9 > extra-10-110-50-30.txt

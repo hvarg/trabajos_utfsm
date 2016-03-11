@@ -1,0 +1,29 @@
+Ejecución:
+    ./bep_greedy input_file [output_file]
+
+input_file:  Archivo de entrada con parámetros del problema.
+output_file: Parámetro opcional, especifica una ruta para la salida. Si no es
+             suministrado se creará un archivo llamado "results" en el
+             directorio de ejecución.
+
+stdin:  No requiere parámetros por entrada estándar.
+stdout: Imprime el tiempo total de la evacuación, el tiempo de ejecución y el
+        número de iteraciones efectuadas.
+stderr: Puede mostrar errores en tiempo de ejecución.
+
+Ejemplos de uso:
+    ./bep_greedy InstanciasBEP/InstanceBEP-8-40-20-20.txt 8-40-20-20.resultado
+    ./bep_greedy InstanciasBEP/InstanceBEP-2-9-7-5.txt /dev/stdout
+
+El primer ejemplo escribirá los resultados en un archivo especifico para esta
+ejecución. El segundo los imprimirá por la salida estándar.
+
+EXTRAS:
+
+En la carpeta "OtrasInstanciasBEP" se encuentran los archivos de instancias
+extra generadas para el análisis del algoritmo. Todos los archivos fueron
+generados al ejecutar "sh create.sh" que hace sucesivas ejecuciones del script
+en python que genera archivos de instancias.
+El script "generate.py" simplemente imprime por pantalla una instancia aleatoria
+según los parámetros de entrada. Se crean refugios con una capacidad total de al
+menos el 114% de las personas a rescatar.
