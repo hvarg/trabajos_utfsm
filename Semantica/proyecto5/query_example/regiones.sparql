@@ -1,0 +1,10 @@
+PREFIX inst: <http://example.com/Capacidad_instalada#>
+PREFIX vend: <http://example.com/Electricidad_vendida_por_comuna#>
+
+
+#Retorna las regiones que gastan energia. 
+#Las regiones tienen nombres diferentes :(
+SELECT ?region WHERE {
+#    ?x  inst:region                 ?region     .
+    ?x  vend:region                 ?region     .
+} 

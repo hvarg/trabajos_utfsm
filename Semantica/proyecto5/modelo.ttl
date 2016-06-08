@@ -1,0 +1,14 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+@prefix inst: <http://example.com/Capacidad_instalada#> .
+@prefix vend: <http://example.com/Electricidad_vendida_por_comuna#> .
+@prefix ex: <http://example.com> .
+
+#Mismas Regiones
+inst:region     rdfs:subclassOf     rdf:Place   .
+vend:region     owl:sameAs          inst:region .
+#Mismas Comunas
+inst:comuna     rdfs:subclassOf     rdf:Place   .
+vend:comuna     owl:sameAs          inst:comuna .

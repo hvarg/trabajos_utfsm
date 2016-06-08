@@ -1,0 +1,56 @@
+@prefix rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>       .
+@prefix rdfs:       <http://www.w3.org/2000/01/rdf-schema#>             .
+@prefix :           <http://www.example.org/>                           .
+
+:Don_Quijote            rdfs:honorificPrefix    "Don"                   .
+:Don_Quijote            rdfs:alternateName      "Quijote"               .
+:Don_Quijote            rdfs:givenName          "Alonso"                .
+:Don_Quijote            rdfs:familyName         "Quijano"               .
+
+:Noble                  rdfs:subclassOf         rdfs:Person             .
+:Hidalgo                rdfs:subclassOf         :Noble                  .
+:Don_Quijote            rdf:type                :Hidalgo                .
+
+:edad                   rdf:type                rdf:Property            .
+:edad                   rdfs:domain             rdfs:Person             .
+:Don_Quijote            :edad                   50                      .
+
+:La_Mancha              rdf:type                rdfs:Place              .
+:La_Mancha              rdfs:name               "La Mancha"             .
+:Don_Quijote            rdfs:homeLocation       :La_Mancha              .
+
+:leer                   rdf:type                rdf:Property            .
+:leer                   rdfs:domain             rdfs:Person             .
+:leer                   rdfs:range              rdfs:Book               .
+:Libros_de_Caballeria   rdfs:subclassOf         rdfs:Book               .
+:Don_Quijote            :leer                   :Libros_de_Caballeria   .
+
+:Animal                 rdfs:subclassOf         rdfs:Thing              .
+:Caballo                rdfs:subclassOf         :Animal                 .
+:Rocinante              rdf:type                :Caballo                .
+:Rocinante              rdfs:name               "Rocinante"             .
+
+:tiene                  rdf:type                rdf:Property            .
+:tiene                  rdfs:domain             rdfs:Person             .
+:tiene                  rdfs:range              rdfs:Thing              .
+:Don_Quijote            :tiene                  :Rocinante              .
+
+:Dulcinea               rdf:type                rdfs:Person             .
+:Dulcinea               rdfs:givenName          "Dulcinea"              .
+:Dulcinea               rdfs:familyName         "de Toboso"             .
+
+:estar_enamorado        rdf:type                rdf:Property            .
+:estar_enamorado        rdfs:domain             rdfs:Person             .
+:estar_enamorado        rdfs:range              rdfs:Person             .
+:Don_Quijote            :estar_enamorado        :Dulcinea               .
+:Don_Quijote            :estar_enamorado        :Dulcinea               .
+
+:Sancho                 rdf:type                rdfs:Person             .
+:Sancho                 rdfs:givenName          "Sancho"                .
+:Sancho                 rdfs:familyName         "Panza"                 .
+
+:escudero_de            rdf:type                rdf:Property            .
+:escudero_de            rdfs:domain             rdfs:Person             .
+:escudero_de            rdfs:range              rdfs:Person             .
+
+:Sancho                 :escudero_de            :Don_Quixote            .

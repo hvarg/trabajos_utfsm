@@ -1,0 +1,85 @@
+############################ CONSULTAS DE PELICULAS ############################
+## endpoint http://dbpedia.org/sparql
+
+#1
+select distinct * where {
+    ?pelicula   dbp:starring    ?actor  .
+} LIMIT 100
+
+#2
+select distinct * where {
+    ?pelicula   dbp:starring    ?actor      .
+    ?pelicula   dbp:director    ?director   .
+} LIMIT 100
+
+#3
+select distinct * where {
+    ?pelicula   dbp:starring    ?actor      .
+    ?pelicula   dbp:director    ?director   .
+    ?pelicula   dbp:producer    ?director   .
+} LIMIT 100
+
+#4
+select distinct ?pelicula ?actor ?director where {
+    ?pelicula   dbp:starring    ?actor      .
+    ?pelicula   dbp:director    ?director   .
+    ?director   dbp:children    ?actor      .
+} LIMIT 100
+
+#5
+select distinct ?pelicula ?actor ?director where {
+    ?pelicula   dbp:starring    ?actor      .
+    ?pelicula   dbp:director    ?director   .
+    ?director   dbo:parent      ?actor      .
+} LIMIT 100
+
+#6
+select distinct ?pelicula ?actor ?director where {
+    ?pelicula   dbp:starring    ?actor      .
+    ?pelicula   dbp:director    ?director   .
+    ?pelicula   dbp:producer    ?director   .
+    ?director   dbp:children    ?actor      .
+} LIMIT 100
+
+#7
+select distinct ?pelicula ?actor ?director where {
+    ?pelicula   dbp:starring    ?actor      .
+    ?pelicula   dbp:director    ?director   .
+    ?pelicula   dbp:producer    ?director   .
+    ?pelicula   dbp:music       ?musico     .
+    ?director   dbp:children    ?musico     .
+} LIMIT 100
+
+#8
+select distinct ?director ?actor ?anio where {
+    ?pelicula   dbp:name        ?titulo     .
+    ?pelicula   dbp:director    ?director   .
+    ?pelicula   dbp:starring    ?actor      .
+    ?pelicula   dbp:released    ?anio       .
+    FILTER regex(?titulo, "Total Recall")
+} LIMIT 100
+
+#9
+select distinct ?pelicula ?actor ?director ?duracion where {
+    ?pelicula   dbp:starring    ?actor      .
+    ?pelicula   dbp:director    ?director   .
+    ?pelicula   dbp:producer    ?director   .
+    ?director   dbp:children    ?actor      .
+    OPTIONAL {
+        ?pelicula   dbo:runtime     ?duracion   .
+    }
+} LIMIT 100
+
+#10
+select distinct ?pelicula ?actor ?director where { {
+        ?pelicula   dbp:starring    ?actor      .
+        ?pelicula   dbp:director    ?director   .
+        ?director   dbp:children    ?actor      .
+    } 
+    UNION 
+    {
+        ?pelicula   dbp:starring    ?actor      .
+        ?pelicula   dbp:director    ?director   .
+        ?director   dbo:parent      ?actor      .
+    } 
+}LIMIT 100

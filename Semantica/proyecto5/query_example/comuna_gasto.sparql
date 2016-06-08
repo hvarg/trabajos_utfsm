@@ -1,0 +1,10 @@
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX inst: <http://example.com/Capacidad_instalada#>
+PREFIX vend: <http://example.com/Electricidad_vendida_por_comuna#>
+
+
+#Retorna las comunas y su gasto de energia
+SELECT DISTINCT ?comuna ?gasto WHERE {
+    ?x  vend:comuna                 ?comuna     .
+    ?x  vend:suma_de_energia_kwh    ?gasto      .
+} 

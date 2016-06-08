@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html prefix="rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+              rdfs: http://www.w3.org/2000/01/rdf-schema#"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <title>Hernán Vargas</title>
+    <!--[if lt IE 9]>
+        <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body about="http://alumnos.inf.utfsm.cl/~hvargas/" typeof="rdfs:Person" style="width: 738px;">
+    <div id="container" style="margin-left: 40px;">
+        <h1 property="rdfs:name" class="title" style="text-align: left; margin-left: 80px;">
+            <span property="rdfs:givenName">Hernán</span>
+            <span property="rdfs:additionalName">Felipe</span>
+            <span property="rdfs:familyName">Vargas</span>
+            Leighton.
+        </h1>
+        <hr style="margin-left: 80px;" />
+        <p class="section none" style="margin-left: 80px;">
+            email: 
+            <span property="rdfs:email">hernan.vargas@alumnos.usm.cl</span>
+        </p>
+        <p class="section none" style="margin-left: 80px;">
+            phone: 
+            <span property="rdfs:telephone">+56 9 5079 0933</span>
+        </p>
+        <p class="section none" style="margin-left: 80px;">
+            Mailing address:
+            <span property="rdfs:address" typeof="rdfs:PostalAddress">
+                <span property="rdfs:streetAddress">Mercedes 461 dpto 406</span>,
+                <span property="rdfs:addressLocality">Placeres</span>,
+                <span property="rdfs:addressRegion">Valparaíso</span>, 
+                <span property="rdfs:addressCountry" typeof="rdfs:Country">
+                    <span property="rdfs:name">Chile</span>
+                </span>
+            </span>.
+        </p>
+        <hr style="margin-left: 80px;" />
+
+        <h2 style="margin-left: 80px;">About me</h2>
+        <p property="rdfs:comment" style="margin-left: 80px;">
+            I was born on <span property="rdfs:birthDate" typeof="rdfs:Date">1992-01-08</span>
+            in <span property="rdfs:birthPlace" typeof="rdfs:Place">
+               <span property="rdfs:address" typeof="rdfs:PostalAddress">
+                <span property="rdfs:addressLocality">Quillota</span>,
+                <span property="rdfs:addressRegion">Valparaíso</span>, 
+                <span property="rdfs:addressCountry" typeof="rdfs:Country">
+                    <span property="rdfs:name">Chile</span>
+                </span>
+               </span>
+            </span>
+        </p>
+        <p property="rdfs:comment" style="margin-left: 80px;">
+            I'm currently studying something like computer engineering in the 
+            <span property="rdfs:alumniOf" typeof="EducationalOrganization">
+                "<span property="rdfs:name">Universidad Técnica Federíco Santa María</span>"
+                <link href="http://es.dbpedia.org/page/Universidad_Técnica_Federico_Santa_María" property:"rdfs:sameAs">
+                (<span property="rdfs:alternateName">UTFSM</span>) located at
+                <span property="rdfs:address" typeof="rdfs:PostalAddress">
+                    <span property="rdfs:streetAddress">Avenida España 1680, Casilla 110-V</span>,
+                    <span property="rdfs:addressRegion">Valparaíso</span>, 
+                    <span property="rdfs:addressCountry" typeof="rdfs:Country">
+                        <span property="rdfs:name">Chile</span>.
+                    </span>
+                </span>
+            </span>
+        </p>
+        <p property="rdfs:comment" style="margin-left: 80px;">
+            I'm member of the 
+            <span property="rdfs:memberOf" typeof="rdfs:Organization">
+                "<span property="rdfs:name">Sociedad de debates USM</span>", a debate team of 
+                <span property="rdfs:parentOrganization" typeof="rdfs:Organization">
+                    <span property="rdfs:alternateName">UTFSM</span>
+                </span>
+                who has participate in a lot of international tournaments like
+                <span property="rdfs:event" typeof="event">
+                    "<span property="rdfs:name">Campeonato Mundial Universitario de Debate en Español</span>"
+                    <span property="rdfs:alternateName">CMUDE</span>
+                    <span property="rdfs:startDate" typeof="rdfs:Date">2015</span>
+                </span>,
+                <span property="rdfs:event" typeof="event">
+                    "<span property="rdfs:name">Torneo de debate internacional ICUSTA</span>"
+                    <span property="rdfs:startDate" typeof="rdfs:Date">2014</span> of the university
+                    <span property="rdfs:organizer" typeof="rdfs:Organization">
+                        "<span property="rdfs:name">Santo Tomás</span>"
+                    </span>
+                </span>,
+                <span property="rdfs:event" typeof="event">
+                    "<span property="rdfs:name">Torneo de Debate Interuniversitario</span>"
+                    <span property="rdfs:alternateName">ToDi</span>
+                    <span property="rdfs:startDate">2012</span> of the university
+                    <span property="rdfs:organizer" typeof="rdfs:Organization">
+                        "<span property="rdfs:name">Pontificia Universidad Católica del Perú</span>"
+                        <span property="rdfs:alternateName">(PUCP)</span>
+                    </span>
+                </span>,
+                etc. </br>
+                You can send us a mail to <span property="rdfs:email">debate@usm.cl</span> or follow our facebook page 
+                <a property="rdfs:url" href=https://www.facebook.com/debateusm>here</a>.
+            </span>
+        </p>
+        <p property="rdfs:comment" style="margin-left: 80px;">
+            I'm interested in web scraping and process automation. 
+            I like to write my programs on vim and everything who can be done in a CLI. 
+            You can see my facebook account <a property="rdfs:url" href=https://www.facebook.com/Hernan.Vargas.Leighton>here</a>
+        </p>
+
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>

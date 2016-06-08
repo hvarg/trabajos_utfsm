@@ -1,0 +1,461 @@
+@prefix : <file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <www.example.com/ufsm/websemantica> .
+
+<www.example.com/ufsm/websemantica> rdf:type owl:Ontology .
+
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#amigo_de
+
+:amigo_de rdf:type owl:ObjectProperty ,
+                   owl:SymmetricProperty .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#casado_con
+
+:casado_con rdf:type owl:FunctionalProperty ,
+                     owl:ObjectProperty ,
+                     owl:SymmetricProperty .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#enamorado_de
+
+:enamorado_de rdf:type owl:ObjectProperty .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#es_de_la_familia
+
+:es_de_la_familia rdf:type owl:ObjectProperty ;
+                  
+                  rdfs:range :Familia ;
+                  
+                  rdfs:domain :Persona .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#familiar_de
+
+:familiar_de rdf:type owl:ObjectProperty ;
+             
+             rdfs:range :Persona ;
+             
+             rdfs:domain :Persona .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#hermano_de
+
+:hermano_de rdf:type owl:ObjectProperty ,
+                     owl:SymmetricProperty ;
+            
+            rdfs:subPropertyOf :familiar_de .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#hijo_de
+
+:hijo_de rdf:type owl:AsymmetricProperty ,
+                  owl:IrreflexiveProperty ,
+                  owl:ObjectProperty ;
+         
+         rdfs:subPropertyOf :familiar_de .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#mascota_de
+
+:mascota_de rdf:type owl:AsymmetricProperty ,
+                     owl:ObjectProperty .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#padre_de
+
+:padre_de rdf:type owl:AsymmetricProperty ,
+                   owl:IrreflexiveProperty ,
+                   owl:ObjectProperty ;
+          
+          rdfs:subPropertyOf :familiar_de ;
+          
+          owl:inverseOf :hijo_de .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#se_lleva_mal_con
+
+:se_lleva_mal_con rdf:type owl:ObjectProperty .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#tiene_como_mascota
+
+:tiene_como_mascota rdf:type owl:ObjectProperty ;
+                    
+                    owl:inverseOf :mascota_de .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Animal
+
+:Animal rdf:type owl:Class .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Familia
+
+:Familia rdf:type owl:Class .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Gato
+
+:Gato rdf:type owl:Class ;
+      
+      rdfs:subClassOf :Animal ;
+      
+      owl:disjointWith :Perro .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Hombre
+
+:Hombre rdf:type owl:Class ;
+        
+        rdfs:subClassOf :Persona ;
+        
+        owl:disjointWith :Mujer .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Mujer
+
+:Mujer rdf:type owl:Class ;
+       
+       rdfs:subClassOf :Persona .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Perro
+
+:Perro rdf:type owl:Class ;
+       
+       rdfs:subClassOf :Animal .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Persona
+
+:Persona rdf:type owl:Class .
+
+
+
+
+
+#################################################################
+#
+#    Individuals
+#
+#################################################################
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Abraham
+
+:Abraham rdf:type :Hombre ,
+                  owl:NamedIndividual ;
+         
+         :padre_de :Homer ;
+         
+         :casado_con :Mona ;
+         
+         :es_de_la_familia :Simpsons .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Ayudante_de_Santa
+
+:Ayudante_de_Santa rdf:type :Perro ,
+                            owl:NamedIndividual ;
+                   
+                   :mascota_de :Simpsons .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Bart
+
+:Bart rdf:type :Hombre ,
+               owl:NamedIndividual ;
+      
+      :hermano_de :Lisa ,
+                  :Maggie ;
+      
+      :amigo_de :Milhouse ;
+      
+      :es_de_la_familia :Simpsons .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Bola_de_Nieve
+
+:Bola_de_Nieve rdf:type :Gato ,
+                        owl:NamedIndividual ;
+               
+               :mascota_de :Simpsons .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Bouvier
+
+:Bouvier rdf:type :Familia ,
+                  owl:NamedIndividual .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Flanders
+
+:Flanders rdf:type :Familia ,
+                   owl:NamedIndividual .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Homer
+
+:Homer rdf:type :Hombre ,
+                owl:NamedIndividual ;
+       
+       :padre_de :Bart ,
+                 :Lisa ,
+                 :Maggie ;
+       
+       :casado_con :Marge ;
+       
+       :enamorado_de :Marge ;
+       
+       :amigo_de :Ned ;
+       
+       :se_lleva_mal_con :Ned ;
+       
+       :es_de_la_familia :Simpsons .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Kirk
+
+:Kirk rdf:type :Hombre ,
+               owl:NamedIndividual ;
+      
+      :se_lleva_mal_con :Luann ;
+      
+      :enamorado_de :Luann ;
+      
+      :padre_de :Milhouse ;
+      
+      :es_de_la_familia :Van_Houten .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Lisa
+
+:Lisa rdf:type :Mujer ,
+               owl:NamedIndividual ;
+      
+      :es_de_la_familia :Simpsons .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Luann
+
+:Luann rdf:type :Mujer ,
+                owl:NamedIndividual ;
+       
+       :padre_de :Milhouse ;
+       
+       :es_de_la_familia :Van_Houten .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Maggie
+
+:Maggie rdf:type :Mujer ,
+                 owl:NamedIndividual ;
+        
+        :es_de_la_familia :Simpsons .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Marge
+
+:Marge rdf:type :Mujer ,
+                owl:NamedIndividual ;
+       
+       :padre_de :Bart ;
+       
+       :es_de_la_familia :Bouvier ;
+       
+       :padre_de :Lisa ,
+                 :Maggie ;
+       
+       :es_de_la_familia :Simpsons .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Maude
+
+:Maude rdf:type :Mujer ,
+                owl:NamedIndividual ;
+       
+       :es_de_la_familia :Flanders ;
+       
+       :padre_de :Rod ,
+                 :Todd .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Milhouse
+
+:Milhouse rdf:type :Hombre ,
+                   owl:NamedIndividual ;
+          
+          :enamorado_de :Lisa ;
+          
+          :es_de_la_familia :Van_Houten .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Mona
+
+:Mona rdf:type :Mujer ,
+               owl:NamedIndividual ;
+      
+      :padre_de :Homer ;
+      
+      :es_de_la_familia :Simpsons .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Ned
+
+:Ned rdf:type :Hombre ,
+              owl:NamedIndividual ;
+     
+     :es_de_la_familia :Flanders ;
+     
+     :amigo_de :Homer ;
+     
+     :casado_con :Maude ;
+     
+     :padre_de :Rod ,
+               :Todd .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Patty
+
+:Patty rdf:type :Mujer ,
+                owl:NamedIndividual ;
+       
+       :es_de_la_familia :Bouvier ;
+       
+       :hermano_de :Marge ,
+                   :Selma ;
+       
+       :amigo_de :Selma .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Rod
+
+:Rod rdf:type :Hombre ,
+              owl:NamedIndividual ;
+     
+     :es_de_la_familia :Flanders ;
+     
+     :amigo_de :Todd ;
+     
+     :hermano_de :Todd .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Selma
+
+:Selma rdf:type :Mujer ,
+                owl:NamedIndividual ;
+       
+       :es_de_la_familia :Bouvier .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Simpsons
+
+:Simpsons rdf:type :Familia ,
+                   owl:NamedIndividual .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Todd
+
+:Todd rdf:type :Hombre ,
+               owl:NamedIndividual ;
+      
+      :es_de_la_familia :Flanders .
+
+
+
+###  file:/home/hvargas/Documentos/Universidad/Semantica/proyecto4/www.example.com/ufsm/websemantica#Van_Houten
+
+:Van_Houten rdf:type :Familia ,
+                     owl:NamedIndividual .
+
+
+
+
+
+#################################################################
+#
+#    General axioms
+#
+#################################################################
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( :Bart
+                        :Homer
+                        :Lisa
+                        :Maggie
+                        :Marge
+                      )
+] .
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Animal
+                :Familia
+                :Persona
+              )
+] .
+
+
+
+
+###  Generated by the OWL API (version 3.5.1) http://owlapi.sourceforge.net
+

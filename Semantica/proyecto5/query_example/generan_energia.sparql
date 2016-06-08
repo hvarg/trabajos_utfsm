@@ -1,0 +1,17 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX inst: <http://example.com/Capacidad_instalada#>
+PREFIX vend: <http://example.com/Electricidad_vendida_por_comuna#>
+
+
+#Retorna las comunas que generan energia:
+SELECT DISTINCT ?generan_energia WHERE { 
+    ?x  inst:comuna                 ?generan_energia  .
+    ?y  vend:comuna                 ?generan_energia  .
+}
+#No logré hacer funcionar el construc
+#CONSTRUCT {
+#    ?com    rdf:type    rdfs:Place .
+#} WHERE {
+#    ?s      vend:comuna     ?com .
+#} LIMIT 10

@@ -1,0 +1,53 @@
+Proyecto 5 - RDB2RDF
+Hernán Vargas
+--------------------
+
+Contenido:
+  1.- Introducción.
+  2.- Mapping R2RML
+  3.- Modelo RDFS/OWL
+  4.- Inferencias
+
+
+1.- INTRODUCCIÓN
+
+  Para el evitar problemas a la hora de trabajar los datos se hicieron las
+siguientes modificaciones a las bases de datos utilizadas como input de este
+proyecto ("capacidad de generación" y "electricidad vendida por comuna").
+    1.1.- Se eliminaron caracteres conflictivos como paréntesis y acentos.
+    1.2.- Se cambio el tamaño de "Suma_de_energía_(kwh)" debido a que en
+    ocasiones se producía overflow.
+  Además se trabajó con las herramientas "morph-rdb" descargada desde el moodle
+y apache-jena.
+
+
+2.- MAPPING R2RML.
+  Se hizo direct mapping utilizando morph-rdb. La configuración utilizada puede
+verse en el archivo `DG_electricidad_chile.morph.properties`. El modelo 
+resultante de dicho mapping está en el archivo `electricidad_chile-mapping.ttl`
+y los datos en `electricidad_chile-result.nt`.
+  Para probar la correctidad del mapping se adjuntan algunas consultas en sparql
+en la carpeta `query_example`. Las consultas pueden ser probadas con el
+interprete de sparql de Jena como:
+  `sparql --data=electricidad_chile-result.nt --query=query_example/algo.sparql`
+
+
+3.- MODELO RDFS/OWL
+  El modelo para hacer las inferencias se encuentra en el archivo `modelo.ttl`,
+el modelo solo incluye la definición de regiones y comunas y el nexo entre
+ellas. De esta manera aclaramos que los datos en ambas tablas están relacionados
+por la región y comuna en que se encuentran.
+  El nombre de las regiones en ambas tablas difiere por la aparición del prefijo
+"Región de" en la tabla de consumo. Esto puede ser solucionado utilizando un
+mapping más especifico en el archivo `location_mapping.ttl` que es uno de los
+inputs de morph-rdb.
+  Además se intentaron crear triples mediante `CONSTRUCT` de sparql para poder
+definir relaciones entre las instancias pero tampoco se logró.
+
+
+4.- INFERENCIAS
+  Para hacer las inferencias se utilizó el comando `infer` de Jena como:
+    `infer --rdfs=modelo.ttl electricidad_chile-result.nt`
+Lamentablemente no noto resultados de la aplicación del modelo sobre los datos
+obtenidos del direct mapping (ambos archivos tienen 4233 lineas) y por ello no
+continué ampliando el modelo. 
